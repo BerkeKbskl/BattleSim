@@ -3,7 +3,7 @@
 #include "game.h"
 #include <iostream>
 
-Game::Game(Scenario scenario,QWidget *parent):QWidget(parent),scenario(scenario),map(scenario){
+Game::Game(Scenario scenario,QWidget *parent):QWidget(parent),scenario(scenario),map(scenario),user(scenario),ai(scenario){
     setFocusPolicy(Qt::StrongFocus);
     // start updating frames.
     gameSetup();
