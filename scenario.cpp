@@ -5,18 +5,7 @@
 
 
 Scenario::Scenario(int scenarioNum) {
-    switch (scenarioNum){
-    case 1:
-        scenarioPath="scenario1.txt"; break;
-    case 2:
-        scenarioPath="scenario2.txt"; break;
-    case 3:
-        scenarioPath="scenario3.txt"; break;
-    case 4:
-        scenarioPath="scenario4.txt"; break;
-    }
-
-
+    scenarioPath.append("scenario").append(to_string(scenarioNum)).append(".txt");
     scanScenarioFile(scenarioPath);
 
 }
@@ -27,6 +16,13 @@ vector<QPointF> Scenario::getUserUntisPositions() {
 
 vector<QPointF> Scenario::getAIUntisPositions() {
     return AIUnitsPositions;
+}
+list<QString> Scenario::getUserUnitsType() {
+    return userUnitsTypes;
+}
+
+list<QString> Scenario::getAIUnitsType() {
+    return AIUnitsTypes;
 }
 
 QImage Scenario::getMapImage() {
@@ -51,7 +47,7 @@ bool Scenario::scanScenarioFile(QString fileName) {
             if(declaration=="Unit:"){
                 userType=decLineContent[1];
                 unitType=decLineContent[2];
-                    if (unitType == "infantry:" || unitType == "cavalry:"||unitType=="artillery:") {
+                if (unitType == "infantry:" || unitType == "cavalry:"||unitType=="artillery:") {
                     QString line=in.readLine();
                     QStringList positionsLine = line.split(" ");
                     for (int i = 0; i < positionsLine.size(); i += 2) {
@@ -78,9 +74,9 @@ bool Scenario::scanScenarioFile(QString fileName) {
                             }
                         }
                     }
-                    }else {
-                        qDebug() << "undefined definition for unit " ;
-                    }
+                }else {
+                    qDebug() << "undefined definition for unit " ;
+                }
 
             }
             else{

@@ -1,7 +1,9 @@
 #include "ai.h"
 #include <iostream>
 
-AI::AI() { /**/
+AI::AI(Scenario scenario) {
+    this->scenario=scenario;
+    createUnits(scenario.getAIUnitsType());
     color = Qt::black;
 }
 
