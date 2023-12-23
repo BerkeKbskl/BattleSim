@@ -1,0 +1,8 @@
+Unit: AI: infantry: 
+100 500 150 500
+Unit: AI: cavalry: 
+200 500 300 400
+Unit: AI: artillery: 
+250 500 300 500
+Unit: User: infantry:
+100 100 500 100
