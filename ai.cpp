@@ -1,7 +1,7 @@
 #include "ai.h"
 #include <iostream>
 
-AI::AI() {
+AI::AI() { /**/
     color = Qt::black;
 }
 
