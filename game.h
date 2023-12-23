@@ -26,9 +26,9 @@ private:
     void checkState();
     Scenario scenario;
     void gameSetup();
-    Map* map;
-    User* user;
-    AI* ai;
+    Map map;
+    User user;
+    AI ai;
 };
 
 #endif // GAME_H

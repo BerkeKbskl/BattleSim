@@ -2,6 +2,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "Scenario.h"
 #include "obstacle.h"
 #include <QObject>
 #include <QRect>
@@ -12,7 +13,7 @@ class Map : public QObject, public QRect
     Q_OBJECT
 
 public:
-    Map(QImage );
+    Map(Scenario scenario);
     void draw(QPainter* painter);
     std::vector<Obstacle*> obstacles;
 

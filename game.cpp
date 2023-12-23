@@ -3,26 +3,20 @@
 #include "game.h"
 #include <iostream>
 
-Game::Game(Scenario scenario,QWidget *parent):QWidget(parent),scenario(scenario){
+Game::Game(Scenario scenario,QWidget *parent):QWidget(parent),scenario(scenario),map(scenario){
     setFocusPolicy(Qt::StrongFocus);
-    user=new User();
-    ai = new AI();
-    map = new Map(scenario.getMapImage());
     // start updating frames.
     gameSetup();
 }
 
 Game::~Game(){
     delete timer;
-    delete user;
-    delete ai;
-    delete map;
 }
 
 void Game::gameSetup(){
 
-    ai->deployUnits(scenario);
-    user->deployUnits(scenario);
+    ai.deployUnits(scenario);
+    user.deployUnits(scenario);
     timer=new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
     timer->start(1000/60); // 60 FPS
@@ -32,15 +26,15 @@ void Game::gameSetup(){
 void Game::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     QPainter painter(this);
-    map->draw(&painter);
+    map.draw(&painter);
 
 
-    for(Unit *unit:user->units){
+    for(Unit *unit:user.units){
         QPainter painter(this);
         unit->draw(&painter);
     }
 
-    for(Unit *unit:ai->units){
+    for(Unit *unit:ai.units){
         QPainter painter(this);
         unit->draw(&painter);
     }
@@ -51,7 +45,7 @@ void Game::paintEvent(QPaintEvent* event) {
 void Game::mousePressEvent(QMouseEvent *event) {
 
     if(event->button()==Qt::LeftButton ){//selection ***left mouse button
-        for(Unit *unit:user->units){
+        for(Unit *unit:user.units){
             unit->selectUnit(event->pos());
             // rotate unit.
 
@@ -60,9 +54,9 @@ void Game::mousePressEvent(QMouseEvent *event) {
         }
     }
 
-    else if(event->button()==Qt::RightButton && map->contains(event->pos())){//moving ***right muse button
+    else if(event->button()==Qt::RightButton && map.contains(event->pos())){//moving ***right muse button
         //***
-        for(Unit *unit:user->units){
+        for(Unit *unit:user.units){
             if(unit->selected)
             {
                 unit->setTarget(event->pos());
@@ -85,10 +79,10 @@ void Game::mousePressEvent(QMouseEvent *event) {
 }
 
 void Game::checkState(){
-    for(Unit *unit:user->units){
+    for(Unit *unit:user.units){
         QPolygonF nextPolygon=unit->getNextPoly();
 
-        for (Unit* trUnit : user->units) {
+        for (Unit* trUnit : user.units) {
 
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
@@ -97,7 +91,7 @@ void Game::checkState(){
             }
         }
 
-        for (Unit* trUnit : ai->units) {
+        for (Unit* trUnit : ai.units) {
 
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
@@ -106,7 +100,7 @@ void Game::checkState(){
             }
         }
 
-        for (Obstacle* o : map->obstacles) {
+        for (Obstacle* o : map.obstacles) {
             if (!nextPolygon.intersected(o->shape).isEmpty()) {
                 unit->setCollisionState(1);
                 std::cout << "h";
@@ -119,9 +113,10 @@ void Game::checkState(){
     }
 }
 void Game::updateGame(){
+
     checkState();
 
-    for(Unit *unit:user->units){
+    for(Unit *unit:user.units){
         unit->moveTo();
     }
 

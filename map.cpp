@@ -5,10 +5,10 @@
 #define WW 1000
 #define WH 1000
 
-Map::Map(QImage mapImage)
+Map::Map(Scenario scenario)
     : width(WW),
     height(WH),
-    QRect(0, 0, WW, WH),mapImage(mapImage) {
+    QRect(0, 0, WW, WH),mapImage(scenario.getMapImage()) {
 
 
     for(int i=0;i<2;i++){
