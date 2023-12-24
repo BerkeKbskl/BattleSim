@@ -24,8 +24,8 @@ public:
 
 private:
     void checkState();
-    Scenario scenario;
     void gameSetup();
+    Scenario scenario;
     Map map;
     User user;
     AI ai;

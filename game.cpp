@@ -70,9 +70,7 @@ void Game::mousePressEvent(QMouseEvent *event) {
                 rotationTransform.translate(-unit->shape.boundingRect().center().x(),
                                             -unit->shape.boundingRect().center().y());
                 unit->shape = rotationTransform.map(unit->shape);
-
-
-
+                cout << "Clicked pos: " << event->pos().x() << "," << event->pos().y();
             }
 
         }

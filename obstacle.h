@@ -12,7 +12,9 @@ public:
     void draw(QPainter* painter);
     QPolygonF shape;
 
-private:
+
+protected:
+    QColor color;
 
 };
 

@@ -13,7 +13,6 @@ Unit::Unit(int x, int y, double width, double height)
     angle(0),
     width(width),
     height(height),
-    color(Qt::green),
     selected(false),
     movable(false){
 
@@ -41,6 +40,7 @@ void Unit::setTarget(QPoint point){
         movable=true;
         angle = atan2(point.y() - shape.boundingRect().center().y(),
                       point.x()- shape.boundingRect().center().x());
+        selected = false;
     }
 
 }
@@ -112,7 +112,7 @@ void Unit::draw(QPainter* painter) {
 
         QTransform transform;
         transform.rotate(orientation * 180 / M_PI);
-        resizedImage = resizedImage.transformed(transform);
+        resizedImage = resizedImage.transformed(transform, Qt::SmoothTransformation);
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
@@ -121,5 +121,18 @@ void Unit::draw(QPainter* painter) {
                            resizedImage);
     }
 
-    painter->restore();
+    // Draw rounded integer values for debug information
+    /*painter->setPen(Qt::red);
+    painter->setFont(QFont("Arial", 10));
+
+    QPoint roundedPosition(static_cast<int>(shape[0].x()), static_cast<int>(shape[0].y()));
+    QString debugText = QString("X: %1\nY: %2").arg(roundedPosition.x()).arg(roundedPosition.y());
+    painter->drawText(roundedPosition, debugText);
+
+    // Draw a 2px dot at the top-left corner
+    painter->setPen(Qt::black);
+    painter->setBrush(Qt::black);
+    painter->drawEllipse(roundedPosition.x(), roundedPosition.y(), 2, 2);
+
+    painter->restore();*/
 }

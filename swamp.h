@@ -1,10 +1,14 @@
 #ifndef SWAMP_H
 #define SWAMP_H
 
-class Swamp
+#include "obstacle.h"
+#include <QPointF>
+
+class Swamp : public Obstacle
 {
 public:
-    Swamp();
+    Swamp(QPointF,QPointF,QPointF,QPointF);
+
 };
 
 #endif // SWAMP_H

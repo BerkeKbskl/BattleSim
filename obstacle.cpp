@@ -9,9 +9,13 @@ Obstacle::Obstacle()
 void Obstacle::draw(QPainter* painter)
 {
     painter->save();
-    painter->setBrush(QBrush(QColor(255,255,155)));
+    painter->setBrush(color);
+    painter->setPen(color.lighter(60));
+    painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawPolygon(shape);
     painter->restore();
+
+
 }
 
 
