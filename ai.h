@@ -6,7 +6,7 @@ class AI : public Player
 
 {
 public:
-    AI();
+    AI(Scenario scenario);
     void makeMove();
     void deployUnits(Scenario scenario) override;
 

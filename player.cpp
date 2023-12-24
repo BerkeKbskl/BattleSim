@@ -6,16 +6,11 @@
 Player::Player()
 {
 
-    for(int i=0;i<infantryCount;i++){
-        units.push_back(new Infantry());
+}
+void Player::createUnits(list<QString> unitTypes){
+    for(QString type:unitTypes){
+        if(type=="infantry"){units.push_back(new Infantry());}
+        else if(type=="cavalry"){units.push_back(new Cavalry());}
+        else if(type=="artillery"){units.push_back(new Artillery());}
     }
-
-    for(int i=0;i<artilleryCount;i++){
-        units.push_back(new Artillery());
-    }
-
-    for(int i=0;i<cavalryCount;i++){
-        units.push_back(new Cavalry());
-    }
-
 }

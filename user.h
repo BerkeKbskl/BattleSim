@@ -6,7 +6,7 @@
 class User:public Player
 {
 public:
-    User();
+    User(Scenario scenario);
     void deployUnits(Scenario ) override;
 };
 

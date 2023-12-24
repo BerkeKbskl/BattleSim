@@ -1,9 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define A_Count 4
-#define C_Count 4
-#define I_Count 8
+
 
 #include "unit.h"
 #include "scenario.h"
@@ -16,7 +14,8 @@ public:
     vector<Unit*> units;
 
 protected:
-    const int artilleryCount = A_Count, cavalryCount = C_Count, infantryCount = I_Count;
+    void createUnits(list<QString>);
+    Scenario scenario=0;
     QColor color;
 };
 
