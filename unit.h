@@ -14,9 +14,10 @@ public:
     void setPosition(vector<double> v);
     void moveTo();
     void selectUnit(QPoint);
-    void draw(QPainter *);
+    virtual void draw(QPainter *);
     void rotate(double degrees);
     QPolygonF getNextPoly();
+    virtual QPolygonF getNextCollider();
     double getAngle();
     double getOrientation();
     vector<int> target;
@@ -25,15 +26,19 @@ public:
     bool selected;
     double orientation;
     QColor color;
+
     QPolygonF shape;
+    QPolygonF collider;
+
     QImage img;
-    int attack(Unit* enemy);
+    virtual int attack(Unit& enemy);
+    int health;
 protected:
 
 
     double newPosX, newPosY;
     int attackPower;
-    int health;
+
     int speed;
     int moral;
     int defensePower;

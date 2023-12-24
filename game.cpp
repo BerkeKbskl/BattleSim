@@ -103,11 +103,20 @@ void Game::checkState()
                     unit->setCollisionState(2);
                     trUnit->setCollisionState(2);
 
-                    if(unit->attack(trUnit)){
+                    if(unit->attack(*trUnit)){
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
                     }
 
-                    unit->attack(trUnit);
+                    unit->attack(*trUnit);
+                    collisionDetected = true;
+                } else
+
+                // If it is not beneath but somewhere close for artillery
+                if (unit->getNextCollider().intersected(trUnit->shape).isEmpty() == false) {
+                    if(unit->attack(*trUnit)){
+                        ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
+                    }
+                    unit->attack(*trUnit);
                     collisionDetected = true;
                 }
             }
@@ -122,11 +131,6 @@ void Game::checkState()
                     collisionDetected = true;
                 }
             }
-        }
-
-        if (!collisionDetected) {
-            // No collisions detected, set default state and color
-            //unit->color = Qt::blue;
         }
 
 

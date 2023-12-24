@@ -7,6 +7,7 @@ Unit::Unit(int x, int y, double width, double height)
                 QPoint(x + width, y),
                 QPoint(x + width, y + height),
                 QPoint(x, y + height)}),
+
     target(x, y),
     speed(0),
     health(100),
@@ -14,7 +15,8 @@ Unit::Unit(int x, int y, double width, double height)
     width(width),
     height(height),
     selected(false),
-    movable(false),orientation(0){
+    movable(false),
+    orientation(0){
 
 }
 
@@ -28,17 +30,13 @@ void Unit::selectUnit(QPoint point){
 }
 
 
-int Unit::attack(Unit* enemy){
+int Unit::attack(Unit& enemy){
 
-    qDebug("ATTACKING!");
-
-    if(enemy->health<=0){
-        qDebug("enemy unit destroyed!");
+    if(enemy.health<=0){
         return 1;
     }
     else{
-        enemy->health-=(attackPower-defensePower/100);
-        qDebug("Unit attack to enemy unit! health->%i",enemy->health);
+        enemy.health-=(attackPower-defensePower/100);
         return 0;
     }
 }
@@ -66,6 +64,7 @@ void Unit::moveTo()
         }
     }
 }
+
 QPolygonF Unit::getNextPoly()
 {
     if (movable) {
@@ -100,6 +99,11 @@ QPolygonF Unit::getNextPoly()
 
 }
 
+QPolygonF Unit::getNextCollider()
+{
+    return getNextPoly();
+}
+
 
 void Unit::setCollisionState(int index) {
     collisionState=index;
@@ -122,7 +126,7 @@ double Unit::getAngle() {
 
 
 void Unit::draw(QPainter* painter) {
-    //painter->save();
+    painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.lighter(60));
     painter->setBrush(QBrush(color));
@@ -155,6 +159,6 @@ void Unit::draw(QPainter* painter) {
     painter->setPen(Qt::black);
     painter->setBrush(Qt::black);
     painter->drawEllipse(roundedPosition.x(), roundedPosition.y(), 2, 2);
-
-    painter->restore();*/
+    */
+    painter->restore();
 }
