@@ -27,7 +27,7 @@ void Unit::selectUnit(QPoint point){
         selected = !selected;
     }
 }
-void Unit::attack(Unit* enemy){
+void Unit::attack(Unit& enemy){
 
 
 
@@ -51,9 +51,7 @@ void Unit::moveTo() {
             this->setPosition({newPosX, newPosY});
             }
             else {
-            // ***
-            movable = selected = false; // other states
-            // ***
+                movable = selected = false; // other states
             }
         }
 
@@ -102,11 +100,44 @@ double Unit::getAngle() {
 
 void Unit::draw(QPainter* painter) {
 
+
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
+
     painter->setBrush(QBrush(color));
     painter->drawPolygon(shape);
-    painter->restore();
+
+
+    if (!img.isNull()) {
+        //painter->save();
+
+
+        // Assuming image is a member variable of your Unit class
+        QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+
+        QTransform transform;
+        transform.translate(shape.boundingRect().center().x(),
+                            shape.boundingRect().center().y()
+                            );  // Use the first corner of the shape as the rotation center
+
+        transform.rotate(orientation*180/(M_PI));
+        resizedImage = resizedImage.transformed(transform);
+        transform.translate(-shape.boundingRect().center().x(),
+                            -shape.boundingRect().center().y());
+
+        painter->drawImage(shape.boundingRect().topLeft().x(),
+                           shape.boundingRect().topLeft().y(),
+                           resizedImage);
+
+        painter->restore();
+    }
+
+
+
+
+
+
 
 }
 

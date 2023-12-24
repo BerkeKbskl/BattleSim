@@ -64,12 +64,16 @@ void Game::mousePressEvent(QMouseEvent *event) {
                 QTransform rotationTransform;
                 rotationTransform.translate(unit->shape.boundingRect().center().x(),
                                             unit->shape.boundingRect().center().y());
-                std::cout << unit->getAngle() << endl;
+                //std::cout << unit->getAngle() << endl;
                 rotationTransform.rotate(-unit->orientation*180/(M_PI)+90+unit->getAngle()*180/(M_PI)+90);
                 unit->orientation = unit->getAngle();
                 rotationTransform.translate(-unit->shape.boundingRect().center().x(),
                                             -unit->shape.boundingRect().center().y());
-                unit->shape = rotationTransform.map(unit->shape); }
+                unit->shape = rotationTransform.map(unit->shape);
+
+
+
+            }
 
         }
 
@@ -95,7 +99,8 @@ void Game::checkState(){
 
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
-                unit->attack(trUnit);
+                unit->attack(*trUnit);
+                // Attack unit
                 return;
             }
         }
@@ -103,7 +108,6 @@ void Game::checkState(){
         for (Obstacle* o : map.obstacles) {
             if (!nextPolygon.intersected(o->shape).isEmpty()) {
                 unit->setCollisionState(1);
-                std::cout << "h";
                 //methods for obstacles
                 return;
             }

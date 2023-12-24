@@ -2,9 +2,10 @@
 #include <iostream>
 
 AI::AI(Scenario scenario) {
-    this->scenario=scenario;
+
+    scenario=scenario;
     createUnits(scenario.getAIUnitsType());
-    color = Qt::black;
+    color = QColor(255,155,155);
 }
 
 

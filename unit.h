@@ -26,7 +26,8 @@ public:
     double orientation;
     QColor color;
     QPolygonF shape;
-    void attack(Unit *enemy);
+    QImage img;
+    void attack(Unit& enemy);
 protected:
 
 
@@ -39,7 +40,7 @@ protected:
     int collisionState;
     double width,height; // SEE
     double angle;
-    QImage img;
+
 
 private:
 

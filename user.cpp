@@ -3,7 +3,8 @@
 
 User::User(Scenario scenario)
 {
-    this->scenario=scenario;
+    scenario=scenario;
+    color=QColor(155,185,255);
     createUnits(scenario.getUserUnitsType());
 }
 
@@ -14,7 +15,7 @@ void User::deployUnits(Scenario scenario) {
 
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
-
+         units[i]->color = this->color;
     }
 
 }

@@ -4,8 +4,7 @@ Infantry::Infantry() : Unit() {
 
     speed = 10;
     defensePower = 20;
-
-    this->color = Qt::green;
+    img.load(":/images/infantry.png");
 
 }
 
