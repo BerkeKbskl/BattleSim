@@ -26,7 +26,12 @@ void Unit::selectUnit(QPoint point){
         selected = !selected;
     }
 }
+
+
 int Unit::attack(Unit* enemy){
+
+    qDebug("ATTACKING!");
+
     if(enemy->health<=0){
         qDebug("enemy unit destroyed!");
         return 1;

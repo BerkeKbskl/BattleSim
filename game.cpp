@@ -91,8 +91,8 @@ void Game::checkState()
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
                 trUnit->setCollisionState(1);
-                unit->color = Qt::black;
-                trUnit->color = Qt::black;
+                //unit->color = Qt::black;
+                //trUnit->color = Qt::black;
                 collisionDetected = true;
             }
         }
@@ -102,9 +102,12 @@ void Game::checkState()
                 if (nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                     unit->setCollisionState(2);
                     trUnit->setCollisionState(2);
+
+                    if(unit->attack(trUnit)){
+                        ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
+                    }
+
                     unit->attack(trUnit);
-                    unit->color = Qt::red;
-                    trUnit->color = Qt::red;
                     collisionDetected = true;
                 }
             }
@@ -115,7 +118,7 @@ void Game::checkState()
                 if (!nextPolygon.intersected(o->shape).isEmpty()) {
                     unit->setCollisionState(3);
                     // Handle obstacle collision (if needed)
-                    unit->color = Qt::green;
+                    //unit->color = Qt::green;
                     collisionDetected = true;
                 }
             }
@@ -123,8 +126,10 @@ void Game::checkState()
 
         if (!collisionDetected) {
             // No collisions detected, set default state and color
-            unit->color = Qt::blue;
+            //unit->color = Qt::blue;
         }
+
+
     }
 }
 
