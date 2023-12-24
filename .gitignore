@@ -1,5 +1,5 @@
 #build
 build/
-cMakeLists.txt
+CMakeLists.txt
 #cMakeLists user
 cMakeLists.txt.user
