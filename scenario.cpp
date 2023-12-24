@@ -3,7 +3,7 @@
 
 
 Scenario::Scenario(int scenarioNum) {
-    scenarioPath.append("scenario").append(to_string(scenarioNum)).append(".txt");
+    scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
     scanScenarioFile(scenarioPath);
 
 }
