@@ -6,4 +6,10 @@
         <file>images/infantry.png</file>
         <file>images/map.jpg</file>
     </qresource>
+    <qresource prefix="/scenarios">
+        <file>scenarios/scenario1.txt</file>
+        <file>scenarios/scenario2.txt</file>
+        <file>scenarios/scenario3.txt</file>
+        <file>scenarios/scenario4.txt</file>
+    </qresource>
 </RCC>

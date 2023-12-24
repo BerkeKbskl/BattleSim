@@ -1,0 +1,2 @@
+Unit: AI: infantry: 
+100 500 150 500
