@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/res"/>
-    <qresource prefix="/">
+    <qresource prefix="/images">
         <file>images/artillery.png</file>
         <file>images/cavalry.png</file>
         <file>images/infantry.png</file>
+        <file>images/map.jpg</file>
     </qresource>
 </RCC>

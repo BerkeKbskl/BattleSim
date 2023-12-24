@@ -1,22 +1,17 @@
 #include "obstacle.h"
 
 Obstacle::Obstacle()
-
 {
     // Additional initialization if needed
 }
 
 
-
-
 void Obstacle::draw(QPainter* painter)
 {
-    // Draw only the outline of the rotated rectangle as a red line
     painter->save();
-    painter->setBrush(QBrush(Qt::blue));
+    painter->setBrush(QBrush(QColor(255,255,155)));
     painter->drawPolygon(shape);
     painter->restore();
-
 }
 
 

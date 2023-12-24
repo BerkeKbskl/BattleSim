@@ -14,11 +14,11 @@ public:
     void setPosition(vector<double> v);
     void moveTo();
     void selectUnit(QPoint);
-    void extracted();
     void draw(QPainter *);
     void rotate(double degrees);
     QPolygonF getNextPoly();
     double getAngle();
+    double getOrientation();
     vector<int> target;
     void setCollisionState(int index);
     void setTarget(QPoint point);

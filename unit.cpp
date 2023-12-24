@@ -42,6 +42,7 @@ void Unit::setTarget(QPoint point){
         angle = atan2(point.y() - shape.boundingRect().center().y(),
                       point.x()- shape.boundingRect().center().x());
     }
+
 }
 
 void Unit::moveTo() {
@@ -99,45 +100,26 @@ double Unit::getAngle() {
 
 
 void Unit::draw(QPainter* painter) {
-
-
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
-
+    painter->setPen(color.lighter(60));
     painter->setBrush(QBrush(color));
+    painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawPolygon(shape);
 
-
     if (!img.isNull()) {
-        //painter->save();
-
-
-        // Assuming image is a member variable of your Unit class
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-
         QTransform transform;
-        transform.translate(shape.boundingRect().center().x(),
-                            shape.boundingRect().center().y()
-                            );  // Use the first corner of the shape as the rotation center
-
-        transform.rotate(orientation*180/(M_PI));
+        transform.rotate(orientation * 180 / M_PI);
         resizedImage = resizedImage.transformed(transform);
-        transform.translate(-shape.boundingRect().center().x(),
-                            -shape.boundingRect().center().y());
+
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
         painter->drawImage(shape.boundingRect().topLeft().x(),
                            shape.boundingRect().topLeft().y(),
                            resizedImage);
-
-        painter->restore();
     }
 
-
-
-
-
-
-
+    painter->restore();
 }
-

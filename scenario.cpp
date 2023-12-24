@@ -2,8 +2,6 @@
 #include <iostream>
 
 
-
-
 Scenario::Scenario(int scenarioNum) {
     scenarioPath.append("scenario").append(to_string(scenarioNum)).append(".txt");
     scanScenarioFile(scenarioPath);

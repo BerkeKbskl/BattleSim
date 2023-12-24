@@ -1,10 +1,8 @@
 #include "infantry.h"
 
 Infantry::Infantry() : Unit() {
-
     speed = 10;
     defensePower = 20;
-    img.load(":/images/infantry.png");
-
+    img.load(":images/images/infantry.png");
 }
 
