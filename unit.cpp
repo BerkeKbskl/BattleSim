@@ -39,51 +39,62 @@ int Unit::attack(Unit* enemy){
 }
 
 
-void Unit::setTarget(QPoint point){
-
-    if(selected){
-        target={point.x(),point.y()};
-        movable=true;
+void Unit::setTarget(QPoint point)
+{
+    if (selected) {
+        target = {point.x(), point.y()};
+        cout << "target:" << point.x() << "," << point.y() << endl;
+        movable = true;
         angle = atan2(point.y() - shape.boundingRect().center().y(),
-                      point.x()- shape.boundingRect().center().x());
+                      point.x() - shape.boundingRect().center().x());
         selected = false;
     }
-
 }
 
-void Unit::moveTo() {
-        if (movable) {// if next
-            if(collisionState==0){
-
+void Unit::moveTo()
+{
+    if (movable) { // if next
+        if (collisionState == 0) {
             this->setPosition({newPosX, newPosY});
-            }
-            else {
-                movable = selected = false; // other states
-            }
+        } else {
+            movable = selected = false; // other states
         }
-
-
+    }
 }
-QPolygonF Unit::getNextPoly(){
-    if(movable){
+QPolygonF Unit::getNextPoly()
+{
+    if (movable) {
         double dx = target[0] - shape.boundingRect().center().x();
         double dy = target[1] - shape.boundingRect().center().y();
+
         double distance = sqrt(dx * dx + dy * dy);
         if (distance > speed) {
-
             newPosX = shape.boundingRect().center().x() + speed * cos(angle);
             newPosY = shape.boundingRect().center().y() + speed * sin(angle);
+            // adjusts...
         } else {
             newPosX = target[0];
             newPosY = target[1];
             movable = selected = false; // if unit arrives at the target
         }
     }
-    return QPolygonF() << QPointF(newPosX - width / 2, newPosY - height / 2)
-                       << QPointF(newPosX + width / 2, newPosY - height / 2)
-                       << QPointF(newPosX + width / 2, newPosY + height / 2)
-                       << QPointF(newPosX - width / 2, newPosY + height / 2);
+
+
+    QPolygonF nextPolygon(shape);
+
+    QPointF v = {newPosX, newPosY};
+    // Calculate the current center of the shape
+    QPointF currentCenter = shape.boundingRect().center();
+    // Calculate the translation vector to move the center to the new position
+    QPointF translationVector = v - currentCenter;
+    // Translate the shape using the calculated translation vector
+    nextPolygon.translate(translationVector);
+
+    return nextPolygon;
+
+
 }
+
 
 void Unit::setCollisionState(int index) {
     collisionState=index;

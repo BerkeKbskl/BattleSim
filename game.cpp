@@ -46,84 +46,98 @@ void Game::paintEvent(QPaintEvent* event) {
 }
 
 
-void Game::mousePressEvent(QMouseEvent *event) {
-
-    if(event->button()==Qt::LeftButton ){//selection ***left mouse button
-        for(Unit *unit:user.units){
-        if(unit!=0){
+void Game::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) { //selection ***left mouse button
+        for (Unit *unit : user.units) {
             unit->selectUnit(event->pos());
             // rotate unit.
         }
-
-
-        }
     }
 
-    else if(event->button()==Qt::RightButton && map.contains(event->pos())){//moving ***right muse button
+    else if (event->button() == Qt::RightButton
+             && map.contains(event->pos())) { //moving ***right muse button
         //***
-        for(Unit *unit:user.units){
-            if(unit->selected)
-            {
+        for (Unit *unit : user.units) {
+            if (unit->selected) {
                 unit->setTarget(event->pos());
 
                 QTransform rotationTransform;
                 rotationTransform.translate(unit->shape.boundingRect().center().x(),
                                             unit->shape.boundingRect().center().y());
                 //std::cout << unit->getAngle() << endl;
-                rotationTransform.rotate(-unit->orientation*180/(M_PI)+90+unit->getAngle()*180/(M_PI)+90);
+                rotationTransform.rotate(-unit->orientation * 180 / (M_PI) + 90
+                                         + unit->getAngle() * 180 / (M_PI) + 90);
                 unit->orientation = unit->getAngle();
                 rotationTransform.translate(-unit->shape.boundingRect().center().x(),
                                             -unit->shape.boundingRect().center().y());
                 unit->shape = rotationTransform.map(unit->shape);
-                cout << "Clicked pos: " << event->pos().x() << "," << event->pos().y();
+                cout << "Clicked pos: " << event->pos().x() << ","
+                     << event->pos().y() << endl;
             }
-
         }
-
-
-
     }
 }
 
-void Game::checkState(){
-    for(Unit *unit:user.units){
-        QPolygonF nextPolygon=unit->getNextPoly();
+void Game::checkState()
+{
+    for (Unit *unit : user.units) {
+        QPolygonF nextPolygon = unit->getNextPoly();
+        unit->setCollisionState(0); // Reset collision state for the current unit
 
-        for (Unit* trUnit : user.units) {
+        bool collisionDetected = false;  // Flag to indicate if a collision was detected
 
+        for (Unit *trUnit : user.units) {
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
-                //friend unit
-                return;
+                trUnit->setCollisionState(1);
+                unit->color = Qt::black;
+                trUnit->color = Qt::black;
+                collisionDetected = true;
             }
         }
 
-        for (Unit* trUnit : ai.units) {
-
-            if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
-                unit->setCollisionState(1);
-                if(unit->attack(trUnit)){
-                    ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
+        if (!collisionDetected) {
+            for (Unit *trUnit : ai.units) {
+                if (nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+                    unit->setCollisionState(2);
+                    trUnit->setCollisionState(2);
+                    unit->attack(trUnit);
+                    unit->color = Qt::red;
+                    trUnit->color = Qt::red;
+                    collisionDetected = true;
                 }
-                return;
             }
         }
 
-        for (Obstacle* o : map.obstacles) {
-            if (!nextPolygon.intersected(o->shape).isEmpty()) {
-                unit->setCollisionState(1);
-                //methods for obstacles
-                return;
+        if (!collisionDetected) {
+            for (Obstacle *o : map.obstacles) {
+                if (!nextPolygon.intersected(o->shape).isEmpty()) {
+                    unit->setCollisionState(3);
+                    // Handle obstacle collision (if needed)
+                    unit->color = Qt::green;
+                    collisionDetected = true;
+                }
             }
         }
 
-        unit->setCollisionState(0);
-        unit->moveTo();
+        if (!collisionDetected) {
+            // No collisions detected, set default state and color
+            unit->color = Qt::blue;
+        }
     }
 }
+
+
+
+
 void Game::updateGame(){
 
     checkState();
+
+    for (Unit *unit : user.units) {
+        unit->moveTo();
+    }
 
     update(); // calls paintEvent
 }
