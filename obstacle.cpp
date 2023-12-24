@@ -8,12 +8,12 @@ Obstacle::Obstacle()
 
 void Obstacle::draw(QPainter* painter)
 {
-    painter->save();
+    //painter->save();
     painter->setBrush(color);
     painter->setPen(color.lighter(60));
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawPolygon(shape);
-    painter->restore();
+    //painter->restore();
 
 
 }

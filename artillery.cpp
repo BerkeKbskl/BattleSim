@@ -3,7 +3,9 @@
 
 Artillery::Artillery() : Unit() {
     speed = 2;
-    defensePower = 20;
+    health=300;
+    attackPower=35;
+    defensePower = 15;
     img.load(":images/images/artillery.png");
 }
 

@@ -27,11 +27,12 @@ public:
     QColor color;
     QPolygonF shape;
     QImage img;
-    void attack(Unit& enemy);
+    int attack(Unit* enemy);
 protected:
 
 
     double newPosX, newPosY;
+    int attackPower;
     int health;
     int speed;
     int moral;

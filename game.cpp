@@ -30,13 +30,17 @@ void Game::paintEvent(QPaintEvent* event) {
 
 
     for(Unit *unit:user.units){
+        if(unit!=0){
         QPainter painter(this);
         unit->draw(&painter);
+        }
     }
 
     for(Unit *unit:ai.units){
+        if(unit!=0){
         QPainter painter(this);
         unit->draw(&painter);
+        }
     }
 
 }
@@ -46,9 +50,10 @@ void Game::mousePressEvent(QMouseEvent *event) {
 
     if(event->button()==Qt::LeftButton ){//selection ***left mouse button
         for(Unit *unit:user.units){
+        if(unit!=0){
             unit->selectUnit(event->pos());
             // rotate unit.
-
+        }
 
 
         }
@@ -97,8 +102,9 @@ void Game::checkState(){
 
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
-                unit->attack(*trUnit);
-                // Attack unit
+                if(unit->attack(trUnit)){
+                    ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
+                }
                 return;
             }
         }
@@ -112,15 +118,12 @@ void Game::checkState(){
         }
 
         unit->setCollisionState(0);
+        unit->moveTo();
     }
 }
 void Game::updateGame(){
 
     checkState();
-
-    for(Unit *unit:user.units){
-        unit->moveTo();
-    }
 
     update(); // calls paintEvent
 }

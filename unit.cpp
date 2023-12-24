@@ -14,7 +14,7 @@ Unit::Unit(int x, int y, double width, double height)
     width(width),
     height(height),
     selected(false),
-    movable(false){
+    movable(false),orientation(0){
 
 }
 
@@ -26,10 +26,16 @@ void Unit::selectUnit(QPoint point){
         selected = !selected;
     }
 }
-void Unit::attack(Unit& enemy){
-
-
-
+int Unit::attack(Unit* enemy){
+    if(enemy->health<=0){
+        qDebug("enemy unit destroyed!");
+        return 1;
+    }
+    else{
+        enemy->health-=(attackPower-defensePower/100);
+        qDebug("Unit attack to enemy unit! health->%i",enemy->health);
+        return 0;
+    }
 }
 
 
@@ -100,7 +106,7 @@ double Unit::getAngle() {
 
 
 void Unit::draw(QPainter* painter) {
-    painter->save();
+    //painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.lighter(60));
     painter->setBrush(QBrush(color));
