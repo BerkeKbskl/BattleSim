@@ -8,7 +8,6 @@ class Cavalry : public Unit
 
 public:
     Cavalry() ;
-
     void charge();
     void attack(Unit&);
 

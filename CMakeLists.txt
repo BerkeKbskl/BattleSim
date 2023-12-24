@@ -35,6 +35,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
                scenario.h scenario.cpp
                obstacle.h obstacle.cpp
                river.cpp river.h
+               swamp.h swamp.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

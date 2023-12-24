@@ -8,7 +8,6 @@ class Artillery : public Unit
 public:
     Artillery();
     void shoot();
-
     void attack(Unit&);
 
 

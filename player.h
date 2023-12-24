@@ -15,7 +15,7 @@ public:
 
 protected:
     void createUnits(list<QString>);
-    Scenario scenario=0;
+    Scenario scenario = 0;
     QColor color;
 };
 
