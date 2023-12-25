@@ -90,17 +90,11 @@ void Game::checkState()
         for (Unit *trUnit : user.units) {
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
                 unit->setCollisionState(1);
-<<<<<<< HEAD
-                unit->color=(Qt::black);
-                trUnit->color=(Qt::black);
-                //friend unit
-                return;
-=======
+
                 trUnit->setCollisionState(1);
                 //unit->color = Qt::black;
                 //trUnit->color = Qt::black;
                 collisionDetected = true;
->>>>>>> 92ce53c3357c95a09f2d2740e969c79ce32dc944
             }
         }
 
@@ -143,17 +137,9 @@ void Game::checkState()
             }
         }
     }
-<<<<<<< HEAD
-    if (user.units.empty() || ai.units.empty()) {
-         timer->stop();
-         emit showResult();
-
-    }
+    
 }
 
-=======
-
-    // traverse in AI units
 
 
     for (Unit *unit : ai.units) {
@@ -216,7 +202,7 @@ void Game::checkState()
 
 
 
->>>>>>> 92ce53c3357c95a09f2d2740e969c79ce32dc944
+
 void Game::updateGame(){
 
     ai.makeMove(user.units);
