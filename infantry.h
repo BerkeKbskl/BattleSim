@@ -7,10 +7,9 @@ class Infantry : public Unit
 {
 public:
     Infantry();
-    void melee();
 
 private:
-    double firePower;
+
 };
 
 #endif // INFANTRY_H

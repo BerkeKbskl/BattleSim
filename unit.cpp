@@ -7,6 +7,7 @@ Unit::Unit(int x, int y, double width, double height)
                 QPoint(x + width, y),
                 QPoint(x + width, y + height),
                 QPoint(x, y + height)}),
+
     target(x, y),
     speed(0),
     health(100),
@@ -14,76 +15,98 @@ Unit::Unit(int x, int y, double width, double height)
     width(width),
     height(height),
     selected(false),
-    movable(false),orientation(0){
+    movable(false),
+    orientation(0){
 
 }
 
 
 
-void Unit::selectUnit(QPoint point){
+void Unit::selectUnit(QPointF point){
 
     if(shape.containsPoint(point, Qt::OddEvenFill)) {
         selected = !selected;
     }
 }
-int Unit::attack(Unit* enemy){
-    if(enemy->health<=0){
-        qDebug("enemy unit destroyed!");
+
+QPointF Unit::getPosition(){
+    return shape.boundingRect().center();
+}
+
+
+int Unit::attack(Unit& enemy){
+
+    if(enemy.health<=0){
         return 1;
     }
     else{
-        enemy->health-=(attackPower-defensePower/100);
-        qDebug("Unit attack to enemy unit! health->%i",enemy->health);
+        enemy.health-=(attackPower);
         return 0;
     }
 }
 
 
-void Unit::setTarget(QPoint point){
-
-    if(selected){
-        target={point.x(),point.y()};
-        movable=true;
+void Unit::setTarget(QPointF point)
+{
+    if (selected) {
+        target = {point.x(), point.y()};
+        movable = true;
         angle = atan2(point.y() - shape.boundingRect().center().y(),
-                      point.x()- shape.boundingRect().center().x());
+                      point.x() - shape.boundingRect().center().x());
         selected = false;
     }
-
 }
 
-void Unit::moveTo() {
-        if (movable) {// if next
-            if(collisionState==0){
-
+void Unit::moveTo()
+{
+    if (movable) { // if next
+        if (collisionState == 0) {
             this->setPosition({newPosX, newPosY});
-            }
-            else {
-                movable = selected = false; // other states
-            }
+        } else {
+            movable = selected = false; // other states
         }
-
-
+    }
 }
-QPolygonF Unit::getNextPoly(){
-    if(movable){
-        double dx = target[0] - shape.boundingRect().center().x();
-        double dy = target[1] - shape.boundingRect().center().y();
+
+QPolygonF Unit::getNextPoly()
+{
+    if (movable) {
+        double dx = target.x() - shape.boundingRect().center().x();
+        double dy = target.y() - shape.boundingRect().center().y();
+
         double distance = sqrt(dx * dx + dy * dy);
         if (distance > speed) {
-
             newPosX = shape.boundingRect().center().x() + speed * cos(angle);
             newPosY = shape.boundingRect().center().y() + speed * sin(angle);
+            // adjusts...
         } else {
-            newPosX = target[0];
-            newPosY = target[1];
+            newPosX = target.x();
+            newPosY = target.y();
             movable = selected = false; // if unit arrives at the target
         }
     }
-    return QPolygonF() << QPointF(newPosX - width / 2, newPosY - height / 2)
-                       << QPointF(newPosX + width / 2, newPosY - height / 2)
-                       << QPointF(newPosX + width / 2, newPosY + height / 2)
-                       << QPointF(newPosX - width / 2, newPosY + height / 2);
+
+
+    QPolygonF nextPolygon(shape);
+
+    QPointF v = {newPosX, newPosY};
+    // Calculate the current center of the shape
+    QPointF currentCenter = shape.boundingRect().center();
+    // Calculate the translation vector to move the center to the new position
+    QPointF translationVector = v - currentCenter;
+    // Translate the shape using the calculated translation vector
+    nextPolygon.translate(translationVector);
+
+    return nextPolygon;
+
+
 }
+
+QPolygonF Unit::getNextCollider()
+{
+    return getNextPoly();
+}
+
 
 void Unit::setCollisionState(int index) {
     collisionState=index;
@@ -106,11 +129,19 @@ double Unit::getAngle() {
 
 
 void Unit::draw(QPainter* painter) {
-    //painter->save();
+    painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.lighter(60));
-    painter->setBrush(QBrush(color));
+    //painter->setBrush(QBrush(color));
     painter->setRenderHint(QPainter::Antialiasing, true);
+
+    QLinearGradient gradient(shape.boundingRect().topLeft(), shape.boundingRect().bottomLeft());
+    gradient.setColorAt(0, color);          // Top color
+    gradient.setColorAt(1, color.darker(20));  // Darker shade at the bottom
+
+    painter->setBrush(gradient);
+
+    // Draw the unit's shape
     painter->drawPolygon(shape);
 
     if (!img.isNull()) {
@@ -127,18 +158,26 @@ void Unit::draw(QPainter* painter) {
                            resizedImage);
     }
 
-    // Draw rounded integer values for debug information
-    /*painter->setPen(Qt::red);
-    painter->setFont(QFont("Arial", 10));
+    // Draw health bar
+    double healthBarWidth = width;  // Adjust this value as needed
+    double healthBarHeight = 5;     // Adjust this value as needed
+    double healthBarX = shape.boundingRect().topLeft().x();
+    double healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
 
-    QPoint roundedPosition(static_cast<int>(shape[0].x()), static_cast<int>(shape[0].y()));
-    QString debugText = QString("X: %1\nY: %2").arg(roundedPosition.x()).arg(roundedPosition.y());
-    painter->drawText(roundedPosition, debugText);
+    // Calculate the width based on the current health percentage
+    double currentHealthWidth = healthBarWidth * (health / 100.0);
 
-    // Draw a 2px dot at the top-left corner
-    painter->setPen(Qt::black);
-    painter->setBrush(Qt::black);
-    painter->drawEllipse(roundedPosition.x(), roundedPosition.y(), 2, 2);
+    // Draw the background of the health bar
+    //painter->setPen(Qt::NoPen);
+    painter->setBrush(Qt::red);
+    painter->drawRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
-    painter->restore();*/
+    // Draw the current health
+    painter->setBrush(Qt::green);
+    painter->drawRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
+
+
+    painter->restore();
 }
+

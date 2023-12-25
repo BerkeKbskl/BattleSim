@@ -13,27 +13,33 @@ public:
     Unit(int x = 1000, int y = 1000, double width = 25, double height = 50);
     void setPosition(vector<double> v);
     void moveTo();
-    void selectUnit(QPoint);
-    void draw(QPainter *);
+    void selectUnit(QPointF);
+    QPointF getPosition();
+    virtual void draw(QPainter *);
     void rotate(double degrees);
     QPolygonF getNextPoly();
+    virtual QPolygonF getNextCollider();
     double getAngle();
     double getOrientation();
-    vector<int> target;
+    QPointF target;
     void setCollisionState(int index);
-    void setTarget(QPoint point);
+    void setTarget(QPointF point);
     bool selected;
     double orientation;
     QColor color;
+
     QPolygonF shape;
+    QPolygonF collider;
+
     QImage img;
-    int attack(Unit* enemy);
+    virtual int attack(Unit& enemy);
+    int health;
 protected:
 
 
     double newPosX, newPosY;
     int attackPower;
-    int health;
+
     int speed;
     int moral;
     int defensePower;
