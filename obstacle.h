@@ -1,6 +1,7 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
+#include <QPainterPath>
 #include <QRect>
 #include <QPainter>
 #include <QTransform>
@@ -10,8 +11,7 @@ class Obstacle
 public:
     Obstacle();
     void draw(QPainter* painter);
-    QPolygonF shape;
-
+    QPainterPath shape;
 
 protected:
     QColor color;

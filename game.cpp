@@ -126,13 +126,13 @@ void Game::checkState()
         }
 
         if (!collisionDetected) {
-            for (Obstacle *o : map.obstacles) {
-                if (!nextPolygon.intersected(o->shape).isEmpty()) {
+            for (Obstacle* o : map.obstacles) {
+
+                if (unit->shape.intersects(o->shape.toFillPolygon())) {
                     unit->setCollisionState(3);
-                    // Handle obstacle collision (if needed)
-                    //unit->color = Qt::green;
                     collisionDetected = true;
                 }
+
             }
         }
     }
@@ -184,13 +184,13 @@ void Game::checkState()
         }
 
         if (!collisionDetected) {
-            for (Obstacle *o : map.obstacles) {
-                if (!nextPolygon.intersected(o->shape).isEmpty()) {
+            for (Obstacle* o : map.obstacles) {
+
+                if (unit->shape.intersects(o->shape.toFillPolygon())) {
                     unit->setCollisionState(3);
-                    // Handle obstacle collision (if needed)
-                    //unit->color = Qt::green;
                     collisionDetected = true;
                 }
+
             }
         }
     }

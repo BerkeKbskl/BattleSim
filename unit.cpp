@@ -132,8 +132,14 @@ void Unit::draw(QPainter* painter) {
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.lighter(60));
-    painter->setBrush(QBrush(color));
+    //painter->setBrush(QBrush(color));
     painter->setRenderHint(QPainter::Antialiasing, true);
+
+    QLinearGradient gradient(shape.boundingRect().topLeft(), shape.boundingRect().bottomLeft());
+    gradient.setColorAt(0, color);          // Top color
+    gradient.setColorAt(1, color.darker(20));  // Darker shade at the bottom
+
+    painter->setBrush(gradient);
 
     // Draw the unit's shape
     painter->drawPolygon(shape);
@@ -153,13 +159,13 @@ void Unit::draw(QPainter* painter) {
     }
 
     // Draw health bar
-    int healthBarWidth = width;  // Adjust this value as needed
-    int healthBarHeight = 5;     // Adjust this value as needed
-    int healthBarX = shape.boundingRect().topLeft().x();
-    int healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
+    double healthBarWidth = width;  // Adjust this value as needed
+    double healthBarHeight = 5;     // Adjust this value as needed
+    double healthBarX = shape.boundingRect().topLeft().x();
+    double healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
 
     // Calculate the width based on the current health percentage
-    double currentHealthWidth = width * (health / 100.0);
+    double currentHealthWidth = healthBarWidth * (health / 100.0);
 
     // Draw the background of the health bar
     //painter->setPen(Qt::NoPen);
@@ -169,6 +175,8 @@ void Unit::draw(QPainter* painter) {
     // Draw the current health
     painter->setBrush(Qt::green);
     painter->drawRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
+
 
     painter->restore();
 }

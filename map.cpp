@@ -14,19 +14,13 @@ Map::Map(Scenario scenario)
 {
     // 2 Rivers
     for (int i = 0; i < 1; i++) {
-        obstacles.push_back(new River({rand() % 800 + 0.0, rand() % 800 + 0.0},
-                                      {rand() % 800 + 0.0, rand() % 800 + 0.0}));
+        obstacles.push_back(new River({{476,680},{603,670},{756,600},
+        {801,681},
+        {600,700},
+        {452,790}}));
         // to be imported from scenarios themselves
     }
-    // 1 Swamp
-    for (int i = 0; i < 0; i++) {
-        vector<double> randPt = {rand() % 800 + 0.0, rand() % 800 + 0.0};
-        obstacles.push_back(new Swamp({randPt[0], randPt[1]},
-                                      {randPt[0] + 0, randPt[1] + 100},
-                                      {randPt[0] + 120, randPt[1] + 100},
-                                      {randPt[0] + 120, randPt[1]}));
-        // to be imported from scenarios themselves
-    }
+
 
     // test-map: to-do remove.
 
