@@ -5,14 +5,8 @@ GameMenu::GameMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GameMenu)
 {
-    ui->setupUi(this);
-    ui->sc1->setVisible(false);
-    ui->sc2->setVisible(false);
-    ui->sc3->setVisible(false);
-    ui->sc4->setVisible(false);
+    gameMenuSetup();
 
-    connect(ui->playButton,&QPushButton::clicked,this,&GameMenu::playButtonClicked);//connect(sender(ui),signal to capture/catch,receiver(this class),slot(func to run));
-    connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
 }
 
 GameMenu::~GameMenu()
@@ -20,31 +14,46 @@ GameMenu::~GameMenu()
     delete ui;
     delete game;
     delete scenario;
+    delete resultWidget;
+}
+void GameMenu::gameMenuSetup(){
+    ui->setupUi(this);
+    ui->scWidget->setVisible(false);
+    connect(ui->playButton,&QPushButton::clicked,this,&GameMenu::playButtonClicked);//connect(sender(ui),signal to capture/catch,receiver(this class),slot(func to run));
+    connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
 }
 
 void GameMenu::playGame(){
-    game=new Game(*scenario);
+    if(resultWidget){
+        resultWidget->close();
+        resultWidget=0;
+    }
+    game = new Game(*scenario);
+    connect(game,&Game::showResult,this,&GameMenu::resultScreen);
     setCentralWidget(game);//changes the main scene
 }
 void GameMenu::exitGame(){
     QCoreApplication::quit();//to quit the app
 }
+void GameMenu::resultScreen(){
+    resultWidget=new ResultWidget(this);
+    resultWidget->setGeometry(this->width()/2-resultWidget->width()/2,this->height()/2-resultWidget->height()/2,resultWidget->width(),resultWidget->height());
+    connect(resultWidget,&ResultWidget::exitToMenu,this,&GameMenu::showMenu);
+    connect(resultWidget,&ResultWidget::playAgain,this,&GameMenu::playGame);
+    resultWidget->show();
+}
+void GameMenu::showMenu(){
+    resultWidget->close();
+    resultWidget = nullptr;
+    game->close();
+    game=nullptr;
+    gameMenuSetup();//reset menu setup
 
+}
 void GameMenu::playButtonClicked()
 {
-    ui->playButton->setEnabled(false);
-    ui->exitButton->setEnabled(false);
-    ui->playButton->setVisible(false);
-    ui->exitButton->setVisible(false);
-    ui->sc1->setVisible(true);
-    ui->sc2->setVisible(true);
-    ui->sc1->setEnabled(true);
-    ui->sc2->setEnabled(true);
-    ui->sc3->setVisible(true);
-    ui->sc4->setVisible(true);
-    ui->sc3->setEnabled(true);
-    ui->sc4->setEnabled(true);
-
+    ui->menuWidget->setVisible(false);
+    ui->scWidget->setVisible(true);
 }
 
 

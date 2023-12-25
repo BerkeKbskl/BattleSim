@@ -5,6 +5,7 @@
         <file>images/cavalry.png</file>
         <file>images/infantry.png</file>
         <file>images/map.jpg</file>
+        <file>images/result.png</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario1.txt</file>
