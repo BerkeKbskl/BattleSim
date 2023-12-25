@@ -132,9 +132,64 @@ void Game::checkState()
                 }
             }
         }
-
-
     }
+
+    // traverse in AI units
+
+
+    for (Unit *unit : ai.units) {
+        QPolygonF nextPolygon = unit->getNextPoly();
+        unit->setCollisionState(0); // Reset collision state for the current unit
+
+        bool collisionDetected = false;  // Flag to indicate if a collision was detected
+
+        for (Unit *trUnit : ai.units) {
+            if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+                unit->setCollisionState(1);
+                trUnit->setCollisionState(1);
+                //unit->color = Qt::black;
+                //trUnit->color = Qt::black;
+                collisionDetected = true;
+            }
+        }
+
+        if (!collisionDetected) {
+            for (Unit *trUnit : user.units) {
+                if (nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+                    unit->setCollisionState(2);
+                    trUnit->setCollisionState(2);
+
+                    if(unit->attack(*trUnit)){
+                        user.units.erase(std::remove(user.units.begin(),user.units.end(),trUnit),user.units.end());
+                    }
+
+                    unit->attack(*trUnit);
+                    collisionDetected = true;
+                } else
+
+                // If it is not beneath but somewhere close for artillery
+                if (unit->getNextCollider().intersected(trUnit->shape).isEmpty() == false) {
+                    if(unit->attack(*trUnit)){
+                        user.units.erase(std::remove(user.units.begin(),user.units.end(),trUnit),user.units.end());
+                    }
+                    unit->attack(*trUnit);
+                    collisionDetected = true;
+                }
+            }
+        }
+
+        if (!collisionDetected) {
+            for (Obstacle *o : map.obstacles) {
+                if (!nextPolygon.intersected(o->shape).isEmpty()) {
+                    unit->setCollisionState(3);
+                    // Handle obstacle collision (if needed)
+                    //unit->color = Qt::green;
+                    collisionDetected = true;
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -147,6 +202,12 @@ void Game::updateGame(){
     for (Unit *unit : user.units) {
         unit->moveTo();
     }
+
+    for (Unit *unit : ai.units) {
+        unit->moveTo();
+    }
+
+    ai.makeMove(user.units);
 
     update(); // calls paintEvent
 }

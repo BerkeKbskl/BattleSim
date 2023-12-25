@@ -3,10 +3,10 @@
 
 Artillery::Artillery() : Unit() {
     speed = 2;
-    health=300;
-    attackPower=35;
-    defensePower = 15;
-    ammo = 1000;
+    health=100;
+    attackPower=3;
+    defensePower = 0;
+    ammo = 150;
     img.load(":images/images/artillery.png");
 }
 
@@ -23,36 +23,26 @@ int Artillery::attack(Unit& enemy){
                 return 1;
             }
             else{
-                enemy.health-=(attackPower-defensePower/100);
+                enemy.health-=(attackPower-defensePower/2);
                 return 0;
             }
         }
         return 0;
     }
 
-
-
-
 }
 
 QPolygonF Artillery::getNextCollider()
 {
-
-
     QPolygonF nextPolygon(Unit::getNextPoly());
-
     // Calculate the current center of the polygon
     QPointF currentCenter = nextPolygon.boundingRect().center();
-
     // Scale the polygon by a factor of 2 based on its center
     for (int i = 0; i < nextPolygon.size(); ++i) {
         QPointF vector = nextPolygon[i] - currentCenter;
         nextPolygon[i] = currentCenter + 5 * vector;
     }
-
     return nextPolygon;
-
-
 }
 
 bool Artillery::shoot() {
@@ -71,16 +61,18 @@ void Artillery::draw(QPainter* painter) {
     Unit::draw(painter);
 
     // Draw ammo count in the middle of the shape
-    QFont font("Arial", 12);
+    QFont font("Arial", 8);
     painter->setFont(font);
     painter->setPen(Qt::black);
 
     // Calculate the position to display the ammo count in the middle of the shape
-    QPointF textPosition = shape.boundingRect().center();
+    QPointF textPosition = shape.boundingRect().bottomLeft();
     textPosition -= QPointF(0, font.pixelSize() / 2); // Adjust for vertical alignment
 
+    painter->drawPolygon(getNextCollider());
+
     // Draw the ammo count
-    QString ammoText = QString("Ammo: %1").arg(ammo);
+    QString ammoText = QString("%1").arg(ammo);
     painter->drawText(textPosition, ammoText);
 }
 

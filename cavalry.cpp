@@ -2,9 +2,9 @@
 
 Cavalry::Cavalry() : Unit() {
     speed = 10;
-    health=800;
-    attackPower=60;
-    defensePower = 40;
+    health=100;
+    attackPower=1;
+    defensePower = 5;
     img.load(":images/images/cavalry.png");
 }
 

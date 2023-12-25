@@ -22,11 +22,15 @@ Unit::Unit(int x, int y, double width, double height)
 
 
 
-void Unit::selectUnit(QPoint point){
+void Unit::selectUnit(QPointF point){
 
     if(shape.containsPoint(point, Qt::OddEvenFill)) {
         selected = !selected;
     }
+}
+
+QPointF Unit::getPosition(){
+    return shape.boundingRect().center();
 }
 
 
@@ -36,17 +40,16 @@ int Unit::attack(Unit& enemy){
         return 1;
     }
     else{
-        enemy.health-=(attackPower-defensePower/100);
+        enemy.health-=(attackPower);
         return 0;
     }
 }
 
 
-void Unit::setTarget(QPoint point)
+void Unit::setTarget(QPointF point)
 {
     if (selected) {
         target = {point.x(), point.y()};
-        cout << "target:" << point.x() << "," << point.y() << endl;
         movable = true;
         angle = atan2(point.y() - shape.boundingRect().center().y(),
                       point.x() - shape.boundingRect().center().x());
@@ -68,8 +71,8 @@ void Unit::moveTo()
 QPolygonF Unit::getNextPoly()
 {
     if (movable) {
-        double dx = target[0] - shape.boundingRect().center().x();
-        double dy = target[1] - shape.boundingRect().center().y();
+        double dx = target.x() - shape.boundingRect().center().x();
+        double dy = target.y() - shape.boundingRect().center().y();
 
         double distance = sqrt(dx * dx + dy * dy);
         if (distance > speed) {
@@ -77,8 +80,8 @@ QPolygonF Unit::getNextPoly()
             newPosY = shape.boundingRect().center().y() + speed * sin(angle);
             // adjusts...
         } else {
-            newPosX = target[0];
-            newPosY = target[1];
+            newPosX = target.x();
+            newPosY = target.y();
             movable = selected = false; // if unit arrives at the target
         }
     }
@@ -131,6 +134,8 @@ void Unit::draw(QPainter* painter) {
     painter->setPen(color.lighter(60));
     painter->setBrush(QBrush(color));
     painter->setRenderHint(QPainter::Antialiasing, true);
+
+    // Draw the unit's shape
     painter->drawPolygon(shape);
 
     if (!img.isNull()) {
@@ -147,18 +152,24 @@ void Unit::draw(QPainter* painter) {
                            resizedImage);
     }
 
-    // Draw rounded integer values for debug information
-    /*painter->setPen(Qt::red);
-    painter->setFont(QFont("Arial", 10));
+    // Draw health bar
+    int healthBarWidth = width;  // Adjust this value as needed
+    int healthBarHeight = 5;     // Adjust this value as needed
+    int healthBarX = shape.boundingRect().topLeft().x();
+    int healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
 
-    QPoint roundedPosition(static_cast<int>(shape[0].x()), static_cast<int>(shape[0].y()));
-    QString debugText = QString("X: %1\nY: %2").arg(roundedPosition.x()).arg(roundedPosition.y());
-    painter->drawText(roundedPosition, debugText);
+    // Calculate the width based on the current health percentage
+    double currentHealthWidth = width * (health / 100.0);
 
-    // Draw a 2px dot at the top-left corner
-    painter->setPen(Qt::black);
-    painter->setBrush(Qt::black);
-    painter->drawEllipse(roundedPosition.x(), roundedPosition.y(), 2, 2);
-    */
+    // Draw the background of the health bar
+    //painter->setPen(Qt::NoPen);
+    painter->setBrush(Qt::red);
+    painter->drawRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+    // Draw the current health
+    painter->setBrush(Qt::green);
+    painter->drawRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
     painter->restore();
 }
+
