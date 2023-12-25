@@ -69,7 +69,7 @@ void Artillery::draw(QPainter* painter) {
     QPointF textPosition = shape.boundingRect().bottomLeft();
     textPosition -= QPointF(0, font.pixelSize() / 2); // Adjust for vertical alignment
 
-    painter->drawPolygon(getNextCollider());
+    //painter->drawPolygon(getNextCollider());
 
     // Draw the ammo count
     QString ammoText = QString("%1").arg(ammo);

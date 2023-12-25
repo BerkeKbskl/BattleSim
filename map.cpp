@@ -13,7 +13,7 @@ Map::Map(Scenario scenario)
     , mapImage(scenario.getMapImage())
 {
     // 2 Rivers
-    for (int i = 0; i < 0; i++) {
+    for (int i = 0; i < 1; i++) {
         obstacles.push_back(new River({rand() % 800 + 0.0, rand() % 800 + 0.0},
                                       {rand() % 800 + 0.0, rand() % 800 + 0.0}));
         // to be imported from scenarios themselves

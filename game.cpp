@@ -107,7 +107,11 @@ void Game::checkState()
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
                     }
 
-                    unit->attack(*trUnit);
+                    else if(trUnit->attack(*unit)){
+                        user.units.erase(std::remove(user.units.begin(),user.units.end(),unit),user.units.end());
+                    }
+
+
                     collisionDetected = true;
                 } else
 
@@ -116,7 +120,6 @@ void Game::checkState()
                     if(unit->attack(*trUnit)){
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
                     }
-                    unit->attack(*trUnit);
                     collisionDetected = true;
                 }
             }
@@ -163,7 +166,9 @@ void Game::checkState()
                         user.units.erase(std::remove(user.units.begin(),user.units.end(),trUnit),user.units.end());
                     }
 
-                    unit->attack(*trUnit);
+                    else if(trUnit->attack(*unit)){
+                        ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),unit),ai.units.end());
+                    }
                     collisionDetected = true;
                 } else
 
@@ -197,6 +202,8 @@ void Game::checkState()
 
 void Game::updateGame(){
 
+    ai.makeMove(user.units);
+
     checkState();
 
     for (Unit *unit : user.units) {
@@ -207,8 +214,7 @@ void Game::updateGame(){
         unit->moveTo();
     }
 
-    ai.makeMove(user.units);
+
 
     update(); // calls paintEvent
 }
-
