@@ -29,6 +29,18 @@ void AI::makeMove(vector<Unit*> enemyUnits) {
             QPointF randomTarget(randomX, randomY);
             unit->setTarget(randomTarget);
         }
+
+        QTransform rotationTransform;
+        rotationTransform.translate(unit->shape.boundingRect().center().x(),
+                                    unit->shape.boundingRect().center().y());
+        //std::cout << unit->getAngle() << endl;
+        rotationTransform.rotate(-unit->orientation * 180 / (M_PI) + 90
+                                 + unit->getAngle() * 180 / (M_PI) + 90);
+        unit->orientation = unit->getAngle();
+        rotationTransform.translate(-unit->shape.boundingRect().center().x(),
+                                    -unit->shape.boundingRect().center().y());
+        unit->shape = rotationTransform.map(unit->shape);
+
     }
 }
 
