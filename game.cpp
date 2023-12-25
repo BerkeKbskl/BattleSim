@@ -145,8 +145,9 @@ void Game::checkState()
         }
     }
 
+    
 
-    // traverse in AI units
+
 
 
     for (Unit *unit : ai.units) {
@@ -205,7 +206,6 @@ void Game::checkState()
     }
 
 }
-
 
 
 
