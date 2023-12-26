@@ -45,7 +45,7 @@ bool Scenario::scanScenarioFile(QString fileName) {
             if(declaration=="Unit:"){
                 userType=decLineContent[1];
                 unitType=decLineContent[2];
-                if (unitType == "infantry:" || unitType == "cavalry:"||unitType=="artillery:") {
+                if (unitType == "infantry" || unitType == "cavalry"||unitType=="artillery") {
                     QString line=in.readLine();
                     QStringList positionsLine = line.split(" ");
                     for (int i = 0; i < positionsLine.size(); i += 2) {
@@ -53,23 +53,12 @@ bool Scenario::scanScenarioFile(QString fileName) {
                         yPos=positionsLine[i+1].toDouble();
                         if (userType == "User:") {
                             userUnitsPositions.push_back({xPos, yPos});
-                            if (unitType == "infantry:") {
-                                userUnitsTypes.push_back("infantry");
-                            } else if (unitType == "cavalry:") {
-                                userUnitsTypes.push_back("cavalry");
-                            }else if (unitType == "artillery:") {
-                                userUnitsTypes.push_back("artillery");
-                            }
+                            userUnitsTypes.push_back(unitType);
 
                         } else if (userType == "AI:") {
                             AIUnitsPositions.push_back({xPos, yPos});
-                            if (unitType == "infantry:") {
-                                AIUnitsTypes.push_back("infantry");
-                            }else if (unitType == "cavalry:") {
-                                AIUnitsTypes.push_back("cavalry");
-                            }else if (unitType == "artillery:") {
-                                AIUnitsTypes.push_back("artillery");
-                            }
+                            AIUnitsTypes.push_back(unitType);
+
                         }
                     }
                 }else {
