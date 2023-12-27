@@ -16,7 +16,7 @@ public:
     void selectUnit(QPointF);
     QPointF getPosition();
     virtual void draw(QPainter *);
-    void rotate(double degrees);
+    void rotate();
     QPolygonF getNextPoly();
     virtual QPolygonF getNextCollider();
     double getAngle();

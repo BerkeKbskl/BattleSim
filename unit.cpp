@@ -32,7 +32,18 @@ void Unit::selectUnit(QPointF point){
 QPointF Unit::getPosition(){
     return shape.boundingRect().center();
 }
-
+void Unit::rotate() {
+    QTransform rotationTransform;
+    rotationTransform.translate(this->shape.boundingRect().center().x(),
+                                this->shape.boundingRect().center().y());
+    //std::cout << unit->getAngle() << endl;
+    rotationTransform.rotate(-this->orientation * 180 / (M_PI) + 90
+                             + this->getAngle() * 180 / (M_PI) + 90);
+    this->orientation = this->getAngle();
+    rotationTransform.translate(-this->shape.boundingRect().center().x(),
+                                -this->shape.boundingRect().center().y());
+    this->shape = rotationTransform.map(this->shape);
+}
 
 int Unit::attack(Unit& enemy){
 
