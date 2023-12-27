@@ -5,11 +5,20 @@
 class AI : public Player
 
 {
+   enum class AIMode {
+        Aggressive,
+        Defensive
+    };
 public:
+
+
+
     AI(Scenario scenario);
+    Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
     void makeMove();
     void deployUnits(Scenario scenario) override;
-
+    void setMode(AIMode mode);
+    void switchMode();
     void makeMove(vector<Unit*> enemyUnits);
 
     Unit* findClosestEnemy(Unit* unit, const vector<Unit*>& enemyUnits) ;
@@ -20,6 +29,9 @@ public:
 
 
 private:
+    AIMode mode;
+
 };
+
 
 #endif // AI_H

@@ -14,6 +14,7 @@ public:
     void setPosition(vector<double> v);
     void moveTo();
     void selectUnit(QPointF);
+    bool isHelpNeed(); // for AI
     QPointF getPosition();
     virtual void draw(QPainter *);
     void rotate();
@@ -30,7 +31,7 @@ public:
 
     QPolygonF shape;
     QPolygonF collider;
-
+    bool needHelp;
     QImage img;
     virtual int attack(Unit& enemy);
     int health;

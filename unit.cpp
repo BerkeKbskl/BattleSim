@@ -16,7 +16,8 @@ Unit::Unit(int x, int y, double width, double height)
     height(height),
     selected(false),
     movable(false),
-    orientation(0){
+    orientation(0),
+    needHelp(false){
 
 }
 
@@ -28,7 +29,9 @@ void Unit::selectUnit(QPointF point){
         selected = !selected;
     }
 }
-
+bool Unit::isHelpNeed(){
+    return this->needHelp;
+}
 QPointF Unit::getPosition(){
     return shape.boundingRect().center();
 }
@@ -46,7 +49,7 @@ void Unit::rotate() {
 }
 
 int Unit::attack(Unit& enemy){
-
+    enemy.needHelp = true;
     if(enemy.health<=0){
         return 1;
     }
