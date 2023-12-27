@@ -21,23 +21,22 @@ void AI::switchMode() {
 
 
 void AI::makeMove(vector<Unit*> enemyUnits) {
-    mode = AIMode::Aggressive;
+    mode = AIMode::Defensive;
     for (Unit *unit : units) {
 
 
-        // Find the closest enemy unit
+
 
         if(mode == AIMode::Aggressive){
         Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
         if (closestEnemy) {
-            // Move towards the closest enemy
-            QPointF target = closestEnemy->getPosition();
 
-            cout << target.x() << "," << target.y() << endl;
+            QPointF target = closestEnemy->getPosition();
+            //cout << target.x() << "," << target.y() << endl;
             unit->selected = true;
             unit->setTarget(target);
         } else {
-            // If no enemies are present, move towards a random point on the map
+
             double randomX = rand() % 800;
             double randomY = rand() % 800;
             QPointF randomTarget(randomX, randomY);
@@ -47,13 +46,19 @@ void AI::makeMove(vector<Unit*> enemyUnits) {
 
         }else if(mode == AIMode::Defensive){
         Unit* closestFriend = findClosestFriend(unit, units);
-        if (closestFriend) {
-            // Move towards the closest enemy
+        if (closestFriend&&closestFriend->needHelp) {
+
             QPointF target = closestFriend->getPosition();
 
             cout << target.x() << "," << target.y() << endl;
             unit->selected = true;
             unit->setTarget(target);
+        }else {
+
+            double randomX = rand() % 800;
+            double randomY = rand() % 800;
+            QPointF randomTarget(randomX, randomY);
+            unit->setTarget(randomTarget);
         }
         }
 
@@ -71,8 +76,8 @@ Unit* AI::findClosestFriend(Unit* unit, const vector<Unit*>& setsOfUnits) {
         }
         double distance = calculateDistance(unit->getPosition(), help->getPosition());
 
-        if (distance < minDistance && help->isHelpNeed()) {
-            help->needHelp=true; // will be developed further.
+        if (distance < minDistance) {
+
             minDistance = distance;
             closestHelp = help;
         }
