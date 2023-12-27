@@ -32,5 +32,6 @@ private:
     Ui::GameMenu *ui;
     Game *game;
     ResultWidget *resultWidget=0;
+
 };
 

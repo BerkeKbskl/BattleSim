@@ -15,7 +15,9 @@ public:
 
     AI(Scenario scenario);
     Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
-    void makeMove();
+
+    void makeAggressiveMove(vector<Unit*>& enemyUnits);
+    void makeDefensiveMove();
     void deployUnits(Scenario scenario) override;
     void setMode(AIMode mode);
     void switchMode();

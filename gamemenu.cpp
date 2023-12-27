@@ -31,6 +31,7 @@ void GameMenu::playGame(){
     game = new Game(*scenario);
     connect(game,&Game::showResult,this,&GameMenu::resultScreen);
     setCentralWidget(game);//changes the main scene
+
 }
 void GameMenu::exitGame(){
     QCoreApplication::quit();//to quit the app

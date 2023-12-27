@@ -17,7 +17,8 @@ Unit::Unit(int x, int y, double width, double height)
     selected(false),
     movable(false),
     orientation(0),
-    needHelp(false){
+    needHelp(false),
+    helpAssigned(false){
 
 }
 

@@ -95,12 +95,12 @@ void Game::checkState()
 
         for (Unit *trUnit : user.units) {
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
-                unit->setCollisionState(0);
+                unit->setCollisionState(2);
 
-                trUnit->setCollisionState(0);
+                trUnit->setCollisionState(2);
                 //unit->color = Qt::black;
                 //trUnit->color = Qt::black;
-                collisionDetected = false;
+                collisionDetected = true;
 
             }
         }
@@ -157,11 +157,11 @@ void Game::checkState()
 
         for (Unit *trUnit : ai.units) {
             if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
-                unit->setCollisionState(0);
-                trUnit->setCollisionState(0);
+                unit->setCollisionState(2);
+                trUnit->setCollisionState(2);
                 //unit->color = Qt::black;
                 //trUnit->color = Qt::black;
-                collisionDetected = false;
+                collisionDetected = true;
             }
         }
 

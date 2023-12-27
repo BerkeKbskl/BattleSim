@@ -32,6 +32,8 @@ public:
     QPolygonF shape;
     QPolygonF collider;
     bool needHelp;
+    bool helpAssigned;
+
     QImage img;
     virtual int attack(Unit& enemy);
     int health;
