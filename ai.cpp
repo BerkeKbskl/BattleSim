@@ -24,6 +24,7 @@ void AI::switchMode() {
 void AI::makeMove(vector<Unit*> enemyUnits) {
 
     makeDefensiveMove();
+    makeAggressiveMove(enemyUnits);
 
 }
 void AI::makeAggressiveMove(vector<Unit*>& enemyUnits) {

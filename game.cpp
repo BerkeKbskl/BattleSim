@@ -62,16 +62,7 @@ void Game::mousePressEvent(QMouseEvent *event)
             if (unit->selected) {
                 unit->setTarget(event->pos());
 
-                QTransform rotationTransform;
-                rotationTransform.translate(unit->shape.boundingRect().center().x(),
-                                            unit->shape.boundingRect().center().y());
-                //std::cout << unit->getAngle() << endl;
-                rotationTransform.rotate(-unit->orientation * 180 / (M_PI) + 90
-                                         + unit->getAngle() * 180 / (M_PI) + 90);
-                unit->orientation = unit->getAngle();
-                rotationTransform.translate(-unit->shape.boundingRect().center().x(),
-                                            -unit->shape.boundingRect().center().y());
-                unit->shape = rotationTransform.map(unit->shape);
+                unit->rotate();
                 cout << "Clicked pos: " << event->pos().x() << ","
                      << event->pos().y() << endl;
             }
