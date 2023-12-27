@@ -4,6 +4,7 @@
 
 Scenario::Scenario(int scenarioNum) {
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
+   //mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
     scanScenarioFile(scenarioPath);
 
 }
@@ -66,9 +67,11 @@ bool Scenario::scanScenarioFile(QString fileName) {
                 }
 
             }
-            else{
+            else{}/*
+            else if(declaration=="map:"){
+            Obstacle positions and other necessary informations
 
-            }
+            }*/
 
         }
 
