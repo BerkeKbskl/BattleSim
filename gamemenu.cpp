@@ -5,6 +5,7 @@ GameMenu::GameMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GameMenu)
 {
+    
     gameMenuSetup();
 }
 
@@ -18,25 +19,24 @@ GameMenu::~GameMenu()
 void GameMenu::gameMenuSetup(){
     ui->setupUi(this);
     ui->frame->setVisible(false);
+    
     connect(ui->playButton,&QPushButton::clicked,this,&GameMenu::playButtonClicked);//connect(sender(ui),signal to capture/catch,receiver(this class),slot(func to run));
     connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
-    connect(ui->applyScenario,&QPushButton::clicked,this,&GameMenu::playGame);
     connect(ui->comboBox,&QComboBox::currentIndexChanged,this,&GameMenu::showSelectedScenarioImgae);
 }
 
-void GameMenu::playGame(){
-    if(ui->comboBox->currentIndex()!=0){
-    if(resultWidget){
+void GameMenu::playGame() {
+    if (scenario) {
+    if (resultWidget != nullptr) {
         resultWidget->close();
-        resultWidget=0;
+        resultWidget = nullptr;
     }
-    scenario=new Scenario(ui->comboBox->currentIndex());
     game = new Game(*scenario);
-    game->resize(1500,800);
-    connect(game,&Game::showResult,this,&GameMenu::resultScreen);
-    connect(game,&Game::exitToMenu,this,&GameMenu::showMenu);
+    game->resize(1500, 800);
+    connect(game, &Game::showResult, this, &GameMenu::resultScreen);
+    connect(game, &Game::exitToMenu, this, &GameMenu::showMenu);
     setCentralWidget(game);//changes the main scene
-    }
+}
 }
 void GameMenu::exitGame(){
     QCoreApplication::quit();//to quit the app
@@ -68,5 +68,13 @@ void GameMenu::showSelectedScenarioImgae(){
     QString imagePath=":/images/images/sc";
     imagePath.append(QString::number(ui->comboBox->currentIndex())).append(".jpg");
     ui->scenarioImage->setPixmap(QPixmap(imagePath));
+}
+void GameMenu::on_applyScenario_clicked()
+{
+    if (ui->comboBox->currentIndex() != 0) {
+    scenario = new Scenario(ui->comboBox->currentIndex());
+    playGame();
+    }
+
 }
 

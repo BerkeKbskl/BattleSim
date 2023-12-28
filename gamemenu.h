@@ -21,6 +21,7 @@ public slots:
     void playButtonClicked();
     void resultScreen();
     void showMenu();
+    void on_applyScenario_clicked();
 private:
     void showSelectedScenarioImgae();
     void gameMenuSetup();
