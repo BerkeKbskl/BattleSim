@@ -1,42 +1,62 @@
-// river.cpp
-
 #include "river.h"
-#include <QDebug>
 
-River::River(const QList<QPointF>& points)
+River::River(const QVector<QPointF>& points)
+    : path(generateSmoothPath(points))
 {
-    shape = bezierPathFromPoints(points);
-    color = Qt::blue;  // Set the river color (you can change it as needed)
+    shape = path;
 }
 
-QPainterPath River::bezierPathFromPoints(const QList<QPointF>& points)
+QPainterPath River::generateSmoothPath(const QVector<QPointF>& points)
 {
-    QPainterPath path;
+    qreal factor = 0.30; // Adjust the factor as needed
+    QPainterPath path(points[0]);
 
-    path.moveTo(points.first());
+    QPointF cp1;
 
-    for (int i = 0; i < points.size(); i += 2) {
-        QPointF controlPoint1 = points.at(i);
-        QPointF controlPoint2, endPoint;
+    for (int p = 1; p < points.size() - 1; ++p) {
+        QLineF source(points[p - 1], points[p]);
+        QLineF target(points[p], points[p + 1]);
 
-        if (i + 1 < points.size()) {
-            controlPoint2 = points.at(i + 1);
-        } else {
-            controlPoint2 = points.first();  // Wrap around to the first point
-        }
+        qreal targetAngle = target.angleTo(source);
+        qreal angle;
 
-        if (i + 2 < points.size()) {
-            endPoint = points.at(i + 2);
-        } else {
-            endPoint = points.first();  // Wrap around to the first point
-        }
+        if (targetAngle > 180)
+            angle = fmod((source.angle() + source.angleTo(target) / 2), 360);
+        else
+            angle = fmod((target.angle() + target.angleTo(source) / 2), 360);
 
-        path.cubicTo(controlPoint1, controlPoint2, endPoint);
+        QLineF revTarget = QLineF::fromPolar(source.length() * factor, angle + 180).translated(points[p]);
+        QPointF cp2 = revTarget.p2();
+
+        if (p == 1)
+            path.quadTo(cp2, points[p]);
+        else
+            path.cubicTo(cp1, cp2, points[p]);
+
+        QLineF revSource = QLineF::fromPolar(target.length() * factor, angle).translated(points[p]);
+        cp1 = revSource.p2();
     }
 
+    // the final curve, that joins to the last point
+    path.quadTo(cp1, points.back());
 
-    // Connect the last point to the first point to close the path
-    path.lineTo(points.first());
+    QPainterPathStroker stroker;
+    stroker.setWidth(20);
+    return stroker.createStroke(path);
+}
 
-    return path;
+void River::draw(QPainter* painter)
+{
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    // Create a linear gradient along the river path
+    QLinearGradient gradient(path.boundingRect().topLeft(), path.boundingRect().bottomRight());
+    gradient.setColorAt(0, Qt::blue);
+    gradient.setColorAt(1, Qt::darkBlue);
+
+    // Set the gradient as the brush for the river
+    painter->setBrush(gradient);
+
+    painter->setPen(QPen(Qt::blue, 2));
+    painter->drawPath(shape);
 }

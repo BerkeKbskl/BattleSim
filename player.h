@@ -14,7 +14,6 @@ public:
     vector<Unit*> units;
 
 protected:
-    void extracted(list<QString> &unitTypes);
     void createUnits(list<QString>);
     Scenario scenario = 0;
     QColor color;

@@ -14,12 +14,19 @@ Map::Map(Scenario scenario)
 {
     // 2 Rivers
     for (int i = 0; i < 1; i++) {
-        obstacles.push_back(new River({{476,680},{603,670},{756,600},
-        {801,681},
-        {600,700},
-        {452,790}}));
+        obstacles.push_back(new River({ {127, 607}, {200, 526}, {384, 606},
+                                {446, 531}, {530, 548}, {590, 368},{666, 666}
+            ,{756, 581} }));
+
         // to be imported from scenarios themselves
-    }    
+    }
+    /*
+    for (int i = 0; i < 1; i++) {
+        obstacles.push_back(new Swamp({ {497, 176}, {637, 104}, {692, 261},
+                                {666, 355}, {583, 321},{400, 221} }));
+
+        // to be imported from scenarios themselves
+    }*/
 }
 
 void Map::draw(QPainter *painter)

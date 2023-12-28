@@ -10,11 +10,11 @@ class Obstacle
 {
 public:
     Obstacle();
-    void draw(QPainter* painter);
+    virtual void draw(QPainter* painter);
     QPainterPath shape;
 
+
 protected:
-    QColor color;
 
 };
 
