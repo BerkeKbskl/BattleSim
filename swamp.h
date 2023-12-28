@@ -7,8 +7,12 @@
 class Swamp : public Obstacle
 {
 public:
-    Swamp(QPointF,QPointF,QPointF,QPointF);
 
+    Swamp(const QVector<QPointF>& points);
+
+    QPainterPath generateSmoothPath(const QVector<QPointF>& points);
+    void draw(QPainter* painter) override;
+    QPainterPath path;
 };
 
 #endif // SWAMP_H

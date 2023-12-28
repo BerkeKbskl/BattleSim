@@ -1,19 +1,23 @@
 // river.h
-
 #ifndef RIVER_H
 #define RIVER_H
 
 #include "obstacle.h"
+#include <QVector>
 #include <QPointF>
 #include <QPainterPath>
 
 class River : public Obstacle
 {
 public:
-    River(const QList<QPointF>& points);
+    River(const QVector<QPointF>& points);
+
+    static QPainterPath generateSmoothPath(const QVector<QPointF>& points);
+
+    void draw(QPainter* painter) override;
 
 private:
-    QPainterPath bezierPathFromPoints(const QList<QPointF>& points);
+    QPainterPath path;
 };
 
 #endif // RIVER_H
