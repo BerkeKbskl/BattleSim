@@ -9,19 +9,15 @@ class Scenario
 {
 public:
     Scenario(int);
-    vector<QPointF> getUserUntisPositions();
-    list<QString>getUserUnitsType();
-    vector<QPointF>  getAIUntisPositions();
-    list<QString>getAIUnitsType();
+    vector<QPointF> getUnitPositions(int index);
+    list<QString>getUnitsType(int index);
     QImage  getMapImage();
 private:
-    bool scanScenarioFile(QString path);
+    void scanScenarioFile(QString path);
     QString mapImagePath;
     QString scenarioPath;
-    vector<QPointF> userUnitsPositions;
-    list<QString>userUnitsTypes;
-    vector<QPointF> AIUnitsPositions;
-    list<QString>AIUnitsTypes;
+    vector<QPointF> unitPositions[2];
+    list<QString>unitTypes[2];
 };
 
 #endif // SCENARIO_H

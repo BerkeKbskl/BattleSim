@@ -16,6 +16,23 @@
   <property name="windowTitle">
    <string>GameMenu</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton:!pressed{background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
+color: #ffffff;
+border: 3px solid rgb(0,0,0); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+ background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(50,50,50), stop:1 rgb(255,255,255));
+color: #ffffff;
+border: 3px solid rgb(0,0,0); 
+border-radius: 8px; 
+}
+
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -24,128 +41,25 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">#centralwidget{border-image: url(:/new/prefix1/images/gameMenu.jpg);}</string>
+    <string notr="true">#centralwidget{border-image: url(:/images/images/gamemenu.jpg);}
+</string>
    </property>
-   <widget class="QWidget" name="scWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>180</y>
-      <width>251</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <widget class="QPushButton" name="sc4">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>90</y>
-       <width>249</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhNone</set>
-     </property>
-     <property name="text">
-      <string>4</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sc3">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>60</y>
-       <width>249</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhNone</set>
-     </property>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sc2">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>30</y>
-       <width>249</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhNone</set>
-     </property>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="sc1">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>249</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="inputMethodHints">
-      <set>Qt::ImhNone</set>
-     </property>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="menuWidget" native="true">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>200</y>
-      <width>120</width>
-      <height>80</height>
+      <y>159</y>
+      <width>191</width>
+      <height>141</height>
      </rect>
     </property>
     <widget class="QPushButton" name="exitButton">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>50</y>
-       <width>75</width>
-       <height>24</height>
+       <y>70</y>
+       <width>140</width>
+       <height>55</height>
       </rect>
      </property>
      <property name="font">
@@ -154,6 +68,9 @@
        <italic>true</italic>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>EXİT</string>
@@ -164,8 +81,8 @@
       <rect>
        <x>20</x>
        <y>10</y>
-       <width>75</width>
-       <height>24</height>
+       <width>140</width>
+       <height>55</height>
       </rect>
      </property>
      <property name="font">
@@ -183,6 +100,111 @@
      </property>
     </widget>
    </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>150</y>
+      <width>241</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <widget class="QPushButton" name="applyScenario">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>201</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>APPLY</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>201</width>
+       <height>55</height>
+      </rect>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
+color: #ffffff;
+border: 1px solid rgb(0,0,0); 
+border-radius: 8px; 
+
+
+</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+     </property>
+     <item>
+      <property name="text">
+       <string>Select~Scenario</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>sc1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>sc2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>sc3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>sc4</string>
+      </property>
+     </item>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="scenarioImage">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>170</y>
+      <width>231</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -190,7 +212,7 @@
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

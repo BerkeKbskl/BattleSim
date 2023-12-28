@@ -1,9 +1,13 @@
 #include "game.h"
 #include <iostream>
 #include "gamemenu.h"
+#include "ui_game.h"
 
 Game::Game(Scenario scenario,QWidget *parent)
-    : QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario){
+    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game)
+{   
+    ui->setupUi(this);
+    ui->pauseMenu->setVisible(false);
     setFocusPolicy(Qt::StrongFocus);
     // start updating frames.
     gameSetup();
@@ -11,6 +15,7 @@ Game::Game(Scenario scenario,QWidget *parent)
 
 Game::~Game(){
     delete timer;
+    delete ui;
 }
 
 void Game::gameSetup(){
@@ -19,9 +24,11 @@ void Game::gameSetup(){
     user.deployUnits(scenario);
     timer=new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
+    connect(ui->pushButton_2,&QPushButton::clicked, this,&Game::exitToMenu);
     timer->start(1000/60); // 60 FPS
 
 }
+
 
 void Game::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
@@ -31,20 +38,19 @@ void Game::paintEvent(QPaintEvent* event) {
 
     for(Unit *unit:user.units){
         if(unit!=0){
-        QPainter painter(this);
-        unit->draw(&painter);
+            QPainter painter(this);
+            unit->draw(&painter);
         }
     }
 
     for(Unit *unit:ai.units){
         if(unit!=0){
-        QPainter painter(this);
-        unit->draw(&painter);
+            QPainter painter(this);
+            unit->draw(&painter);
         }
     }
 
 }
-
 
 void Game::mousePressEvent(QMouseEvent *event)
 {
@@ -68,6 +74,27 @@ void Game::mousePressEvent(QMouseEvent *event)
             }
         }
     }
+}
+
+void Game::closePauseMenu()
+{
+    timer->start(1000 / 60);
+    ui->pauseMenu->setVisible(false);
+
+}
+
+void Game::keyPressEvent(QKeyEvent* event)
+{
+    
+        if (event->key() == Qt::Key_Escape) {
+            ui->pauseMenu->setVisible(!ui->pauseMenu->isVisible()); 
+            if (!ui->pauseMenu->isVisible()) 
+                timer->start(1000 / 60);
+            else
+                timer->stop();
+        }
+        connect(ui->pushButton, &QPushButton::clicked, this, &Game::closePauseMenu);
+        
 }
 
 void Game::checkState()
@@ -135,7 +162,7 @@ void Game::checkState()
         }
     }
 
-    
+
 
 
 

@@ -5,12 +5,16 @@
 #include<QTimer>
 #include<QPainter>
 #include<QMouseEvent>
+#include<QKeyEvent>
 #include "ai.h"
 #include "map.h"
 #include"user.h"
 #include"scenario.h"
 #include<QObject>
 
+namespace Ui {
+class Game;
+}
 
 class Game : public QWidget
 {
@@ -25,14 +29,17 @@ public:
     void updateGame();
 signals:
     void showResult();
+    void exitToMenu();
 private:
+    void closePauseMenu();
+    void keyPressEvent(QKeyEvent *event) override;
+    Ui::Game *ui;
     void checkState();
     void gameSetup();
     Scenario scenario;
     Map map;
     User user;
     AI ai;
-
 };
 
 #endif // GAME_H

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Game</class>
+ <widget class="QWidget" name="Game">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1500</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="pauseMenu" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>800</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#pauseMenu{border-image: url(:/images/images/pause.jpg);}
+QPushButton:!pressed{background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
+color: #ffffff;
+border: 3px solid rgb(0,0,0); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+ background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(50,50,50), stop:1 rgb(255,255,255));
+color: #ffffff;
+border: 3px solid rgb(0,0,0); 
+border-radius: 8px; 
+}
+</string>
+   </property>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>70</y>
+      <width>120</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Continue</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>130</y>
+      <width>120</width>
+      <height>45</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>EXIT TO MENU </string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -6,7 +6,6 @@ GameMenu::GameMenu(QWidget *parent)
     , ui(new Ui::GameMenu)
 {
     gameMenuSetup();
-
 }
 
 GameMenu::~GameMenu()
@@ -18,34 +17,42 @@ GameMenu::~GameMenu()
 }
 void GameMenu::gameMenuSetup(){
     ui->setupUi(this);
-    ui->scWidget->setVisible(false);
+    ui->frame->setVisible(false);
     connect(ui->playButton,&QPushButton::clicked,this,&GameMenu::playButtonClicked);//connect(sender(ui),signal to capture/catch,receiver(this class),slot(func to run));
     connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
+    connect(ui->applyScenario,&QPushButton::clicked,this,&GameMenu::playGame);
+    connect(ui->comboBox,&QComboBox::currentIndexChanged,this,&GameMenu::showSelectedScenarioImgae);
 }
 
 void GameMenu::playGame(){
+    if(ui->comboBox->currentIndex()!=0){
     if(resultWidget){
         resultWidget->close();
         resultWidget=0;
     }
+    scenario=new Scenario(ui->comboBox->currentIndex());
     game = new Game(*scenario);
+    game->resize(1500,800);
     connect(game,&Game::showResult,this,&GameMenu::resultScreen);
+    connect(game,&Game::exitToMenu,this,&GameMenu::showMenu);
     setCentralWidget(game);//changes the main scene
-
+    }
 }
 void GameMenu::exitGame(){
     QCoreApplication::quit();//to quit the app
 }
-void GameMenu::resultScreen(){
-    resultWidget=new ResultWidget(this);
+void GameMenu::resultScreen(){ 
+    resultWidget=new ResultWidget(this);                                                          
     resultWidget->setGeometry(this->width()/2-resultWidget->width()/2,this->height()/2-resultWidget->height()/2,resultWidget->width(),resultWidget->height());
     connect(resultWidget,&ResultWidget::exitToMenu,this,&GameMenu::showMenu);
     connect(resultWidget,&ResultWidget::playAgain,this,&GameMenu::playGame);
-    resultWidget->show();
+    resultWidget->show(); 
 }
-void GameMenu::showMenu(){
+void GameMenu::showMenu() {
+    if (resultWidget!=nullptr) {
     resultWidget->close();
     resultWidget = nullptr;
+    }
     game->close();
     game=nullptr;
     gameMenuSetup();//reset menu setup
@@ -54,34 +61,12 @@ void GameMenu::showMenu(){
 void GameMenu::playButtonClicked()
 {
     ui->menuWidget->setVisible(false);
-    ui->scWidget->setVisible(true);
+    ui->frame->setVisible(true);
+    showSelectedScenarioImgae();
 }
-
-
-
-void GameMenu::on_sc1_clicked()
-{
-    scenario=new Scenario(1);
-    playGame();
-}
-
-
-void GameMenu::on_sc2_clicked()
-{
-    scenario=new Scenario(2);
-    playGame();
-}
-
-void GameMenu::on_sc3_clicked()
-{
-    scenario=new Scenario(3);
-    playGame();
-}
-
-
-void GameMenu::on_sc4_clicked()
-{
-    scenario=new Scenario(4);
-    playGame();
+void GameMenu::showSelectedScenarioImgae(){
+    QString imagePath=":/images/images/sc";
+    imagePath.append(QString::number(ui->comboBox->currentIndex())).append(".jpg");
+    ui->scenarioImage->setPixmap(QPixmap(imagePath));
 }
 

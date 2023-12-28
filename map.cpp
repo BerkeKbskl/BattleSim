@@ -19,12 +19,7 @@ Map::Map(Scenario scenario)
         {600,700},
         {452,790}}));
         // to be imported from scenarios themselves
-    }
-
-
-    // test-map: to-do remove.
-
-    mapImage.load(":images/images/map.jpg");
+    }    
 }
 
 void Map::draw(QPainter *painter)

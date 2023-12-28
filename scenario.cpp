@@ -4,66 +4,45 @@
 
 Scenario::Scenario(int scenarioNum) {
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
-   //mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
+    mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".jpg");
     scanScenarioFile(scenarioPath);
 
 }
 
-vector<QPointF> Scenario::getUserUntisPositions() {
-    return userUnitsPositions;
+vector<QPointF> Scenario::getUnitPositions(int index) {
+    return index == 999 ? unitPositions[0] : unitPositions[1];
 }
 
-vector<QPointF> Scenario::getAIUntisPositions() {
-    return AIUnitsPositions;
-}
-list<QString> Scenario::getUserUnitsType() {
-    return userUnitsTypes;
+
+list<QString> Scenario::getUnitsType(int index) {
+    return index == 999 ? unitTypes[0] : unitTypes[1];
 }
 
-list<QString> Scenario::getAIUnitsType() {
-    return AIUnitsTypes;
-}
+
 
 QImage Scenario::getMapImage() {
-    QImage mapImage(mapImagePath);
-    return mapImage;
+    return  QImage(mapImagePath);
 }
 
-bool Scenario::scanScenarioFile(QString fileName) {
+void Scenario::scanScenarioFile(QString fileName) {
     QFile file(fileName);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
-        QString userType;
-        QString unitType;
         QString declaration;
         double xPos, yPos;
 
-        // Her satırı oku
         while (!in.atEnd()) {
-            QString decLine=in.readLine();
-            QStringList decLineContent = decLine.split(" ");
+            QStringList decLineContent =in.readLine().split(" ");
             declaration=decLineContent[0];
             if(declaration=="Unit:"){
-                userType=decLineContent[1];
-                unitType=decLineContent[2];
+                QString userType = decLineContent[1], unitType = decLineContent[2];
                 if (unitType == "infantry" || unitType == "cavalry"||unitType=="artillery") {
-                    QString line=in.readLine();
-                    QStringList positionsLine = line.split(" ");
+                    QStringList positionsLine =in.readLine().split(" ");
                     for (int i = 0; i < positionsLine.size(); i += 2) {
                         xPos=positionsLine[i].toDouble();
                         yPos=positionsLine[i+1].toDouble();
-                        if (userType == "User:") {
-                            userUnitsPositions.push_back({xPos, yPos});
-                            userUnitsTypes.push_back(unitType);
-
-                        } else if (userType == "AI:") {
-                            AIUnitsPositions.push_back({xPos, yPos});
-                            AIUnitsTypes.push_back(unitType);
-
-                        }
+                        userType == "User:" ? (unitPositions[0].push_back({ xPos, yPos }), unitTypes[0].push_back(unitType)):(unitPositions[1].push_back({xPos, yPos}), unitTypes[1].push_back(unitType));
                     }
-                }else {
-                    qDebug() << "undefined definition for unit " ;
                 }
 
             }
@@ -76,9 +55,5 @@ bool Scenario::scanScenarioFile(QString fileName) {
         }
 
         file.close();
-        return true;
-    } else {
-        qDebug() << "Dosya açma hatası!";
-        return false;
-    }
+    } 
 }

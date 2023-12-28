@@ -1,11 +1,14 @@
 <RCC>
-    <qresource prefix="/res"/>
     <qresource prefix="/images">
         <file>images/artillery.png</file>
         <file>images/cavalry.png</file>
         <file>images/infantry.png</file>
-        <file>images/map.jpg</file>
-        <file>images/result.png</file>
+        <file>images/sc1.jpg</file>
+        <file>images/sc2.jpg</file>
+        <file>images/result.jpg</file>
+        <file>images/pause.jpg</file>
+        <file>images/gamemenu.jpg</file>
+        <file>images/map1.jpg</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario1.txt</file>

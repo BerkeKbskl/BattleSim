@@ -24,7 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(C201Pr
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        game.h game.cpp
+
                unit.h unit.cpp
                user.h user.cpp
                player.h player.cpp
@@ -39,6 +39,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
                swamp.h swamp.cpp
                resources.qrc
                resultwidget.h resultwidget.cpp resultwidget.ui
+               game.h game.cpp game.ui
 
 
 
