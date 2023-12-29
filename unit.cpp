@@ -12,42 +12,17 @@ Unit::Unit(int x, int y, double width, double height)
     speed(0),
     health(100),
     angle(0),
+    orientation(0),
     width(width),
     height(height),
     selected(false),
     movable(false),
-    orientation(0),
+
     needHelp(false),
     helpAssigned(false){
 
 }
 
-
-
-void Unit::selectUnit(QPointF point){
-
-    if(shape.containsPoint(point, Qt::OddEvenFill)) {
-        selected = !selected;
-    }
-}
-bool Unit::isHelpNeed(){
-    return this->needHelp;
-}
-QPointF Unit::getPosition(){
-    return shape.boundingRect().center();
-}
-void Unit::rotate() {
-    QTransform rotationTransform;
-    rotationTransform.translate(this->shape.boundingRect().center().x(),
-                                this->shape.boundingRect().center().y());
-    //std::cout << unit->getAngle() << endl;
-    rotationTransform.rotate(-this->orientation * 180 / (M_PI) + 90
-                             + this->getAngle() * 180 / (M_PI) + 90);
-    this->orientation = this->getAngle();
-    rotationTransform.translate(-this->shape.boundingRect().center().x(),
-                                -this->shape.boundingRect().center().y());
-    this->shape = rotationTransform.map(this->shape);
-}
 
 int Unit::attack(Unit& enemy){
     enemy.needHelp = true;
@@ -61,64 +36,112 @@ int Unit::attack(Unit& enemy){
 }
 
 
+bool Unit::isHelpNeed(){
+    return this->needHelp;
+}
+
+
+void Unit::rotate() {
+    QTransform rotationTransform;
+    rotationTransform.translate(this->shape.boundingRect().center().x(),
+                                this->shape.boundingRect().center().y());
+
+    rotationTransform.rotate(- this->orientation * 180 / (M_PI) + 90
+                             + this->angle * 180 / (M_PI) + 90);
+    orientation = angle;
+    rotationTransform.translate(-this->shape.boundingRect().center().x(),
+                                -this->shape.boundingRect().center().y());
+    this->shape = rotationTransform.map(this->shape);
+}
+
+
+void Unit::selectUnit(QPointF point){
+
+    if(shape.containsPoint(point, Qt::OddEvenFill)) {
+        selected = !selected;
+    }
+}
+
+QPointF Unit::getPosition(){
+    return shape.boundingRect().center();
+}
+
 void Unit::setTarget(QPointF point)
 {
     if (selected) {
-        target = {point.x(), point.y()};
+        target = point;
         movable = true;
-        angle = atan2(point.y() - shape.boundingRect().center().y(),
-                      point.x() - shape.boundingRect().center().x());
         selected = false;
+        QPointF center = shape.boundingRect().center();
+        angle = atan2(point.y() - center.y(), point.x() - center.x());
+
     }
+
+
 }
 
 void Unit::moveTo()
 {
-    if (movable) { // if next
+    if (movable) {
         if (collisionState == 0) {
+            QPointF center = shape.boundingRect().center();
+            double dx = target.x() - center.x();
+            double dy = target.y() - center.y();
+
+            double distance = sqrt(dx * dx + dy * dy);
+            if (distance > speed) {
+                newPosX = center.x() + speed * cos(angle);
+                newPosY = center.y() + speed * sin(angle);
+
+            } else {
+                newPosX = target.x();
+                newPosY = target.y();
+                movable = selected = false; // If the unit arrives at the target
+            }
+
             this->setPosition({newPosX, newPosY});
         } else {
-            movable = selected = false; // other states
+            movable = selected = false; // Handle other states
         }
     }
+
+
 }
 
 QPolygonF Unit::getNextPoly()
 {
-    if (movable) {
-        double dx = target.x() - shape.boundingRect().center().x();
-        double dy = target.y() - shape.boundingRect().center().y();
-
-        double distance = sqrt(dx * dx + dy * dy);
-        if (distance > speed) {
-            newPosX = shape.boundingRect().center().x() + speed * cos(angle);
-            newPosY = shape.boundingRect().center().y() + speed * sin(angle);
-            // adjusts...
-        } else {
-            newPosX = target.x();
-            newPosY = target.y();
-            movable = selected = false; // if unit arrives at the target
-        }
-    }
-
-
+    // Returns next polygon
     QPolygonF nextPolygon(shape);
-
-    QPointF v = {newPosX, newPosY};
-    // Calculate the current center of the shape
-    QPointF currentCenter = shape.boundingRect().center();
-    // Calculate the translation vector to move the center to the new position
-    QPointF translationVector = v - currentCenter;
-    // Translate the shape using the calculated translation vector
+    QPointF translationVector =
+        QPointF(shape.boundingRect().center().x() + 2 * cos(angle),
+                shape.boundingRect().center().y() + 2 * sin(angle)) - shape.boundingRect().center();
     nextPolygon.translate(translationVector);
 
     return nextPolygon;
-
-
 }
 
-QPolygonF Unit::getNextCollider()
+QPainterPath Unit::getNextPath()
 {
+    // Returns next QPainterPath representing an ellipse
+    QPointF center = shape.boundingRect().center();
+    QPainterPath ellipsePath;
+    ellipsePath.addEllipse(center, width, height);
+
+
+    QTransform rotationTransform;
+    rotationTransform.translate(this->shape.boundingRect().center().x(),
+                                this->shape.boundingRect().center().y());
+
+    rotationTransform.rotate(90);
+    rotationTransform.translate(-this->shape.boundingRect().center().x(),
+                                -this->shape.boundingRect().center().y());
+
+    return rotationTransform.map(ellipsePath);
+}
+
+
+
+QPolygonF Unit::getNextCollider(){
     return getNextPoly();
 }
 
@@ -128,24 +151,19 @@ void Unit::setCollisionState(int index) {
 }
 
 
-void Unit::setPosition(vector<double> w) {
-    QPointF v = {w[0],w[1]};
-    // Calculate the current center of the shape
-    QPointF currentCenter = shape.boundingRect().center();
-    // Calculate the translation vector to move the center to the new position
-    QPointF translationVector = v - currentCenter;
-    // Translate the shape using the calculated translation vector
-    shape.translate(translationVector);
-}
-
-double Unit::getAngle() {
-    return angle;
+void Unit::setPosition(QPointF v) {
+    shape.translate(v - shape.boundingRect().center());
 }
 
 
 void Unit::draw(QPainter* painter) {
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
+    painter->setPen(color.black());
+
+    painter->drawPolygon(getNextCollider());
+    painter->drawPolygon(getNextPoly());
+    painter->drawPath(getNextPath());
     painter->setPen(color.lighter(60));
     //painter->setBrush(QBrush(color));
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -163,7 +181,7 @@ void Unit::draw(QPainter* painter) {
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
         QTransform transform;
-        transform.rotate(orientation * 180 / M_PI);
+        transform.rotate(angle * 180 / M_PI);
         resizedImage = resizedImage.transformed(transform, Qt::SmoothTransformation);
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);

@@ -3,7 +3,7 @@ Unit: AI: infantry
 Unit: AI: cavalry
 200,500 300,400
 Unit: AI: artillery
-250,500 300,500
+250,500 300,500 700,700 700,800 700,850
 Unit: User: infantry
 100,100 150,100 200,100 250,100 300,100 350,100 400,100 450,100 500,100
 Unit: User: cavalry

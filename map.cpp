@@ -15,7 +15,6 @@ Map::Map(Scenario scenario)
     // 2 Rivers
     for (int i = 0; i < 1; i++) {
         obstacles.push_back(new River({scenario.getObstaclePositions()}));
-
         // to be imported from scenarios themselves
     }
     /*

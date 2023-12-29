@@ -11,7 +11,7 @@ class Unit
 public:
 
     Unit(int x = 1000, int y = 1000, double width = 25, double height = 50);
-    void setPosition(vector<double> v);
+    void setPosition(QPointF v);
     void moveTo();
     void selectUnit(QPointF);
     bool isHelpNeed(); // for AI
@@ -33,13 +33,13 @@ public:
     QPolygonF collider;
     bool needHelp;
     bool helpAssigned;
-
-    QImage img;
     virtual int attack(Unit& enemy);
     int health;
+
+    QPainterPath getNextPath();
 protected:
 
-
+    QImage img;
     double newPosX, newPosY;
     int attackPower;
 

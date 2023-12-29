@@ -67,10 +67,7 @@ void Game::mousePressEvent(QMouseEvent *event)
         for (Unit *unit : user.units) {
             if (unit->selected) {
                 unit->setTarget(event->pos());
-
                 unit->rotate();
-                cout << "Clicked pos: " << event->pos().x() << ","
-                     << event->pos().y() << endl;
             }
         }
     }
@@ -102,30 +99,34 @@ void Game::checkState()
     if (user.units.empty() || ai.units.empty()) {
         timer->stop();
         emit showResult();
-
+        // Checks to end the game.
     }
 
     for (Unit *unit : user.units) {
-        QPolygonF nextPolygon = unit->getNextPoly();
+        QPainterPath nextPolygon = unit->getNextPath();
         unit->setCollisionState(0); // Reset collision state for the current unit
 
         bool collisionDetected = false;  // Flag to indicate if a collision was detected
 
         for (Unit *trUnit : user.units) {
-            if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
-                unit->setCollisionState(2);
+            QPainterPath qainterpath2;
+            qainterpath2.addPolygon(trUnit->shape);
+            if (trUnit != unit && nextPolygon.intersects(qainterpath2)) {
 
-                trUnit->setCollisionState(2);
-                //unit->color = Qt::black;
-                //trUnit->color = Qt::black;
-                collisionDetected = true;
+                unit->setCollisionState(1);
+                trUnit->setCollisionState(1);
+
+                // unit->stop();
+                break;
 
             }
         }
 
         if (!collisionDetected) {
             for (Unit *trUnit : ai.units) {
-                if (nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+                QPainterPath qainterpath2;
+                qainterpath2.addPolygon(trUnit->shape);
+                if (nextPolygon.intersects(qainterpath2)) {
                     unit->setCollisionState(2);
                     trUnit->setCollisionState(2);
 
@@ -154,7 +155,7 @@ void Game::checkState()
         if (!collisionDetected) {
             for (Obstacle* o : map.obstacles) {
 
-                if (nextPolygon.intersects(o->shape.toFillPolygon())) {
+                if (nextPolygon.intersects(o->shape)) {
                     unit->setCollisionState(3);
                     collisionDetected = true;
                 }
@@ -162,10 +163,7 @@ void Game::checkState()
         }
     }
 
-
-
-
-
+    // AI
 
     for (Unit *unit : ai.units) {
         QPolygonF nextPolygon = unit->getNextPoly();
