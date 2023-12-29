@@ -38,8 +38,9 @@ QPainterPath Swamp::generateSmoothPath(const QVector<QPointF>& points)
     }
 
     // the final curve, that joins to the last point
-    path.quadTo(cp1, points.back());
-
+    path.quadTo(cp1, points.last());
+    path.cubicTo(points.last(), points.first(),points.first());
+    path.closeSubpath();
 
     return path;
 
@@ -52,3 +53,7 @@ void Swamp::draw(QPainter* painter)
     painter->setBrush(Qt::blue);
     painter->drawPath(shape);
 }
+
+
+
+
