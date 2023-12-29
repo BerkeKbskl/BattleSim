@@ -117,7 +117,7 @@ double AI::calculateDistance(const QPointF& point1, const QPointF& point2) {
 
 void AI::deployUnits(Scenario scenario) {
 
-    vector<QPointF>unitPositions=scenario.getUnitPositions(0);
+    QVector<QPointF>unitPositions=scenario.getUnitPositions(0);
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
         units[i]->color = this->color;

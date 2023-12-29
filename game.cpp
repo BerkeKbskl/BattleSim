@@ -154,7 +154,7 @@ void Game::checkState()
         if (!collisionDetected) {
             for (Obstacle* o : map.obstacles) {
 
-                if (unit->shape.intersects(o->shape.toFillPolygon())) {
+                if (nextPolygon.intersects(o->shape.toFillPolygon())) {
                     unit->setCollisionState(3);
                     collisionDetected = true;
                 }
@@ -213,7 +213,7 @@ void Game::checkState()
         if (!collisionDetected) {
             for (Obstacle* o : map.obstacles) {
 
-                if (unit->shape.intersects(o->shape.toFillPolygon())) {
+                if (nextPolygon.intersects(o->shape.toFillPolygon())) {
                     unit->setCollisionState(3);
                     collisionDetected = true;
                 }

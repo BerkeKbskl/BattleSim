@@ -9,12 +9,12 @@ Scenario::Scenario(int scenarioNum) {
 
 }
 
-vector<QPointF> Scenario::getUnitPositions(int index) {
+QVector<QPointF> Scenario::getUnitPositions(int index) {
     return index == 999 ? unitPositions[0] : unitPositions[1];
 }
 
 
-list<QString> Scenario::getUnitsType(int index) {
+QList<QString> Scenario::getUnitsType(int index) {
     return index == 999 ? unitTypes[0] : unitTypes[1];
 }
 
@@ -22,6 +22,16 @@ list<QString> Scenario::getUnitsType(int index) {
 
 QImage Scenario::getMapImage() {
     return  QImage(mapImagePath);
+}
+
+QList<QPointF> Scenario::getObstaclePositions()
+{
+    return obstaclePositions;
+}
+
+QVector<QString> Scenario::getObstacleTypes()
+{
+    return obstacleTypes;
 }
 
 void Scenario::scanScenarioFile(QString fileName) {
@@ -32,28 +42,32 @@ void Scenario::scanScenarioFile(QString fileName) {
         double xPos, yPos;
 
         while (!in.atEnd()) {
-            QStringList decLineContent =in.readLine().split(" ");
-            declaration=decLineContent[0];
-            if(declaration=="Unit:"){
+            QStringList decLineContent = in.readLine().split(" ");
+            declaration = decLineContent[0];
+            if (declaration == "Unit:") {
                 QString userType = decLineContent[1], unitType = decLineContent[2];
-                if (unitType == "infantry" || unitType == "cavalry"||unitType=="artillery") {
-                    QStringList positionsLine =in.readLine().split(" ");
-                    for (int i = 0; i < positionsLine.size(); i += 2) {
-                        xPos=positionsLine[i].toDouble();
-                        yPos=positionsLine[i+1].toDouble();
-                        userType == "User:" ? (unitPositions[0].push_back({ xPos, yPos }), unitTypes[0].push_back(unitType)):(unitPositions[1].push_back({xPos, yPos}), unitTypes[1].push_back(unitType));
+                    QStringList positionsLine = in.readLine().split(" ");
+                    for (int i = 0; i < positionsLine.size(); i++) {
+                        xPos = positionsLine[i].split(",")[0].toDouble();
+                        yPos = positionsLine[i].split(",")[1].toDouble();
+                        userType == "User:" ? (unitPositions[0].push_back({ xPos, yPos }), unitTypes[0].push_back(unitType)) : (unitPositions[1].push_back({ xPos, yPos }), unitTypes[1].push_back(unitType));
                     }
+
+            }
+            else if (declaration == "map:") {
+                QString obstacleType = decLineContent[1];
+                QStringList positionsLine = in.readLine().split(" ");
+                for (int i = 0; i < positionsLine.size(); i++) {
+                    xPos = positionsLine[i].split(",")[0].toDouble();
+                    yPos = positionsLine[i].split(",")[1].toDouble();
+                    obstaclePositions.push_back({ xPos,yPos });
+                    obstacleTypes.push_back(obstacleType);
                 }
 
             }
-            else{}/*
-            else if(declaration=="map:"){
-            Obstacle positions and other necessary informations
-
-            }*/
 
         }
 
         file.close();
-    } 
+    }
 }

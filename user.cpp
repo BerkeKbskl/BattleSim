@@ -11,7 +11,7 @@ User::User(Scenario scenario)
 void User::deployUnits(Scenario scenario) {
 
 
-    vector<QPointF>unitPositions=scenario.getUnitPositions(999);
+    QVector<QPointF>unitPositions=scenario.getUnitPositions(999);
 
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});

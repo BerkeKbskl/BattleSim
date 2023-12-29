@@ -14,9 +14,7 @@ Map::Map(Scenario scenario)
 {
     // 2 Rivers
     for (int i = 0; i < 1; i++) {
-        obstacles.push_back(new River({ {127, 607}, {200, 526}, {384, 606},
-                                {446, 531}, {530, 548}, {590, 368},{666, 666}
-            ,{756, 581} }));
+        obstacles.push_back(new River({scenario.getObstaclePositions()}));
 
         // to be imported from scenarios themselves
     }

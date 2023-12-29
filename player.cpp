@@ -7,7 +7,7 @@ Player::Player()
 {
 
 }
-void Player::createUnits(list<QString> unitTypes){
+void Player::createUnits(QList<QString> unitTypes){
     for(QString type:unitTypes){
         if(type=="infantry"){units.push_back(new Infantry());}
         else if(type=="cavalry"){units.push_back(new Cavalry());}
