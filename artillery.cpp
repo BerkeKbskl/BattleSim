@@ -3,47 +3,34 @@
 
 Artillery::Artillery() : Unit() {
     speed = 2;
-    health=100;
-    attackPower=3;
+    health = 100;
+    attackPower = 3;
     defensePower = 0;
     ammo = 150;
     img.load(":images/images/artillery.png");
 }
 
 int Artillery::attack(Unit& enemy){
-
-    // Are they touching? You can't shoot what is in front of you.
-    if (getNextPoly().intersects(enemy.shape))  {
-        return Unit::attack(enemy);
-    } else {
-        qDebug("shooting from distance");
-        // If from distance!
-        while(shoot()) {
-            if(enemy.health<=0){
-                return 1;
-            }
-            else{
-                enemy.health-=(attackPower-defensePower/2);
-                return 0;
-            }
-        }
-        return 0;
-    }
-
+    if(shoot()) return Unit::attack(enemy);
+    return 0;
+    // Bullets?
 }
 
-QPolygonF Artillery::getNextCollider()
+QPainterPath Artillery::getAttackCollider() const
 {
-    QPolygonF nextPolygon(Unit::getNextPoly());
-    // Calculate the current center of the polygon
-    QPointF currentCenter = nextPolygon.boundingRect().center();
-    // Scale the polygon by a factor of 2 based on its center
-    for (int i = 0; i < nextPolygon.size(); ++i) {
-        QPointF vector = nextPolygon[i] - currentCenter;
-        nextPolygon[i] = currentCenter + 5 * vector;
-    }
-    return nextPolygon;
+    // Returns the current collider
+    QPainterPath ellipsePath;
+    ellipsePath.addRect(center.x() - width / 2 , center.y() - height / 2 -height * 3, width , height * 4);
+
+    QTransform rotationTransform;
+    rotationTransform.translate(center.x(),center.y());
+
+    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
+    rotationTransform.translate(-center.x(),-center.y());
+
+    return rotationTransform.map(ellipsePath);
 }
+
 
 bool Artillery::shoot() {
 
@@ -66,7 +53,7 @@ void Artillery::draw(QPainter* painter) {
     painter->setPen(Qt::black);
 
     // Calculate the position to display the ammo count in the middle of the shape
-    QPointF textPosition = shape.boundingRect().bottomLeft();
+    QPointF textPosition = center;
     textPosition -= QPointF(0, font.pixelSize() / 2); // Adjust for vertical alignment
 
     //painter->drawPolygon(getNextCollider());

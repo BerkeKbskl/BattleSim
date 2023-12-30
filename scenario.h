@@ -1,7 +1,6 @@
 #ifndef SCENARIO_H
 #define SCENARIO_H
 #include <QImage>
-#include <vector>
 #include<QFile>
 #include<QDir>
 using namespace std;

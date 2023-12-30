@@ -10,46 +10,45 @@ class Unit
 {
 public:
 
-    Unit(int x = 1000, int y = 1000, double width = 25, double height = 50);
-    void setPosition(vector<double> v);
-    void moveTo();
-    void selectUnit(QPointF);
-    bool isHelpNeed(); // for AI
-    QPointF getPosition();
-    virtual void draw(QPainter *);
-    void rotate();
-    QPolygonF getNextPoly();
-    virtual QPolygonF getNextCollider();
-    double getAngle();
-    double getOrientation();
-    QPointF target;
-    void setCollisionState(int index);
-    void setTarget(QPointF point);
-    bool selected;
-    double orientation;
-    QColor color;
+    Unit(int x = 1000, int y = 1000, double width = 50, double height = 25);
 
-    QPolygonF shape;
-    QPolygonF collider;
+    void stop();
+    void selectUnit(const QPointF);
+    void setPosition(const QPointF v);
+    void setTarget(const QPointF point);
+    void moveTo();
+    QPointF getPosition() const;
+    QPainterPath getNextPath() const;
+    QPainterPath getCurrentPath() const;
+    virtual QPainterPath getAttackCollider() const;
+
+    virtual int attack(Unit& enemy);
+    void takeDamage(int);
+
+    bool isHelpNeed(); // for AI
     bool needHelp;
     bool helpAssigned;
 
-    QImage img;
-    virtual int attack(Unit& enemy);
-    int health;
+    void setColor(const QColor);
+    virtual void draw(QPainter *);
+
+    int getHealth();
 protected:
 
-
-    double newPosX, newPosY;
-    int attackPower;
-
-    int speed;
-    int moral;
-    int defensePower;
-    bool movable;
-    int collisionState;
-    double width,height; // SEE
     double angle;
+    QColor color;
+    QPointF target;
+    QPointF center;
+
+    QImage img;
+    int attackPower;
+    int health;
+    int speed;
+    int defensePower;
+    bool selected;
+    bool movable;
+    double width,height;
+
 
 
 private:

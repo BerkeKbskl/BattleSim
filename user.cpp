@@ -15,7 +15,7 @@ void User::deployUnits(Scenario scenario) {
 
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
-         units[i]->color = this->color;
+         units[i]->setColor(this->color);
     }
 
 }

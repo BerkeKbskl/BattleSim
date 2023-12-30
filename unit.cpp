@@ -1,55 +1,33 @@
 #include "unit.h"
-#include <iostream>
-
 
 Unit::Unit(int x, int y, double width, double height)
-    : shape({QPoint(x, y),
-                QPoint(x + width, y),
-                QPoint(x + width, y + height),
-                QPoint(x, y + height)}),
-
-    target(x, y),
-    speed(0),
+    :
+    center(x,y),
+    target(x,y),
+    speed(1),
     health(100),
-    angle(0),
+    angle(M_PI/2),
     width(width),
     height(height),
     selected(false),
     movable(false),
-    orientation(0),
+
     needHelp(false),
     helpAssigned(false){
 
 }
 
 
-
-void Unit::selectUnit(QPointF point){
-
-    if(shape.containsPoint(point, Qt::OddEvenFill)) {
-        selected = !selected;
-    }
-}
-bool Unit::isHelpNeed(){
+bool Unit::isHelpNeed()
+{
     return this->needHelp;
 }
-QPointF Unit::getPosition(){
-    return shape.boundingRect().center();
-}
-void Unit::rotate() {
-    QTransform rotationTransform;
-    rotationTransform.translate(this->shape.boundingRect().center().x(),
-                                this->shape.boundingRect().center().y());
-    //std::cout << unit->getAngle() << endl;
-    rotationTransform.rotate(-this->orientation * 180 / (M_PI) + 90
-                             + this->getAngle() * 180 / (M_PI) + 90);
-    this->orientation = this->getAngle();
-    rotationTransform.translate(-this->shape.boundingRect().center().x(),
-                                -this->shape.boundingRect().center().y());
-    this->shape = rotationTransform.map(this->shape);
-}
+
+// -------------------------------------------------------------------
+
 
 int Unit::attack(Unit& enemy){
+
     enemy.needHelp = true;
     if(enemy.health<=0){
         return 1;
@@ -60,124 +38,125 @@ int Unit::attack(Unit& enemy){
     }
 }
 
+int Unit::getHealth(){
+    return health;
+}
 
-void Unit::setTarget(QPointF point)
+void Unit::setColor(const QColor color){
+    this->color = color;
+}
+
+void Unit::setPosition(const QPointF v) {
+    center = v;
+}
+
+void Unit::selectUnit(const QPointF point){
+    selected = getCurrentPath().contains(point) ? !selected : selected;
+}
+
+QPointF Unit::getPosition() const {
+    return center;
+}
+
+void Unit::stop(){
+    target = center;
+    movable = false;
+}
+
+void Unit::setTarget(const QPointF point)
 {
-    if (selected) {
-        target = {point.x(), point.y()};
+    if (selected) { // should be able to set a target despite not being selected
+        target = point;
         movable = true;
-        angle = atan2(point.y() - shape.boundingRect().center().y(),
-                      point.x() - shape.boundingRect().center().x());
         selected = false;
+        angle = atan2(point.y() - center.y(), point.x() - center.x());
     }
+
 }
 
-void Unit::moveTo()
-{
-    if (movable) { // if next
-        if (collisionState == 0) {
-            this->setPosition({newPosX, newPosY});
-        } else {
-            movable = selected = false; // other states
-        }
-    }
-}
-
-QPolygonF Unit::getNextPoly()
-{
+void Unit::moveTo(){
     if (movable) {
-        double dx = target.x() - shape.boundingRect().center().x();
-        double dy = target.y() - shape.boundingRect().center().y();
-
-        double distance = sqrt(dx * dx + dy * dy);
-        if (distance > speed) {
-            newPosX = shape.boundingRect().center().x() + speed * cos(angle);
-            newPosY = shape.boundingRect().center().y() + speed * sin(angle);
-            // adjusts...
-        } else {
-            newPosX = target.x();
-            newPosY = target.y();
-            movable = selected = false; // if unit arrives at the target
-        }
+            // Less readable
+            if ((target - center).manhattanLength() > speed) {
+                center += QPointF(speed * cos(angle), speed * sin(angle));
+            } else {
+                stop();
+            }
     }
-
-
-    QPolygonF nextPolygon(shape);
-
-    QPointF v = {newPosX, newPosY};
-    // Calculate the current center of the shape
-    QPointF currentCenter = shape.boundingRect().center();
-    // Calculate the translation vector to move the center to the new position
-    QPointF translationVector = v - currentCenter;
-    // Translate the shape using the calculated translation vector
-    nextPolygon.translate(translationVector);
-
-    return nextPolygon;
-
-
 }
 
-QPolygonF Unit::getNextCollider()
+QPainterPath Unit::getNextPath() const {
+
+    // Pushes the current collider forward the angle
+    QPointF translationVector =
+        QPointF(center.x() + 8 * cos(angle),
+                center.y() + 8 * sin(angle)) - center;
+
+    QTransform rotationTransform;
+    rotationTransform.translate(translationVector.x(),translationVector.y());
+    return rotationTransform.map(getCurrentPath()) + Unit::getCurrentPath();
+}
+
+QPainterPath Unit::getCurrentPath() const
 {
-    return getNextPoly();
+    // Returns the current collider
+    QPainterPath ellipsePath;
+    ellipsePath.addRect(center.x() - width / 2, center.y() - height / 2, width , height);
+
+    QTransform rotationTransform;
+    rotationTransform.translate(center.x(),center.y());
+
+    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
+    rotationTransform.translate(-center.x(),-center.y());
+
+    return rotationTransform.map(ellipsePath);
 }
 
-
-void Unit::setCollisionState(int index) {
-    collisionState=index;
+QPainterPath Unit::getAttackCollider() const
+{
+    return Unit::getNextPath();
 }
-
-
-void Unit::setPosition(vector<double> w) {
-    QPointF v = {w[0],w[1]};
-    // Calculate the current center of the shape
-    QPointF currentCenter = shape.boundingRect().center();
-    // Calculate the translation vector to move the center to the new position
-    QPointF translationVector = v - currentCenter;
-    // Translate the shape using the calculated translation vector
-    shape.translate(translationVector);
-}
-
-double Unit::getAngle() {
-    return angle;
-}
-
 
 void Unit::draw(QPainter* painter) {
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
+    painter->setPen(color.black());
+
+    painter->drawPath(getCurrentPath());
+
+    painter->setPen(color.red());
+
+    painter->drawPath(getNextPath());
+
+    painter->setPen(color.blue());
+
+    painter->drawPath(getAttackCollider());
     painter->setPen(color.lighter(60));
-    //painter->setBrush(QBrush(color));
+
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    QLinearGradient gradient(shape.boundingRect().topLeft(), shape.boundingRect().bottomLeft());
-    gradient.setColorAt(0, color);          // Top color
-    gradient.setColorAt(1, color.darker(20));  // Darker shade at the bottom
-
-    painter->setBrush(gradient);
-
-    // Draw the unit's shape
-    painter->drawPolygon(shape);
 
     if (!img.isNull()) {
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
         QTransform transform;
-        transform.rotate(orientation * 180 / M_PI);
+        transform.rotate(angle * 180 / M_PI + -90);
         resizedImage = resizedImage.transformed(transform, Qt::SmoothTransformation);
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-        painter->drawImage(shape.boundingRect().topLeft().x(),
-                           shape.boundingRect().topLeft().y(),
-                           resizedImage);
+        QPointF imageTopLeft = center - QPointF(resizedImage.width() / 2, resizedImage.height() / 2);
+        painter->drawImage(imageTopLeft, resizedImage);
+
     }
 
     // Draw health bar
-    double healthBarWidth = width;  // Adjust this value as needed
+    double healthBarWidth = 20;  // Adjust this value as needed
     double healthBarHeight = 5;     // Adjust this value as needed
-    double healthBarX = shape.boundingRect().topLeft().x();
-    double healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
+    double healthBarX = center.x() - 20;
+    double healthBarY = center.y() - healthBarHeight - 2 - 20;  // Adjust the offset as needed
+
+
 
     // Calculate the width based on the current health percentage
     double currentHealthWidth = healthBarWidth * (health / 100.0);
@@ -190,8 +169,6 @@ void Unit::draw(QPainter* painter) {
     // Draw the current health
     painter->setBrush(Qt::green);
     painter->drawRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
-
-
 
     painter->restore();
 }
