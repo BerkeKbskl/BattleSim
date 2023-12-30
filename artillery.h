@@ -9,7 +9,6 @@ public:
     Artillery();
     bool shoot();
     int attack(Unit&) override;
-    QPolygonF getNextCollider() override;
 
     void draw(QPainter *) override;
 

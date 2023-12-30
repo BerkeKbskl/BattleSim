@@ -7,6 +7,7 @@ AI::AI(Scenario scenario) {
     scenario=scenario;
     createUnits(scenario.getUnitsType(0));
     color = QColor(255,155,155);
+
 }
 void AI::setMode(AIMode mode) {
     this->mode = mode;
@@ -35,7 +36,7 @@ void AI::makeAggressiveMove(vector<Unit*>& enemyUnits) {
             Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
             if (closestEnemy) {
                 QPointF target = closestEnemy->getPosition();
-                unit->selected=true;
+                //unit->selected=true;
                 unit->setTarget(target);
             } else {
                 double randomX = rand() % 800;
@@ -45,7 +46,7 @@ void AI::makeAggressiveMove(vector<Unit*>& enemyUnits) {
             }
         }
 
-        unit->rotate();
+
     }
 }
 void AI::makeDefensiveMove() {
@@ -57,7 +58,7 @@ void AI::makeDefensiveMove() {
             if (closestFriend && unit->needHelp) {
 
                 QPointF target = unit->getPosition();
-                closestFriend->selected = true;
+                //closestFriend->selected = true;
                 closestFriend->setTarget(target);
 
             } else {
@@ -65,7 +66,6 @@ void AI::makeDefensiveMove() {
             }
         }
 
-        unit->rotate();
     }
 }
 
@@ -120,7 +120,7 @@ void AI::deployUnits(Scenario scenario) {
     QVector<QPointF>unitPositions=scenario.getUnitPositions(0);
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
-        units[i]->color = this->color;
+        units[i]->setColor(this->color);
     }
 
 }

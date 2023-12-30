@@ -1,18 +1,12 @@
 #include "unit.h"
-#include <iostream>
-
 
 Unit::Unit(int x, int y, double width, double height)
-    : shape({QPoint(x, y),
-                QPoint(x + width, y),
-                QPoint(x + width, y + height),
-                QPoint(x, y + height)}),
-
-    target(x, y),
-    speed(0),
+    :
+    center(x,y),
+    target(x,y),
+    speed(1),
     health(100),
     angle(M_PI/2),
-    orientation(M_PI/2),
     width(width),
     height(height),
     selected(false),
@@ -24,7 +18,18 @@ Unit::Unit(int x, int y, double width, double height)
 }
 
 
+bool Unit::isHelpNeed()
+{
+    return this->needHelp;
+}
+
+// -------------------------------------------------------------------
+
+
 int Unit::attack(Unit& enemy){
+
+    stop();
+
     enemy.needHelp = true;
     if(enemy.health<=0){
         return 1;
@@ -35,48 +40,38 @@ int Unit::attack(Unit& enemy){
     }
 }
 
+int Unit::getHealth(){
+    return health;
+}
 
-bool Unit::isHelpNeed(){
-    return this->needHelp;
+void Unit::setColor(const QColor color){
+    this->color = color;
+}
+
+void Unit::setPosition(const QPointF v) {
+    center = v;
+}
+
+void Unit::selectUnit(const QPointF point){
+    selected = getCurrentPath().contains(point) ? !selected : selected;
+}
+
+QPointF Unit::getPosition() const {
+    return center;
 }
 
 void Unit::stop(){
-    movable = 0;
+
+    target = center;
+    movable = false;
 }
 
-
-void Unit::rotate() {
-    QTransform rotationTransform;
-    rotationTransform.translate(this->shape.boundingRect().center().x(),
-                                this->shape.boundingRect().center().y());
-
-    rotationTransform.rotate(- this->orientation * 180 / (M_PI) + 90
-                             + this->angle * 180 / (M_PI) + 90);
-    orientation = angle;
-    rotationTransform.translate(-this->shape.boundingRect().center().x(),
-                                -this->shape.boundingRect().center().y());
-    this->shape = rotationTransform.map(this->shape);
-}
-
-
-void Unit::selectUnit(QPointF point){
-
-    if(shape.containsPoint(point, Qt::OddEvenFill)) {
-        selected = !selected;
-    }
-}
-
-QPointF Unit::getPosition(){
-    return shape.boundingRect().center();
-}
-
-void Unit::setTarget(QPointF point)
+void Unit::setTarget(const QPointF point)
 {
-    if (selected) {
+    if (selected) { // should be able to set a target despite not being selected
         target = point;
         movable = true;
         selected = false;
-        QPointF center = shape.boundingRect().center();
         angle = atan2(point.y() - center.y(), point.x() - center.x());
     }
 
@@ -85,129 +80,56 @@ void Unit::setTarget(QPointF point)
 void Unit::moveTo()
 {
     if (movable) {
-        if (collisionState == 0) {
-            QPointF center = shape.boundingRect().center();
-            double dx = target.x() - center.x();
-            double dy = target.y() - center.y();
-
-            double newPosX, newPosY;
-
-            double distance = sqrt(dx * dx + dy * dy);
-            if (distance > speed) {
-                newPosX = center.x() + speed * cos(angle);
-                newPosY = center.y() + speed * sin(angle);
-
+            // Less readable
+            if ((target - center).manhattanLength() > speed) {
+                center += QPointF(speed * cos(angle), speed * sin(angle));
             } else {
-                newPosX = target.x();
-                newPosY = target.y();
-                movable = selected = false; // If the unit arrives at the target
+                stop();
             }
-
-            this->setPosition({newPosX, newPosY});
-        } else {
-            movable = selected = false; // Handle other states
-        }
     }
 }
 
-QPolygonF Unit::getNextPoly()
+QPainterPath Unit::getNextPath() const
 {
-    // Returns next polygon
-    QPolygonF nextPolygon(shape);
+    // Pushes the current collider forward the angle
     QPointF translationVector =
-        QPointF(shape.boundingRect().center().x() + 8 * cos(angle),
-                shape.boundingRect().center().y() + 8 * sin(angle)) - shape.boundingRect().center();
-    nextPolygon.translate(translationVector);
-
-    return nextPolygon;
-}
-
-QPainterPath Unit::getNextPath()
-{
-    // Returns next QPainterPath representing an ellipse
-    QPointF center = shape.boundingRect().center();
-    QPainterPath ellipsePath;
-    ellipsePath.addEllipse(center, width / 2 + 2, height / 2 + speed);
-
-    QPointF translationVector =
-        QPointF(center.x() + speed * cos(angle),
-                center.y() + speed * sin(angle)) - center;
+        QPointF(center.x() + 8 * cos(angle),
+                center.y() + 8 * sin(angle)) - center;
 
     QTransform rotationTransform;
-
     rotationTransform.translate(translationVector.x(),translationVector.y());
+    return rotationTransform.map(getCurrentPath());
+}
 
-    rotationTransform.translate(this->shape.boundingRect().center().x(),
-                                this->shape.boundingRect().center().y());
+QPainterPath Unit::getCurrentPath() const
+{
+    // Returns the current collider
+    QPainterPath ellipsePath;
+    ellipsePath.addEllipse(center, width / 2 + 4, height / 4 + 4);
+
+    QTransform rotationTransform;
+    rotationTransform.translate(center.x(),center.y());
 
     rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
-    orientation = angle;
-    rotationTransform.translate(-this->shape.boundingRect().center().x(),
-                                -this->shape.boundingRect().center().y());
+    rotationTransform.translate(-center.x(),-center.y());
 
     return rotationTransform.map(ellipsePath);
 }
-
-QPainterPath Unit::getCurrentPath()
-{
-    // Returns next QPainterPath representing an ellipse
-    QPointF center = shape.boundingRect().center();
-    QPainterPath ellipsePath;
-    ellipsePath.addEllipse(center, width / 2 + 2, height / 2 + 2);
-
-    QPointF translationVector =
-        QPointF(center.x(),
-                                        center.y()) - center;
-
-    QTransform rotationTransform;
-
-    rotationTransform.translate(translationVector.x(),translationVector.y());
-
-    rotationTransform.translate(this->shape.boundingRect().center().x(),
-                                this->shape.boundingRect().center().y());
-
-    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
-    orientation = angle;
-    rotationTransform.translate(-this->shape.boundingRect().center().x(),
-                                -this->shape.boundingRect().center().y());
-
-    return rotationTransform.map(ellipsePath);
-}
-
-QPolygonF Unit::getNextCollider(){
-    return getNextPoly();
-}
-
-
-void Unit::setCollisionState(int index) {
-    collisionState=index;
-}
-
-
-void Unit::setPosition(QPointF v) {
-    shape.translate(v - shape.boundingRect().center());
-}
-
 
 void Unit::draw(QPainter* painter) {
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.black());
 
-    //painter->drawPolygon(getNextPoly());
+    painter->drawPath(getCurrentPath());
+
+    painter->setPen(color.red());
+
     painter->drawPath(getNextPath());
     painter->setPen(color.lighter(60));
-    //painter->setBrush(QBrush(color));
+
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    QLinearGradient gradient(shape.boundingRect().topLeft(), shape.boundingRect().bottomLeft());
-    gradient.setColorAt(0, color);          // Top color
-    gradient.setColorAt(1, color.darker(20));  // Darker shade at the bottom
-
-    painter->setBrush(gradient);
-
-    // Draw the unit's shape
-    painter->drawPolygon(shape);
 
     if (!img.isNull()) {
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -218,16 +140,16 @@ void Unit::draw(QPainter* painter) {
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-        painter->drawImage(shape.boundingRect().topLeft().x(),
-                           shape.boundingRect().topLeft().y(),
-                           resizedImage);
+        QPointF imageTopLeft = center - QPointF(resizedImage.width() / 2, resizedImage.height() / 2);
+        painter->drawImage(imageTopLeft, resizedImage);
+
     }
 
     // Draw health bar
-    double healthBarWidth = width;  // Adjust this value as needed
+    double healthBarWidth = 20;  // Adjust this value as needed
     double healthBarHeight = 5;     // Adjust this value as needed
-    double healthBarX = shape.boundingRect().topLeft().x();
-    double healthBarY = shape.boundingRect().topLeft().y() - healthBarHeight - 2;  // Adjust the offset as needed
+    double healthBarX = center.x() - 20;
+    double healthBarY = center.y() - healthBarHeight - 2 - 20;  // Adjust the offset as needed
 
     // Calculate the width based on the current health percentage
     double currentHealthWidth = healthBarWidth * (health / 100.0);
