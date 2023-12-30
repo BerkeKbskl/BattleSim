@@ -14,7 +14,6 @@ GameMenu::~GameMenu()
     delete ui;
     delete game;
     delete scenario;
-    delete resultWidget;
 }
 void GameMenu::gameMenuSetup(){
     ui->setupUi(this);
@@ -23,35 +22,19 @@ void GameMenu::gameMenuSetup(){
     connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
     connect(ui->howTP_Button,&QPushButton::clicked,this,&GameMenu::showHowToPlay);
     connect(ui->comboBox,&QComboBox::currentIndexChanged,this,&GameMenu::showSelectedScenarioImgae);
-}
+    connect(ui->backToMenu,&QPushButton::clicked,this,&GameMenu::on_back_clicked);
 
-void GameMenu::playGame() {
-    if (scenario) {
-    if (resultWidget != nullptr) {
-        resultWidget->close();
-        resultWidget = nullptr;
-    }
-    game = new Game(*scenario);
-    connect(game, &Game::showResult, this, &GameMenu::resultScreen);
-    connect(game, &Game::exitToMenu, this, &GameMenu::showMenu);
-    setCentralWidget(game);//changes the main scene
 }
+void GameMenu::playGame() {
+    game = new Game(*scenario);
+    connect(game,&Game::exitToMenu,this,&GameMenu::showMenu);
+    connect(game,&Game::playAgain,this,&GameMenu::playGame);
+    setCentralWidget(game);//changes the main scene
 }
 void GameMenu::exitGame(){
     QCoreApplication::quit();//to quit the app
 }
-void GameMenu::resultScreen(){ 
-    resultWidget=new ResultWidget(this);                                                          
-    resultWidget->setGeometry(this->width()/2-resultWidget->width()/2,this->height()/2-resultWidget->height()/2,resultWidget->width(),resultWidget->height());
-    connect(resultWidget,&ResultWidget::exitToMenu,this,&GameMenu::showMenu);
-    connect(resultWidget,&ResultWidget::playAgain,this,&GameMenu::playGame);
-    resultWidget->show(); 
-}
 void GameMenu::showMenu() {
-    if (resultWidget!=nullptr) {
-    resultWidget->close();
-    resultWidget = nullptr;
-    }
     game->close();
     game=nullptr;
     gameMenuSetup();//reset menu setup
@@ -71,7 +54,6 @@ void GameMenu::showHowToPlay()
 {
     static int imageNum;
     imageNum=1;
-
     ui->gameMenuW->setCurrentIndex(2);
     changeHtpImage(imageNum);
 

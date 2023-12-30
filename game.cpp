@@ -5,9 +5,8 @@
 
 Game::Game(Scenario scenario,QWidget *parent)
     :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game)
-{   
+{
     ui->setupUi(this);
-    ui->pauseMenu->setVisible(false);
     setFocusPolicy(Qt::StrongFocus);
     // start updating frames.
     gameSetup();
@@ -22,9 +21,13 @@ void Game::gameSetup(){
 
     ai.deployUnits(scenario);
     user.deployUnits(scenario);
+    ui->gameW->setCurrentIndex(0);
     timer=new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
-    connect(ui->pushButton_2,&QPushButton::clicked, this,&Game::exitToMenu);
+    connect(ui->exitToGMenu,&QPushButton::clicked, this,&Game::exitToMenu);
+    connect(ui->playAgainButton,&QPushButton::clicked,this,&Game::playAgain);
+    connect(ui->exitToMenuButton,&QPushButton::clicked,this,&Game::exitToMenu);
+    connect(ui->pauseConButton, &QPushButton::clicked, this, &Game::pauseGame);
     timer->start(1000/60); // 60 FPS
 
 }
@@ -51,17 +54,27 @@ void Game::paintEvent(QPaintEvent* event) {
     }
 
 }
+void Game::showResult(){
+    ui->gameW->setCurrentIndex(1);
+
+}
+void Game::pauseGame(){
+    static int pauseState = 1;
+    pauseState=pauseState==0?1:0;
+    pauseState == 0 ? timer->stop(): timer->start(1000 / 60);
+    pauseState == 0 ? isPauseState=false:isPauseState=true;
+}
 
 void Game::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) { //selection ***left mouse button
+    if (isPauseState&&event->button() == Qt::LeftButton) { //selection ***left mouse button
         for (Unit *unit : user.units) {
             unit->selectUnit(event->pos());
             // rotate unit.
         }
     }
 
-    else if (event->button() == Qt::RightButton
+    else if (isPauseState&&event->button() == Qt::RightButton
              && map.contains(event->pos())) { //moving ***right muse button
         //***
         for (Unit *unit : user.units) {
@@ -76,32 +89,15 @@ void Game::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void Game::closePauseMenu()
-{
-    timer->start(1000 / 60);
-    ui->pauseMenu->setVisible(false);
-
-}
-
-void Game::keyPressEvent(QKeyEvent* event)
-{
-    
-        if (event->key() == Qt::Key_Escape) {
-            ui->pauseMenu->setVisible(!ui->pauseMenu->isVisible()); 
-            if (!ui->pauseMenu->isVisible()) 
-                timer->start(1000 / 60);
-            else
-                timer->stop();
-        }
-        connect(ui->pushButton, &QPushButton::clicked, this, &Game::closePauseMenu);
-        
-}
-
 void Game::checkState()
 {
     if (user.units.empty() || ai.units.empty()) {
+        QPalette palette = ui->resText->palette();
+        palette.setColor(QPalette::WindowText, Qt::white);
+        ui->resText->setPalette(palette);
+        ui->resText->setText(ai.units.empty()?("YOU WON"):("YOU ARE DEFEATED"));
         timer->stop();
-        emit showResult();
+        showResult();
 
     }
 
@@ -225,7 +221,12 @@ void Game::checkState()
 }
 
 
-
+void Game::updateGameInfo(){
+    QString info="";
+    info.append(" Remaining user units: ").append(QString::number(user.units.size())).append("\n");
+    info.append(" Remaining enemy units: ").append(QString::number(ai.units.size())).append("\n");
+    ui->label->setText(info);
+}
 void Game::updateGame(){
 
     ai.makeMove(user.units);
@@ -241,6 +242,7 @@ void Game::updateGame(){
     }
 
 
-
+    updateGameInfo();
     update(); // calls paintEvent
 }
+

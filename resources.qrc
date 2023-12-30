@@ -13,6 +13,8 @@
         <file>images/htp2.png</file>
         <file>images/htp3.png</file>
         <file>images/htp4.png</file>
+        <file>images/pauseCon.png</file>
+        <file>images/resulttext.jpg</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario1.txt</file>

@@ -38,7 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
                river.cpp river.h
                swamp.h swamp.cpp
                resources.qrc
-               resultwidget.h resultwidget.cpp resultwidget.ui
+
                game.h game.cpp game.ui
 
 

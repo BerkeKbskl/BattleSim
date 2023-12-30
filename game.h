@@ -28,11 +28,13 @@ public:
     void mousePressEvent(QMouseEvent* event)override;
     void updateGame();
 signals:
-    void showResult();
+    void playAgain();
     void exitToMenu();
 private:
-    void closePauseMenu();
-    void keyPressEvent(QKeyEvent *event) override;
+    void updateGameInfo();
+    void pauseGame();
+    void showResult();
+    bool isPauseState;
     Ui::Game *ui;
     void checkState();
     void gameSetup();
