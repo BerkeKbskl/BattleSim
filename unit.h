@@ -20,6 +20,7 @@ public:
     QPointF getPosition() const;
     QPainterPath getNextPath() const;
     QPainterPath getCurrentPath() const;
+    virtual QPainterPath getAttackCollider() const;
 
     virtual int attack(Unit& enemy);
     void takeDamage(int);

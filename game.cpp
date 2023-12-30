@@ -1,7 +1,7 @@
 #include "game.h"
-#include <iostream>
 #include "gamemenu.h"
 #include "ui_game.h"
+#define FPS 60
 
 Game::Game(Scenario scenario,QWidget *parent)
     :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game)
@@ -25,7 +25,7 @@ void Game::gameSetup(){
     timer=new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
     connect(ui->pushButton_2,&QPushButton::clicked, this,&Game::exitToMenu);
-    timer->start(1000/60); // 60 FPS
+    timer->start(1000/FPS);
 
 }
 
@@ -97,28 +97,34 @@ void Game::manageCollisions() {
         for (Unit* unit : units1) {
             QPainterPath nextPath = unit->getNextPath();
 
+            // For direct collisions.
             for (Unit* trUnit : units1) {
                 if (trUnit != unit && nextPath.intersects(trUnit->getCurrentPath())) {
                     unit->stop();
-                    //trUnit->stop();
+                }
+            }
 
+            for (Obstacle* o : map.obstacles) {
+                if (unit->getNextPath().intersects(o->shape)) {
+                    unit->stop();
                 }
             }
 
             for (Unit* trUnit : units2) {
-                    if (nextPath.intersects(trUnit->getCurrentPath())) {
-                        unit->attack(*trUnit);
-                        trUnit->attack(*unit);
-                    }
+                if (nextPath.intersects(trUnit->getCurrentPath())) {
+                    unit->stop();
+                }
+
+                // Receive attacks (may do opposite)
+                if (nextPath.intersects(trUnit->getAttackCollider())) {
+                    trUnit->attack(*unit);
+                }
             }
 
-            for (Obstacle* o : map.obstacles) {
-                    if (nextPath.intersects(o->shape)) {
-                        unit->stop();
-                    }
-            }
 
         }
+
+
     };
 
     if (user.units.empty() || ai.units.empty()) {

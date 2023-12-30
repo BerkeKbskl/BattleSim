@@ -121,6 +121,7 @@ void AI::deployUnits(Scenario scenario) {
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
         units[i]->setColor(this->color);
+        // has to be deployed 180 degrees because they face the opposite way.
     }
 
 }

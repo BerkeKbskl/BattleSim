@@ -28,8 +28,6 @@ bool Unit::isHelpNeed()
 
 int Unit::attack(Unit& enemy){
 
-    stop();
-
     enemy.needHelp = true;
     if(enemy.health<=0){
         return 1;
@@ -61,7 +59,6 @@ QPointF Unit::getPosition() const {
 }
 
 void Unit::stop(){
-
     target = center;
     movable = false;
 }
@@ -77,8 +74,7 @@ void Unit::setTarget(const QPointF point)
 
 }
 
-void Unit::moveTo()
-{
+void Unit::moveTo(){
     if (movable) {
             // Less readable
             if ((target - center).manhattanLength() > speed) {
@@ -89,8 +85,8 @@ void Unit::moveTo()
     }
 }
 
-QPainterPath Unit::getNextPath() const
-{
+QPainterPath Unit::getNextPath() const {
+
     // Pushes the current collider forward the angle
     QPointF translationVector =
         QPointF(center.x() + 8 * cos(angle),
@@ -98,14 +94,14 @@ QPainterPath Unit::getNextPath() const
 
     QTransform rotationTransform;
     rotationTransform.translate(translationVector.x(),translationVector.y());
-    return rotationTransform.map(getCurrentPath());
+    return rotationTransform.map(getCurrentPath()) + Unit::getCurrentPath();
 }
 
 QPainterPath Unit::getCurrentPath() const
 {
     // Returns the current collider
     QPainterPath ellipsePath;
-    ellipsePath.addEllipse(center, width / 2 + 4, height / 4 + 4);
+    ellipsePath.addRect(center.x() - width / 2, center.y() - height / 2, width , height);
 
     QTransform rotationTransform;
     rotationTransform.translate(center.x(),center.y());
@@ -114,6 +110,11 @@ QPainterPath Unit::getCurrentPath() const
     rotationTransform.translate(-center.x(),-center.y());
 
     return rotationTransform.map(ellipsePath);
+}
+
+QPainterPath Unit::getAttackCollider() const
+{
+    return Unit::getNextPath();
 }
 
 void Unit::draw(QPainter* painter) {
@@ -126,6 +127,10 @@ void Unit::draw(QPainter* painter) {
     painter->setPen(color.red());
 
     painter->drawPath(getNextPath());
+
+    painter->setPen(color.blue());
+
+    painter->drawPath(getAttackCollider());
     painter->setPen(color.lighter(60));
 
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -151,6 +156,8 @@ void Unit::draw(QPainter* painter) {
     double healthBarX = center.x() - 20;
     double healthBarY = center.y() - healthBarHeight - 2 - 20;  // Adjust the offset as needed
 
+
+
     // Calculate the width based on the current health percentage
     double currentHealthWidth = healthBarWidth * (health / 100.0);
 
@@ -162,8 +169,6 @@ void Unit::draw(QPainter* painter) {
     // Draw the current health
     painter->setBrush(Qt::green);
     painter->drawRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
-
-
 
     painter->restore();
 }

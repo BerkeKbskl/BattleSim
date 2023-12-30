@@ -3,18 +3,32 @@
 
 Artillery::Artillery() : Unit() {
     speed = 2;
-    health=100;
-    attackPower=3;
+    health = 100;
+    attackPower = 3;
     defensePower = 0;
     ammo = 150;
     img.load(":images/images/artillery.png");
 }
 
 int Artillery::attack(Unit& enemy){
+    if(shoot()) return Unit::attack(enemy);
+    return 0;
+    // Bullets?
+}
 
+QPainterPath Artillery::getAttackCollider() const
+{
+    // Returns the current collider
+    QPainterPath ellipsePath;
+    ellipsePath.addRect(center.x() - width / 2 , center.y() - height / 2 -height * 3, width , height * 4);
 
-    return Unit::attack(enemy);
+    QTransform rotationTransform;
+    rotationTransform.translate(center.x(),center.y());
 
+    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
+    rotationTransform.translate(-center.x(),-center.y());
+
+    return rotationTransform.map(ellipsePath);
 }
 
 

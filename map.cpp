@@ -19,8 +19,8 @@ Map::Map(Scenario scenario)
     }
     /*
     for (int i = 0; i < 1; i++) {
-        obstacles.push_back(new Swamp({ {497, 176}, {637, 104}, {692, 261},
-                                {666, 355}, {583, 321},{400, 221} }));
+        // the last item should be same as in first as it needs connection.
+        obstacles.push_back(new Swamp({scenario.getObstaclePositions()}));
 
         // to be imported from scenarios themselves
     }*/
@@ -28,7 +28,6 @@ Map::Map(Scenario scenario)
 
 void Map::draw(QPainter *painter)
 {
-    //painter->fillRect(0,0,WW,WH,Qt::gray);
     painter->setOpacity(0.3); // too distracting
     painter->drawImage(*this, mapImage);
 
