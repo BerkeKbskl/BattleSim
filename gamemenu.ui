@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>800</height>
+    <width>1366</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -44,116 +44,122 @@ border-radius: 8px;
     <string notr="true">#centralwidget{border-image: url(:/images/images/gamemenu.jpg);}
 </string>
    </property>
-   <widget class="QWidget" name="menuWidget" native="true">
+   <widget class="QStackedWidget" name="gameMenuW">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>159</y>
-      <width>191</width>
-      <height>141</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1366</width>
+      <height>768</height>
      </rect>
     </property>
-    <widget class="QPushButton" name="exitButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>140</width>
-       <height>55</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>EXİT</string>
-     </property>
+    <property name="styleSheet">
+     <string notr="true">#howtp_W{background-color: rgb(0, 0, 0);}</string>
+    </property>
+    <widget class="QWidget" name="menu" native="true">
+     <widget class="QPushButton" name="exitButton">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>260</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>EXİT</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="playButton">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>120</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <italic>true</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>PLAY</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="howTP_Button">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>190</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>HOW TO PLAY</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QPushButton" name="playButton">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>140</width>
-       <height>55</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>PLAY</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>150</y>
-      <width>241</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="lineWidth">
-     <number>0</number>
-    </property>
-    <widget class="QPushButton" name="applyScenario">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>80</y>
-       <width>201</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>APPLY</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>201</width>
-       <height>55</height>
-      </rect>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    <widget class="QWidget" name="scenarioW">
+     <widget class="QPushButton" name="applyScenario">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>240</y>
+        <width>201</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>APPLY</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>170</y>
+        <width>201</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
     stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
 color: #ffffff;
 border: 1px solid rgb(0,0,0); 
@@ -161,49 +167,110 @@ border-radius: 8px;
 
 
 </string>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
-     </property>
-     <item>
-      <property name="text">
-       <string>Select~Scenario</string>
       </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>sc1</string>
+      <property name="sizeAdjustPolicy">
+       <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
       </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>sc2</string>
+      <item>
+       <property name="text">
+        <string>Select~Scenario</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>sc1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>sc2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>sc3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>sc4</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="scenarioImage">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>170</y>
+        <width>331</width>
+        <height>211</height>
+       </rect>
       </property>
-     </item>
-     <item>
       <property name="text">
-       <string>sc3</string>
+       <string/>
       </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>sc4</string>
-      </property>
-     </item>
+     </widget>
     </widget>
-   </widget>
-   <widget class="QLabel" name="scenarioImage">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>170</y>
-      <width>231</width>
-      <height>211</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
+    <widget class="QWidget" name="howtp_W">
+     <widget class="QPushButton" name="next">
+      <property name="geometry">
+       <rect>
+        <x>980</x>
+        <y>490</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NEXT</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="back">
+      <property name="geometry">
+       <rect>
+        <x>1140</x>
+        <y>650</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>BACK TO MENU</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pre">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>490</y>
+        <width>140</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>PREVİOUS</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="htp_panel">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>90</y>
+        <width>591</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -211,12 +278,11 @@ border-radius: 8px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1500</width>
+     <width>1366</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

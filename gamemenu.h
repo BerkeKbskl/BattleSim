@@ -21,8 +21,13 @@ public slots:
     void playButtonClicked();
     void resultScreen();
     void showMenu();
+    void showHowToPlay();
+private slots:
     void on_applyScenario_clicked();
+    void on_back_clicked();
+    void changeHtpImage(int);
 private:
+
     void showSelectedScenarioImgae();
     void gameMenuSetup();
     void playGame();

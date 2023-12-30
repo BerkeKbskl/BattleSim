@@ -9,6 +9,10 @@
         <file>images/pause.jpg</file>
         <file>images/gamemenu.jpg</file>
         <file>images/map1.jpg</file>
+        <file>images/htp1.png</file>
+        <file>images/htp2.png</file>
+        <file>images/htp3.png</file>
+        <file>images/htp4.png</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario1.txt</file>
