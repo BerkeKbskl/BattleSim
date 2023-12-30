@@ -8,7 +8,7 @@ River::River(const QVector<QPointF>& points)
 
 QPainterPath River::generateSmoothPath(const QVector<QPointF>& points)
 {
-    qreal factor = 0.30; // Adjust the factor as needed
+    qreal factor = 0.40; // Adjust the factor as needed
     QPainterPath path(points[0]);
 
     QPointF cp1;

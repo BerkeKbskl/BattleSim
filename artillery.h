@@ -9,9 +9,8 @@ public:
     Artillery();
     bool shoot();
     int attack(Unit&) override;
-    QPolygonF getNextCollider() override;
-
-    void draw(QPainter *) override;
+    void draw(QPainter*) override;
+    QPainterPath getAttackCollider() const override;
 
 private:
     int ammo;

@@ -27,6 +27,9 @@ public:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent* event)override;
     void updateGame();
+    void checkHealth();
+
+
 signals:
     void playAgain();
     void exitToMenu();
@@ -36,7 +39,7 @@ private:
     void showResult();
     bool isPauseState;
     Ui::Game *ui;
-    void checkState();
+    void manageCollisions();
     void gameSetup();
     Scenario scenario;
     Map map;
