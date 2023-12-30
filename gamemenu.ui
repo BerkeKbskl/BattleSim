@@ -297,13 +297,8 @@ border-radius: 8px;
     <rect>
      <x>0</x>
      <y>0</y>
-<<<<<<< HEAD
      <width>1366</width>
      <height>21</height>
-=======
-     <width>1500</width>
-     <height>25</height>
->>>>>>> 652e5bace5d392793da3814ef853544c414dd04c
     </rect>
    </property>
   </widget>

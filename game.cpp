@@ -61,7 +61,7 @@ void Game::showResult(){
 void Game::pauseGame(){
     static int pauseState = 1;
     pauseState=pauseState==0?1:0;
-    pauseState == 0 ? timer->stop(): timer->start(1000 / FPS;
+    pauseState == 0 ? timer->stop(): timer->start(1000 / FPS);
     pauseState == 0 ? isPauseState=false:isPauseState=true;
 }
 
