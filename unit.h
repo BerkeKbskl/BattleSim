@@ -10,7 +10,7 @@ class Unit
 {
 public:
 
-    Unit(int x = 1000, int y = 1000, double width = 25, double height = 50);
+    Unit(int x = 1000, int y = 1000, double width = 50, double height = 25);
     void setPosition(QPointF v);
     void moveTo();
     void selectUnit(QPointF);
@@ -36,11 +36,15 @@ public:
     virtual int attack(Unit& enemy);
     int health;
 
+    double angle;
+
     QPainterPath getNextPath();
+    QPainterPath getColliderBoundaries();
+    QPainterPath getCurrentPath();
+    void stop();
 protected:
 
     QImage img;
-    double newPosX, newPosY;
     int attackPower;
 
     int speed;
@@ -49,7 +53,7 @@ protected:
     bool movable;
     int collisionState;
     double width,height; // SEE
-    double angle;
+
 
 
 private:

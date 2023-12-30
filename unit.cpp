@@ -11,8 +11,8 @@ Unit::Unit(int x, int y, double width, double height)
     target(x, y),
     speed(0),
     health(100),
-    angle(0),
-    orientation(0),
+    angle(M_PI/2),
+    orientation(M_PI/2),
     width(width),
     height(height),
     selected(false),
@@ -38,6 +38,10 @@ int Unit::attack(Unit& enemy){
 
 bool Unit::isHelpNeed(){
     return this->needHelp;
+}
+
+void Unit::stop(){
+    movable = 0;
 }
 
 
@@ -74,9 +78,7 @@ void Unit::setTarget(QPointF point)
         selected = false;
         QPointF center = shape.boundingRect().center();
         angle = atan2(point.y() - center.y(), point.x() - center.x());
-
     }
-
 
 }
 
@@ -87,6 +89,8 @@ void Unit::moveTo()
             QPointF center = shape.boundingRect().center();
             double dx = target.x() - center.x();
             double dy = target.y() - center.y();
+
+            double newPosX, newPosY;
 
             double distance = sqrt(dx * dx + dy * dy);
             if (distance > speed) {
@@ -104,8 +108,6 @@ void Unit::moveTo()
             movable = selected = false; // Handle other states
         }
     }
-
-
 }
 
 QPolygonF Unit::getNextPoly()
@@ -113,8 +115,8 @@ QPolygonF Unit::getNextPoly()
     // Returns next polygon
     QPolygonF nextPolygon(shape);
     QPointF translationVector =
-        QPointF(shape.boundingRect().center().x() + 2 * cos(angle),
-                shape.boundingRect().center().y() + 2 * sin(angle)) - shape.boundingRect().center();
+        QPointF(shape.boundingRect().center().x() + 8 * cos(angle),
+                shape.boundingRect().center().y() + 8 * sin(angle)) - shape.boundingRect().center();
     nextPolygon.translate(translationVector);
 
     return nextPolygon;
@@ -125,21 +127,52 @@ QPainterPath Unit::getNextPath()
     // Returns next QPainterPath representing an ellipse
     QPointF center = shape.boundingRect().center();
     QPainterPath ellipsePath;
-    ellipsePath.addEllipse(center, width, height);
+    ellipsePath.addEllipse(center, width / 2 + 2, height / 2 + speed);
 
+    QPointF translationVector =
+        QPointF(center.x() + speed * cos(angle),
+                center.y() + speed * sin(angle)) - center;
 
     QTransform rotationTransform;
+
+    rotationTransform.translate(translationVector.x(),translationVector.y());
+
     rotationTransform.translate(this->shape.boundingRect().center().x(),
                                 this->shape.boundingRect().center().y());
 
-    rotationTransform.rotate(90);
+    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
+    orientation = angle;
     rotationTransform.translate(-this->shape.boundingRect().center().x(),
                                 -this->shape.boundingRect().center().y());
 
     return rotationTransform.map(ellipsePath);
 }
 
+QPainterPath Unit::getCurrentPath()
+{
+    // Returns next QPainterPath representing an ellipse
+    QPointF center = shape.boundingRect().center();
+    QPainterPath ellipsePath;
+    ellipsePath.addEllipse(center, width / 2 + 2, height / 2 + 2);
 
+    QPointF translationVector =
+        QPointF(center.x(),
+                                        center.y()) - center;
+
+    QTransform rotationTransform;
+
+    rotationTransform.translate(translationVector.x(),translationVector.y());
+
+    rotationTransform.translate(this->shape.boundingRect().center().x(),
+                                this->shape.boundingRect().center().y());
+
+    rotationTransform.rotate(this->angle * 180 / (M_PI) + 90);
+    orientation = angle;
+    rotationTransform.translate(-this->shape.boundingRect().center().x(),
+                                -this->shape.boundingRect().center().y());
+
+    return rotationTransform.map(ellipsePath);
+}
 
 QPolygonF Unit::getNextCollider(){
     return getNextPoly();
@@ -161,8 +194,7 @@ void Unit::draw(QPainter* painter) {
     painter->setOpacity(selected ? 0.2 : 1);
     painter->setPen(color.black());
 
-    painter->drawPolygon(getNextCollider());
-    painter->drawPolygon(getNextPoly());
+    //painter->drawPolygon(getNextPoly());
     painter->drawPath(getNextPath());
     painter->setPen(color.lighter(60));
     //painter->setBrush(QBrush(color));
@@ -181,7 +213,7 @@ void Unit::draw(QPainter* painter) {
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
         QTransform transform;
-        transform.rotate(angle * 180 / M_PI);
+        transform.rotate(angle * 180 / M_PI + -90);
         resizedImage = resizedImage.transformed(transform, Qt::SmoothTransformation);
 
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);

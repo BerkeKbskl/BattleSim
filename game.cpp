@@ -99,110 +99,92 @@ void Game::checkState()
     if (user.units.empty() || ai.units.empty()) {
         timer->stop();
         emit showResult();
-        // Checks to end the game.
     }
 
     for (Unit *unit : user.units) {
-        QPainterPath nextPolygon = unit->getNextPath();
+        QPainterPath nextPath = unit->getNextPath();
+
         unit->setCollisionState(0); // Reset collision state for the current unit
 
         bool collisionDetected = false;  // Flag to indicate if a collision was detected
 
         for (Unit *trUnit : user.units) {
-            QPainterPath qainterpath2;
-            qainterpath2.addPolygon(trUnit->shape);
-            if (trUnit != unit && nextPolygon.intersects(qainterpath2)) {
+            if (trUnit != unit && nextPath.intersects(trUnit->getCurrentPath())) {
+                //unit->setCollisionState(1);
+                //trUnit->setCollisionState(1);
 
-                unit->setCollisionState(1);
-                trUnit->setCollisionState(1);
+                unit->stop();
+                trUnit->stop();
 
-                // unit->stop();
                 break;
-
             }
         }
 
         if (!collisionDetected) {
             for (Unit *trUnit : ai.units) {
-                QPainterPath qainterpath2;
-                qainterpath2.addPolygon(trUnit->shape);
-                if (nextPolygon.intersects(qainterpath2)) {
+                if (nextPath.intersects(trUnit->getCurrentPath())) {
                     unit->setCollisionState(2);
                     trUnit->setCollisionState(2);
 
                     if(unit->attack(*trUnit)){
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
                     }
-
                     else if(trUnit->attack(*unit)){
                         user.units.erase(std::remove(user.units.begin(),user.units.end(),unit),user.units.end());
                     }
 
-
                     collisionDetected = true;
-                } else
-
-                // If it is not beneath but somewhere close for artillery
-                if (unit->getNextCollider().intersected(trUnit->shape).isEmpty() == false) {
+                } else if (unit->getNextCollider().intersects(trUnit->shape)) {
                     if(unit->attack(*trUnit)){
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),trUnit),ai.units.end());
                     }
-                    collisionDetected = true;
+                    break;
                 }
             }
         }
 
         if (!collisionDetected) {
             for (Obstacle* o : map.obstacles) {
-
-                if (nextPolygon.intersects(o->shape)) {
+                if (nextPath.intersects(o->shape)) {
                     unit->setCollisionState(3);
-                    collisionDetected = true;
+                    break;
                 }
             }
         }
     }
 
-    // AI
-
     for (Unit *unit : ai.units) {
-        QPolygonF nextPolygon = unit->getNextPoly();
+        QPainterPath nextPath = unit->getNextPath();
         unit->setCollisionState(0); // Reset collision state for the current unit
 
         bool collisionDetected = false;  // Flag to indicate if a collision was detected
 
         for (Unit *trUnit : ai.units) {
-            if (trUnit != unit && nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+            if (trUnit != unit && nextPath.intersects(trUnit->getNextPath())) {
                 unit->setCollisionState(2);
                 trUnit->setCollisionState(2);
-                //unit->color = Qt::black;
-                //trUnit->color = Qt::black;
                 collisionDetected = true;
             }
         }
 
         if (!collisionDetected) {
             for (Unit *trUnit : user.units) {
-                if (nextPolygon.intersected(trUnit->shape).isEmpty() == false) {
+                if (nextPath.intersects(trUnit->getNextPath())) {
                     unit->setCollisionState(2);
                     trUnit->setCollisionState(2);
 
                     if(unit->attack(*trUnit)){
                         user.units.erase(std::remove(user.units.begin(),user.units.end(),trUnit),user.units.end());
                     }
-
                     else if(trUnit->attack(*unit)){
                         ai.units.erase(std::remove(ai.units.begin(),ai.units.end(),unit),ai.units.end());
                     }
-                    collisionDetected = true;
-                } else
 
-                // If it is not beneath but somewhere close for artillery
-                if (unit->getNextCollider().intersected(trUnit->shape).isEmpty() == false) {
+                    collisionDetected = true;
+                } else if (unit->getNextCollider().intersects(trUnit->shape)) {
                     if(unit->attack(*trUnit)){
                         user.units.erase(std::remove(user.units.begin(),user.units.end(),trUnit),user.units.end());
                     }
-                    unit->attack(*trUnit);
                     collisionDetected = true;
                 }
             }
@@ -210,25 +192,25 @@ void Game::checkState()
 
         if (!collisionDetected) {
             for (Obstacle* o : map.obstacles) {
-
-                if (nextPolygon.intersects(o->shape.toFillPolygon())) {
+                if (nextPath.intersects(o->shape)) {
                     unit->setCollisionState(3);
+                    // ROTATE
                     collisionDetected = true;
                 }
-
             }
         }
     }
-
 }
+
+
 
 
 
 void Game::updateGame(){
 
-    ai.makeMove(user.units);
-
     checkState();
+
+    ai.makeMove(user.units);
 
     for (Unit *unit : user.units) {
         unit->moveTo();
