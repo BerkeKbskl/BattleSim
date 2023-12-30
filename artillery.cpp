@@ -8,11 +8,16 @@ Artillery::Artillery() : Unit() {
     defensePower = 0;
     ammo = 150;
     img.load(":images/images/artillery.png");
+    meleePower = 1;
 }
 
 int Artillery::attack(Unit& enemy){
-    if(shoot()) return Unit::attack(enemy);
-    return 0;
+    if (!shoot())
+        attackPower = meleePower;
+        
+    return Unit::attack(enemy);
+
+    
     // Bullets?
 }
 
@@ -20,7 +25,10 @@ QPainterPath Artillery::getAttackCollider() const
 {
     // Returns the current collider
     QPainterPath ellipsePath;
+    if(ammo>0)
     ellipsePath.addRect(center.x() - width / 2 , center.y() - height / 2 -height * 3, width , height * 4);
+    else
+    ellipsePath.addRect(center.x() - width / 2, center.y() - height / 2 -8, width, height);
 
     QTransform rotationTransform;
     rotationTransform.translate(center.x(),center.y());

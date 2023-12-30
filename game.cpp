@@ -18,7 +18,7 @@ Game::~Game(){
 }
 
 void Game::gameSetup(){
-
+    isPauseState = false;
     ai.deployUnits(scenario);
     user.deployUnits(scenario);
     ui->gameW->setCurrentIndex(0);
@@ -59,23 +59,21 @@ void Game::showResult(){
 
 }
 void Game::pauseGame(){
-    static int pauseState = 1;
-    pauseState=pauseState==0?1:0;
-    pauseState == 0 ? timer->stop(): timer->start(1000 / FPS);
-    pauseState == 0 ? isPauseState=false:isPauseState=true;
+    isPauseState = isPauseState ? false : true;
+    isPauseState ? timer->stop(): timer->start(1000 / FPS);
+
 }
 
 void Game::mousePressEvent(QMouseEvent *event)
 {
-    if (isPauseState&&event->button() == Qt::LeftButton) { //selection ***left mouse button
+    if (!isPauseState&&event->button() == Qt::LeftButton) { 
         for (Unit *unit : user.units) {
             unit->selectUnit(event->pos());
         }
     }
 
-    else if (isPauseState&&event->button() == Qt::RightButton
-             && map.contains(event->pos())) { //moving ***right muse button
-        //***
+    else if (!isPauseState&&event->button() == Qt::RightButton
+             && map.contains(event->pos())) {
         for (Unit *unit : user.units) {
                 unit->setTarget(event->pos());
         }

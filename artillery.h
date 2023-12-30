@@ -13,6 +13,7 @@ public:
     QPainterPath getAttackCollider() const override;
 
 private:
+    int meleePower;
     int ammo;
 
 };
