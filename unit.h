@@ -23,23 +23,21 @@ public:
     virtual QPainterPath getAttackCollider() const;
 
     virtual int attack(Unit& enemy);
-    void takeDamage(int);
 
     bool isHelpNeed(); // for AI
-    bool needHelp;
-    bool helpAssigned;
+    bool needHelp; // make private
+    bool helpAssigned; // make private
 
     void setColor(const QColor);
     virtual void draw(QPainter *);
 
-    int getHealth();
+    int getHealth() const;
 protected:
 
     double angle;
     QColor color;
     QPointF target;
     QPointF center;
-
     QImage img;
     int attackPower;
     int health;
@@ -49,11 +47,8 @@ protected:
     bool movable;
     double width,height;
 
-
-
 private:
-
-
+    
 };
 
 #endif // UNIT_H

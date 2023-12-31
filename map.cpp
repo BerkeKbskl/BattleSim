@@ -6,6 +6,14 @@
 #define WW 1366
 #define WH 768
 
+/**
+ * @brief Construct a new Map object based on the specified scenario.
+ *
+ * Initializes a Map object with the specified width, height, map image, and obstacles
+ * extracted from the provided scenario.
+ *
+ * @param scenario The scenario containing information about the map and obstacles.
+ */
 Map::Map(Scenario scenario)
     : width(WW)
     , height(WH)
@@ -24,15 +32,24 @@ Map::Map(Scenario scenario)
 
         // to be imported from scenarios themselves
     }*/
+
+    for(const QString &type:scenario.getObstacleTypes()){
+
+        if(type=="swamp"){obstacles.push_back(new Swamp(scenario.getObstaclePositions()));}
+        else if(type=="river"){obstacles.push_back(new River(scenario.getObstaclePositions()));}
+    }
+
 }
 
 void Map::draw(QPainter *painter)
 {
-
     painter->drawImage(*this, mapImage);
-
-
     for (Obstacle *obstacle : obstacles) {
         obstacle->draw(painter);
     }
+}
+
+std::vector<Obstacle*> Map::getObstacles()
+{
+    return std::vector<Obstacle*>();
 }

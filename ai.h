@@ -9,9 +9,8 @@ class AI : public Player
         Aggressive,
         Defensive
     };
+
 public:
-
-
 
     AI(Scenario scenario);
     Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
@@ -24,11 +23,7 @@ public:
     void makeMove(vector<Unit*> enemyUnits);
 
     Unit* findClosestEnemy(Unit* unit, const vector<Unit*>& enemyUnits) ;
-
     double calculateDistance(const QPointF& point1, const QPointF& point2) ;
-
-
-
 
 private:
     AIMode mode;

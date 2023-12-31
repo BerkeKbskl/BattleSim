@@ -11,7 +11,6 @@ public:
 
 private:
 
-
 };
 
 #endif // CAVALRY_H
