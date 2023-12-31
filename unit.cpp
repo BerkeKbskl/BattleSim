@@ -10,7 +10,6 @@ Unit::Unit(int x, int y, double width, double height):
     height(height),
     selected(false),
     movable(false),
-
     needHelp(false),
     helpAssigned(false){
 
@@ -206,10 +205,8 @@ void Unit::draw(QPainter* painter) {
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-
     if (!img.isNull()) {
         QImage resizedImage = img.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
         QTransform transform;
         transform.rotate(angle * 180 / M_PI + -90);
         resizedImage = resizedImage.transformed(transform, Qt::SmoothTransformation);
@@ -217,23 +214,22 @@ void Unit::draw(QPainter* painter) {
         painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
 
         QPointF imageTopLeft = center - QPointF(resizedImage.width() / 2, resizedImage.height() / 2);
-        painter->drawImage(imageTopLeft, resizedImage);
 
+        // Draw the background with transparency
+        painter->fillPath(getCurrentPath(),color);
+        painter->drawImage(imageTopLeft, resizedImage);
     }
 
     // Draw health bar
     double healthBarWidth = 20;  // Adjust this value as needed
-    double healthBarHeight = 5;     // Adjust this value as needed
+    double healthBarHeight = 5;  // Adjust this value as needed
     double healthBarX = center.x() - 20;
     double healthBarY = center.y() - healthBarHeight - 2 - 20;  // Adjust the offset as needed
-
-
 
     // Calculate the width based on the current health percentage
     double currentHealthWidth = healthBarWidth * (health / 100.0);
 
     // Draw the background of the health bar
-    //painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::red);
     painter->drawRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
@@ -243,4 +239,3 @@ void Unit::draw(QPainter* painter) {
 
     painter->restore();
 }
-

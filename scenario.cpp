@@ -29,7 +29,7 @@ QVector<QPointF> Scenario::getUnitPositions(int index) {
 /**
  * @brief Get the types of units based on the specified index.
  *
- * @param index The index indicating which set of unit types to retrieve (999 for User).
+ * @param index The index indicating which set of unit types to retrieve.
  * @return The QList of QString representing the unit types.
  */
 QList<QString> Scenario::getUnitsType(int index) {
@@ -93,7 +93,7 @@ void Scenario::scanScenarioFile(QString fileName) {
                     }
 
             }
-            else if (declaration == "map:") {
+            else if (declaration == "Map:") {
                 QString obstacleType = decLineContent[1];
                 QStringList positionsLine = in.readLine().split(" ");
                 for (int i = 0; i < positionsLine.size(); i++) {

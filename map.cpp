@@ -32,6 +32,13 @@ Map::Map(Scenario scenario)
 
         // to be imported from scenarios themselves
     }*/
+
+    for(const QString &type:scenario.getObstacleTypes()){
+
+        if(type=="swamp"){obstacles.push_back(new Swamp(scenario.getObstaclePositions()));}
+        else if(type=="river"){obstacles.push_back(new River(scenario.getObstaclePositions()));}
+    }
+
 }
 
 void Map::draw(QPainter *painter)

@@ -23,4 +23,5 @@
         <file>scenarios/scenario3.txt</file>
         <file>scenarios/scenario4.txt</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

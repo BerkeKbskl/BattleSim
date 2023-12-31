@@ -92,20 +92,34 @@ void Artillery::draw(QPainter* painter) {
     // Call the base class draw method to draw the unit shape
     Unit::draw(painter);
 
-    // Draw ammo count in the middle of the shape
-    QFont font("Arial", 8);
-    painter->setFont(font);
+    painter->save();
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    QPainterPath rotatedRectPath = getCurrentPath();
+
+    // Calculate the position of the black rectangle on the right side
+    double blackRectWidth = 20;  // Adjust this value as needed
+    double blackRectHeight = height - 5;  // Match the height of the bounding rectangle
+    double blackRectX = center.x() + height - blackRectWidth;  // Right side of the bounding rectangle
+    double blackRectY = center.y() - blackRectHeight / 2;  // Align with the top of the bounding rectangle
+
+    // Move the text to the bottom right corner
+    blackRectY += blackRectHeight - 10;  // Adjust as needed
+
+    // Draw the ammo count on the rotated black rectangle
     painter->setPen(Qt::black);
+    QFont font("Arial", 10, QFont::Bold);  // Set the font to bold
+    painter->setFont(font);
+    QString ammoText = QString::number(ammo / 10);  // Assuming ammo is an integer variable
 
-    // Calculate the position to display the ammo count in the middle of the shape
-    QPointF textPosition = center;
-    textPosition -= QPointF(0, font.pixelSize() / 2); // Adjust for vertical alignment
+    // Draw the text on the rotated black rectangle
+    painter->translate(center);
+    painter->rotate(fmod(angle * 180 / M_PI,180)- 90);  // Apply the same rotation as the unit
+    painter->translate(-center);
 
-    //painter->drawPolygon(getNextCollider());
+    painter->drawText(blackRectX, blackRectY, blackRectWidth, blackRectHeight-10, Qt::AlignCenter, ammoText);
 
-    // Draw the ammo count
-    QString ammoText = QString("%1").arg(ammo);
-    painter->drawText(textPosition, ammoText);
+    painter->restore();
 }
 
 
