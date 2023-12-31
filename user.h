@@ -3,11 +3,11 @@
 
 #include"player.h"
 
-class User:public Player
+class User : public Player
 {
 public:
     User(Scenario scenario);
-    void deployUnits(Scenario ) override;
+    void deployUnits(Scenario) override;
 };
 
 #endif // USER_H

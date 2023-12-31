@@ -11,10 +11,9 @@ class River : public Obstacle
 {
 public:
     River(const QVector<QPointF>& points);
-
     static QPainterPath generateSmoothPath(const QVector<QPointF>& points);
-
     void draw(QPainter* painter) override;
+    QPainterPath getPath() const override;
 
 private:
     QPainterPath path;

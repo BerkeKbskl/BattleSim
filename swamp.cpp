@@ -1,14 +1,30 @@
 #include "swamp.h"
 
+/**
+ * @brief Construct a new Swamp object with the specified points.
+ *
+ * Initializes a closed collider object with a
+ * smooth path generated from the given points.
+ *
+ * @param points The points defining the shape of the collider.
+ */
 Swamp::Swamp(const QVector<QPointF>& points)
     : path(generateSmoothPath(points))
 {
-    shape = path;
 }
 
+/**
+ * @brief Generate a smooth QPainterPath from the specified points.
+ *
+ * This function takes a set of points and generates a smooth QPainterPath representing
+ * the shape of the swamp. The smooth path is created using cubic Bezier curves.
+ *
+ * @param points The points defining the shape of the swamp.
+ * @return A smooth QPainterPath representing the swamp shape.
+ */
 QPainterPath Swamp::generateSmoothPath(const QVector<QPointF>& points)
 {
-    qreal factor = 0.30; // Adjust the factor as needed
+    qreal factor = 0.30;
     QPainterPath path(points[0]);
 
     QPointF cp1;
@@ -46,12 +62,17 @@ QPainterPath Swamp::generateSmoothPath(const QVector<QPointF>& points)
 
 }
 
+QPainterPath Swamp::getPath() const
+{
+    return path;
+}
+
 void Swamp::draw(QPainter* painter)
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(QPen(Qt::blue, 2));
     painter->setBrush(Qt::blue);
-    painter->drawPath(shape);
+    painter->drawPath(path);
 }
 
 

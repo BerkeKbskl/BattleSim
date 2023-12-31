@@ -1,11 +1,26 @@
 #include "river.h"
 
+/**
+ * @brief Construct a new River object with the specified points.
+ *
+ * Initializes a River object with a smooth path generated from the given points.
+ *
+ * @param points The points defining the shape of the river.
+ */
 River::River(const QVector<QPointF>& points)
     : path(generateSmoothPath(points))
 {
-    shape = path;
 }
 
+/**
+ * @brief Generate a smooth QPainterPath from the specified points.
+ *
+ * This function takes a set of points and generates a smooth QPainterPath representing
+ * the shape of the river. The smooth path is created using cubic Bezier curves.
+ *
+ * @param points The points defining the shape of the river.
+ * @return A smooth QPainterPath representing the river shape.
+ */
 QPainterPath River::generateSmoothPath(const QVector<QPointF>& points)
 {
     qreal factor = 0.40; // Adjust the factor as needed
@@ -45,6 +60,7 @@ QPainterPath River::generateSmoothPath(const QVector<QPointF>& points)
     return stroker.createStroke(path);
 }
 
+
 void River::draw(QPainter* painter)
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
@@ -58,5 +74,10 @@ void River::draw(QPainter* painter)
     painter->setBrush(gradient);
 
     painter->setPen(QPen(Qt::blue, 2));
-    painter->drawPath(shape);
+    painter->drawPath(path);
+}
+
+QPainterPath River::getPath() const
+{
+    return path;
 }

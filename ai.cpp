@@ -113,8 +113,6 @@ double AI::calculateDistance(const QPointF& point1, const QPointF& point2) {
 }
 
 
-
-
 void AI::deployUnits(Scenario scenario) {
 
     QVector<QPointF>unitPositions=scenario.getUnitPositions(0);

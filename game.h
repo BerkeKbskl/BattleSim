@@ -29,12 +29,10 @@ public:
     void updateGame();
     void checkHealth();
 
-
 signals:
     void playAgain();
     void exitToMenu();
 private:
-    void updateGameInfo();
     void pauseGame();
     void showResult();
     bool isPauseState;

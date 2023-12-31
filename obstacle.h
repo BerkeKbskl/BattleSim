@@ -11,11 +11,7 @@ class Obstacle
 public:
     Obstacle();
     virtual void draw(QPainter* painter);
-    QPainterPath shape;
-
-
-protected:
-
+    virtual QPainterPath getPath() const = 0 ;
 };
 
 #endif // OBSTACLE_H
