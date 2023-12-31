@@ -21,6 +21,7 @@ void Game::gameSetup(){
     isPauseState = false;
     ai.deployUnits(scenario);
     user.deployUnits(scenario);
+    ui->pauseIcon->hide();
     ui->gameW->setCurrentIndex(0);
     timer=new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
@@ -61,7 +62,7 @@ void Game::showResult(){
 void Game::pauseGame(){
     isPauseState = isPauseState ? false : true;
     isPauseState ? timer->stop(): timer->start(1000 / FPS);
-
+    isPauseState?ui->pauseIcon->show():ui->pauseIcon->hide();
 }
 
 void Game::mousePressEvent(QMouseEvent *event)
@@ -135,7 +136,7 @@ void Game::updateGameInfo(){
     QString info="";
     info.append(" Remaining user units: ").append(QString::number(user.units.size())).append("\n");
     info.append(" Remaining enemy units: ").append(QString::number(ai.units.size())).append("\n");
-    ui->label->setText(info);
+    ui->info->setText(info);
 }
 void Game::updateGame(){
 

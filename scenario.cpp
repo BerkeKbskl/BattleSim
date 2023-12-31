@@ -4,7 +4,7 @@
 
 Scenario::Scenario(int scenarioNum) {
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
-    mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".jpg");
+    mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
     scanScenarioFile(scenarioPath);
 
 }

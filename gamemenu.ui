@@ -17,19 +17,19 @@
    <string>GameMenu</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton:!pressed{background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
+   <string notr="true">/*QPushButton:!pressed{
+	border-image: url(:/images/images/button.jpg);
 color: #ffffff;
 border: 3px solid rgb(0,0,0); 
 border-radius: 8px; 
 }
 QPushButton:hover {
- background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgb(50,50,50), stop:1 rgb(255,255,255));
-color: #ffffff;
-border: 3px solid rgb(0,0,0); 
+background-image: url(:/images/images/resulttext.jpg);
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+border: 3px solid rgba(0,0,0,0.3); 
 border-radius: 8px; 
-}
+}*/
 
 </string>
   </property>
@@ -42,7 +42,16 @@ border-radius: 8px;
    </property>
    <property name="styleSheet">
     <string notr="true">#centralwidget{border-image: url(:/images/images/gamemenu.jpg);}
-</string>
+QPushButton:!pressed{
+background-image: url(:/images/images/button.jpg);
+color: #ffffff;
+border: 1px solid rgba(255,255,255,0.3); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+}</string>
    </property>
    <widget class="QStackedWidget" name="gameMenuW">
     <property name="geometry">
@@ -54,7 +63,8 @@ border-radius: 8px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#howtp_W{background-color: rgb(0, 0, 0);}</string>
+     <string notr="true">
+</string>
     </property>
     <widget class="QWidget" name="menu">
      <widget class="QPushButton" name="exitButton">
@@ -159,8 +169,7 @@ border-radius: 8px;
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="styleSheet">
-       <string notr="true">background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
+       <string notr="true">background-image: url(:/images/images/button.jpg);
 color: #ffffff;
 border: 1px solid rgb(0,0,0); 
 border-radius: 8px; 

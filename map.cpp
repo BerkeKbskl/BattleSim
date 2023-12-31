@@ -3,8 +3,8 @@
 #include "river.h"
 #include "swamp.h"
 
-#define WW 1000
-#define WH 1000
+#define WW 1366
+#define WH 768
 
 Map::Map(Scenario scenario)
     : width(WW)
@@ -28,10 +28,10 @@ Map::Map(Scenario scenario)
 
 void Map::draw(QPainter *painter)
 {
-    painter->setOpacity(0.3); // too distracting
+
     painter->drawImage(*this, mapImage);
 
-    painter->setOpacity(1);
+
     for (Obstacle *obstacle : obstacles) {
         obstacle->draw(painter);
     }

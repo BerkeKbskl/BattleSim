@@ -5,16 +5,17 @@
         <file>images/infantry.png</file>
         <file>images/sc1.jpg</file>
         <file>images/sc2.jpg</file>
-        <file>images/result.jpg</file>
-        <file>images/pause.jpg</file>
-        <file>images/gamemenu.jpg</file>
-        <file>images/map1.jpg</file>
         <file>images/htp1.png</file>
         <file>images/htp2.png</file>
         <file>images/htp3.png</file>
         <file>images/htp4.png</file>
         <file>images/pauseCon.png</file>
-        <file>images/resulttext.jpg</file>
+        <file>images/gamemenu.jpg</file>
+        <file>images/button.jpg</file>
+        <file>images/pauseicon.png</file>
+        <file>images/map1.png</file>
+        <file>images/map2.png</file>
+        <file>images/result.png</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario1.txt</file>

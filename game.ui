@@ -26,21 +26,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-QPushButton:!pressed{background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgb(100,100,100), stop:1 rgb(255,255,255));
-color: #ffffff;
-border: 3px solid rgb(0,0,0); 
-border-radius: 8px; 
-}
-QPushButton:hover {
- background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgb(50,50,50), stop:1 rgb(255,255,255));
-color: #ffffff;
-border: 3px solid rgb(0,0,0); 
-border-radius: 8px; 
-}
-</string>
+    <string notr="true"/>
    </property>
    <property name="currentIndex">
     <number>1</number>
@@ -62,7 +48,15 @@ border-radius: 8px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-image: url(:/images/images/pauseCon.png);</string>
+      <string notr="true">QPushButton:!pressed{
+border-image: url(:/images/images/pauseCon.png);
+
+}
+QPushButton:hover {
+border:2px solid rgba(255,255,255,0.5);
+background-color:rgba(230,230,230,0.5);
+}
+</string>
      </property>
      <property name="text">
       <string/>
@@ -77,11 +71,23 @@ border-radius: 8px;
        <height>45</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:!pressed{
+background-image: url(:/images/images/button.jpg);
+color: #ffffff;
+border: 1px solid rgba(255,255,255,0.3); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+}</string>
+     </property>
      <property name="text">
       <string>EXIT TO MENU </string>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="info">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -94,7 +100,7 @@ border-radius: 8px;
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 255, 255, 100);</string>
+      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
      </property>
      <property name="text">
       <string/>
@@ -106,24 +112,50 @@ border-radius: 8px;
       <bool>false</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="pauseIcon">
+     <property name="geometry">
+      <rect>
+       <x>483</x>
+       <y>184</y>
+       <width>400</width>
+       <height>400</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/images/images/pauseicon.png);
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="page">
     <property name="styleSheet">
-     <string notr="true">border-radius: 20px;
-resultMenu{border: 2px solid rgb(255,255,255);}</string>
+     <string notr="true">QPushButton:!pressed{
+background-image: url(:/images/images/button.jpg);
+color: #ffffff;
+border: 1px solid rgba(255,255,255,0.3); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+}</string>
     </property>
     <widget class="QGroupBox" name="resultMenu">
      <property name="geometry">
       <rect>
        <x>483</x>
-       <y>259</y>
+       <y>184</y>
        <width>400</width>
-       <height>250</height>
+       <height>400</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">#resultMenu{border-image: url(:/images/images/result.jpg);
-border:5px solid rgb(255,255,255);
+      <string notr="true">#resultMenu{
+	background-image: url(:/images/images/result.png);
+border:2px solid rgba(255,255,255,0.5);
 }</string>
      </property>
      <property name="title">
@@ -136,7 +168,7 @@ border:5px solid rgb(255,255,255);
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>110</y>
+        <y>190</y>
         <width>200</width>
         <height>50</height>
        </rect>
@@ -471,7 +503,7 @@ border:5px solid rgb(255,255,255);
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>170</y>
+        <y>260</y>
         <width>200</width>
         <height>50</height>
        </rect>
@@ -791,7 +823,7 @@ border:5px solid rgb(255,255,255);
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>20</y>
+        <y>70</y>
         <width>200</width>
         <height>80</height>
        </rect>
@@ -803,9 +835,9 @@ border:5px solid rgb(255,255,255);
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;
-background-image: url(:/images/images/resulttext.jpg);
-border: 1px solid rgb(255,255,255);</string>
+       <string notr="true">border-radius: 20px;
+border: 2px solid rgba(255,255,255,0.6);
+background-color:rgba(0,0,0,0.5);</string>
       </property>
       <property name="text">
        <string/>
