@@ -63,8 +63,7 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-</string>
+     <string notr="true"/>
     </property>
     <widget class="QWidget" name="menu">
      <widget class="QPushButton" name="exitButton">
@@ -87,7 +86,7 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>EXİT</string>
+       <string>EXIT</string>
       </property>
      </widget>
      <widget class="QPushButton" name="playButton">
@@ -279,7 +278,7 @@ border-radius: 8px;
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>PREVİOUS</string>
+       <string>PREVIOUS</string>
       </property>
      </widget>
      <widget class="QLabel" name="htp_panel">

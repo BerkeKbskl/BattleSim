@@ -11,7 +11,7 @@ public:
     QVector<QPointF> getUnitPositions(int index);
     QList<QString>getUnitsType(int index);
     QImage  getMapImage();
-    QVector<QPointF> getObstaclePositions();
+    QVector<QVector<QPointF>> getObstaclePositions();
     QList<QString> getObstacleTypes();
 private:
     void scanScenarioFile(QString path);
@@ -19,7 +19,7 @@ private:
     QString scenarioPath;
     QVector<QPointF> unitPositions[2];
     QList<QString> unitTypes[2];
-    QVector<QPointF> obstaclePositions;
+    QVector<QVector<QPointF>> obstaclesPositions;
     QList<QString> obstacleTypes;
 
 };

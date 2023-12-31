@@ -50,9 +50,9 @@ QImage Scenario::getMapImage() {
  *
  * @return The QList of QPointF representing the obstacle positions.
  */
-QList<QPointF> Scenario::getObstaclePositions()
+QVector<QVector<QPointF>> Scenario::getObstaclePositions()
 {
-    return obstaclePositions;
+    return obstaclesPositions;
 }
 
 /**
@@ -93,16 +93,16 @@ void Scenario::scanScenarioFile(QString fileName) {
                     }
 
             }
-            else if (declaration == "Map:") {
-                QString obstacleType = decLineContent[1];
-                QStringList positionsLine = in.readLine().split(" ");
-                for (int i = 0; i < positionsLine.size(); i++) {
-                    xPos = positionsLine[i].split(",")[0].toDouble();
-                    yPos = positionsLine[i].split(",")[1].toDouble();
-                    obstaclePositions.push_back({ xPos,yPos });
+            else if (declaration == "map:") {
+                    QString obstacleType = decLineContent[1];
+                    QStringList positionsLine = in.readLine().split(" ");
                     obstacleTypes.push_back(obstacleType);
-                }
-
+                    QVector<QPointF> obstaclePositions;
+                    for (QString positions:positionsLine) {
+                        obstaclePositions.push_back({ positions.split(",")[0].toDouble(),positions.split(",")[1].toDouble()});
+                    }
+                    if(obstacleType=="swamp"){obstaclePositions.push_back(obstaclePositions[0]);}
+                    obstaclesPositions.push_back(obstaclePositions);
             }
 
         }

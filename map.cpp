@@ -20,23 +20,10 @@ Map::Map(Scenario scenario)
     , QRect(0, 0, WW, WH)
     , mapImage(scenario.getMapImage())
 {
-    // 2 Rivers
-    for (int i = 0; i < 1; i++) {
-        obstacles.push_back(new River({scenario.getObstaclePositions()}));
-        // to be imported from scenarios themselves
-    }
-    /*
-    for (int i = 0; i < 1; i++) {
-        // the last item should be same as in first as it needs connection.
-        obstacles.push_back(new Swamp({scenario.getObstaclePositions()}));
-
-        // to be imported from scenarios themselves
-    }*/
-
-    for(const QString &type:scenario.getObstacleTypes()){
-
-        if(type=="swamp"){obstacles.push_back(new Swamp(scenario.getObstaclePositions()));}
-        else if(type=="river"){obstacles.push_back(new River(scenario.getObstaclePositions()));}
+    for (int i = 0; i < scenario.getObstacleTypes().size(); i++) {
+        QString type = scenario.getObstacleTypes()[i];
+        if (type == "river") { obstacles.push_back(new River(scenario.getObstaclePositions()[i]));}
+        else if (type == "swamp") { obstacles.push_back(new Swamp(scenario.getObstaclePositions()[i]));}
     }
 
 }
@@ -51,5 +38,5 @@ void Map::draw(QPainter *painter)
 
 std::vector<Obstacle*> Map::getObstacles()
 {
-    return std::vector<Obstacle*>();
+    return obstacles;
 }

@@ -155,6 +155,5 @@ void GameMenu::changeHtpImage(int num)
 {
     QString imagePath=":/images/images/htp";
     imagePath.append(QString::number(num)).append(".png");
-    qDebug("%s",imagePath.toStdString().c_str());
     ui->htp_panel->setPixmap(QPixmap(imagePath));
 }
