@@ -32,7 +32,11 @@ public:
 signals:
     void playAgain();
     void exitToMenu();
+private slots:
+    void on_startGame_clicked();
+
 private:
+    bool startGame;
     void pauseGame();
     void showResult();
     bool isPauseState;

@@ -10,10 +10,10 @@ class Unit
 {
 public:
 
-    Unit(int x = 1000, int y = 1000, double width = 50, double height = 25);
+    Unit(int x = 1000, int y = 1000, double width = 39, double height = 24);
 
     void stop();
-    void selectUnit(const QPointF);
+    bool selectUnit(const QPointF);
     void setPosition(const QPointF v);
     void setTarget(const QPointF point);
     void moveTo();
@@ -30,7 +30,7 @@ public:
 
     void setColor(const QColor);
     virtual void draw(QPainter *);
-
+    void manualMove(QPointF point,QRectF border,QVector<Obstacle*>,QVector<Unit*>);
     int getHealth() const;
 protected:
 

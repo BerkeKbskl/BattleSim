@@ -129,6 +129,52 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="startGame">
+     <property name="geometry">
+      <rect>
+       <x>1169</x>
+       <y>670</y>
+       <width>181</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:!pressed{
+background-image: url(:/images/images/button.jpg);
+color: #ffffff;
+border: 1px solid rgba(255,255,255,0.3); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+}</string>
+     </property>
+     <property name="text">
+      <string>START GAME</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="manuelDeployBorder">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1366</width>
+       <height>384</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,70,0,0.3);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="page">
     <property name="styleSheet">

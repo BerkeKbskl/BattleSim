@@ -12,7 +12,7 @@
  * @param parent The parent widget.
  */
 Game::Game(Scenario scenario,QWidget *parent)
-    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game)
+    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game),startGame(false)
 {
     ui->setupUi(this);
     setFocusPolicy(Qt::StrongFocus);
@@ -37,13 +37,11 @@ void Game::gameSetup(){
     ui->pauseIcon->hide();
     ui->gameW->setCurrentIndex(0);
     timer=new QTimer(this);
-
     connect(timer, &QTimer::timeout, this, &Game::updateGame);
     connect(ui->exitToGMenu,&QPushButton::clicked, this,&Game::exitToMenu);
     connect(ui->playAgainButton,&QPushButton::clicked,this,&Game::playAgain);
     connect(ui->exitToMenuButton,&QPushButton::clicked,this,&Game::exitToMenu);
     connect(ui->pauseConButton, &QPushButton::clicked, this, &Game::pauseGame);
-
     timer->start(1000/FPS);
 
 }
@@ -103,18 +101,24 @@ void Game::pauseGame(){
  */
 void Game::mousePressEvent(QMouseEvent *event)
 {
-    if (!isPauseState&&event->button() == Qt::LeftButton) { 
-        for (Unit *unit : user.getUnits()) {
-            unit->selectUnit(event->pos());
+        static bool isAnyUnitSelected=false;
+        if (!isPauseState&&event->button() == Qt::LeftButton) {
+            for (Unit *unit : user.getUnits()) {
+            if(startGame){unit->selectUnit(event->pos());}
+            else if(!isAnyUnitSelected){isAnyUnitSelected=unit->selectUnit(event->pos());}
+            }
         }
-    }
 
-    else if (!isPauseState&&event->button() == Qt::RightButton
-             && map.contains(event->pos())) {
-        for (Unit *unit : user.getUnits()) {
-                unit->setTarget(event->pos());
+        else if (!isPauseState&&event->button() == Qt::RightButton
+                 && map.contains(event->pos())) {
+            for (Unit *unit : user.getUnits()) {
+            isAnyUnitSelected=false;
+            startGame?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->manuelDeployBorder->width(),ui->manuelDeployBorder->height()),map.getObstacles(),user.getUnits());
+            }
         }
-    }
+
+
+
 }
 
 /**
@@ -181,11 +185,11 @@ void Game::manageCollisions() {
  * updates unit positions, updates game information, and triggers a repaint.
  */
 void Game::updateGame(){
-
+    if(startGame){
     manageCollisions();
     checkHealth();
 
-    ai.makeMove(user.getUnits());
+    //ai.makeMove(user.getUnits());
 
     for (Unit *unit : user.getUnits()) {
         unit->moveTo();
@@ -194,7 +198,7 @@ void Game::updateGame(){
     for (Unit *unit : ai.getUnits()) {
         unit->moveTo();
     }
-
+    }
     // Update info in the UI.
     QString info="";
     info.append(" Remaining user units: ").append(QString::number(user.getUnits().size())).append("\n");
@@ -224,5 +228,13 @@ void Game::checkHealth() {
         }
     }
 
+}
+
+
+void Game::on_startGame_clicked()
+{
+    ui->manuelDeployBorder->setVisible(false);
+    ui->startGame->setVisible(false);
+    startGame=true;
 }
 

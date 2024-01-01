@@ -15,11 +15,11 @@ class Map : public QObject, public QRect
 public:
     Map(Scenario scenario);
     void draw(QPainter* painter);
-    std::vector<Obstacle*> getObstacles();
+    QVector<Obstacle*> getObstacles();
 
 private:
     QImage mapImage;
-    std::vector<Obstacle*> obstacles;
+    QVector<Obstacle*> obstacles;
     int width;
     int height;
 };

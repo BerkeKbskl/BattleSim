@@ -117,7 +117,7 @@ void Artillery::draw(QPainter* painter) {
     painter->rotate(fmod(angle * 180 / M_PI,180)- 90);  // Apply the same rotation as the unit
     painter->translate(-center);
 
-    painter->drawText(blackRectX, blackRectY, blackRectWidth, blackRectHeight-10, Qt::AlignCenter, ammoText);
+    painter->drawText(blackRectX-3, blackRectY, blackRectWidth, blackRectHeight-6, Qt::AlignCenter, ammoText);
 
     painter->restore();
 }

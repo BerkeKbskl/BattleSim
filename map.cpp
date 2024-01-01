@@ -36,7 +36,7 @@ void Map::draw(QPainter *painter)
     }
 }
 
-std::vector<Obstacle*> Map::getObstacles()
+QVector<Obstacle*> Map::getObstacles()
 {
     return obstacles;
 }

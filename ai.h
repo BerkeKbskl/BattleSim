@@ -13,12 +13,12 @@ class AI : public Player
 public:
 
     AI(Scenario scenario);
-    Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
+    /*Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
 
     void makeAggressiveMove(vector<Unit*>& enemyUnits);
-    void makeDefensiveMove();
+    void makeDefensiveMove();*/
     void deployUnits(Scenario scenario) override;
-    void setMode(AIMode mode);
+   /* void setMode(AIMode mode);
     void switchMode();
     void makeMove(vector<Unit*> enemyUnits);
 
@@ -27,7 +27,7 @@ public:
 
 private:
     AIMode mode;
-
+*/
 };
 
 

@@ -20,7 +20,19 @@ bool Unit::isHelpNeed()
 {
     return this->needHelp;
 }
-
+void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,QVector<Unit*> unit){
+    bool isFieldEmpty=true;
+    for (Unit *unit:unit){
+        if(isFieldEmpty){isFieldEmpty=!unit->getCurrentPath().intersects(QRectF(point.x(),point.y(),width+5,height+5));}
+    }
+    for(Obstacle *obstacle:obstacles){
+        if(isFieldEmpty){isFieldEmpty=!obstacle->getPath().intersects(QRectF(point.x(),point.y(),width+10,height+10));}
+    }
+    if(selected&&border.contains(point)&&isFieldEmpty){
+    center=point;
+    selected=false;
+    }
+}
 // -------------------------------------------------------------------
 
 /**
@@ -75,8 +87,9 @@ void Unit::setPosition(const QPointF v) {
  * @brief Unit::selectUnit
  * @param point
  */
-void Unit::selectUnit(const QPointF point){
+bool Unit::selectUnit(const QPointF point){
     selected = getCurrentPath().contains(point) ? !selected : selected;
+    return selected;
 }
 
 /**

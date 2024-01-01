@@ -13,7 +13,7 @@ Player::Player()
  *
  * @return A vector of Unit pointers owned by the player.
  */
-vector<Unit*> Player::getUnits() const
+QVector<Unit*> Player::getUnits() const
 {
     return units;
 }

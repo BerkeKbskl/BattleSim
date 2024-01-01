@@ -8,7 +8,7 @@ AI::AI(Scenario scenario) {
     createUnits(scenario.getUnitsType(0));
     color = QColor(255,155,155);
 
-}
+}/*
 void AI::setMode(AIMode mode) {
     this->mode = mode;
 }
@@ -111,7 +111,7 @@ double AI::calculateDistance(const QPointF& point1, const QPointF& point2) {
     double dy = point2.y() - point1.y();
     return std::sqrt(dx * dx + dy * dy);
 }
-
+*/
 
 void AI::deployUnits(Scenario scenario) {
 
