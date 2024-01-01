@@ -17,6 +17,7 @@ public:
     void setPosition(const QPointF v);
     void setTarget(const QPointF point);
     void moveTo();
+    void setSelection(bool exp);
     QPointF getPosition() const;
     QPainterPath getNextPath() const;
     QPainterPath getCurrentPath() const;

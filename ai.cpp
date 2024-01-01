@@ -7,8 +7,9 @@ AI::AI(Scenario scenario) {
     scenario=scenario;
     createUnits(scenario.getUnitsType(0));
     color = QColor(255,155,155);
+    isFirstMove = true;
 
-}/*
+}
 void AI::setMode(AIMode mode) {
     this->mode = mode;
 }
@@ -22,13 +23,57 @@ void AI::switchMode() {
 }
 
 
-void AI::makeMove(vector<Unit*> enemyUnits) {
+void AI::makeMove(QVector<Unit*> enemyUnits) {
+    int totalAllyHealth=0;
+    int totalEnemyHealth=0;
+    if (isFirstMove) {
 
-    makeDefensiveMove();
-    makeAggressiveMove(enemyUnits);
+        int randomMode = rand() % 2;
+
+        if (randomMode == 0) {
+            mode = AIMode::Aggressive;
+        } else {
+            mode = AIMode::Defensive;
+        }
+        isFirstMove = false;
+    }
+    for (Unit* unit : units) {
+        if(unit)
+            totalAllyHealth += unit->getHealth();
+    }
+    for(Unit* unit : enemyUnits){
+        if(unit)
+            totalEnemyHealth += unit->getHealth();
+    }
+    if(totalAllyHealth>totalEnemyHealth*0.6){
+        mode = AIMode::Aggressive;
+    }else{
+        mode = AIMode::Defensive;
+    }
+
+    if (mode == AIMode::Aggressive) {
+        makeAggressiveMove(enemyUnits);
+    } else {
+        //Defensive move
+        turnTowardEnemy(enemyUnits);
+        //makeDefensiveMove();
+
+    }
 
 }
-void AI::makeAggressiveMove(vector<Unit*>& enemyUnits) {
+void AI::turnTowardEnemy(QVector<Unit*>& enemyUnits){
+    for (Unit* unit : units) {
+        Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
+        QPointF target = closestEnemy->getPosition();
+        unit->setSelection(true);
+        unit->setTarget(target);
+        unit->stop();
+        makeDefensiveMove();
+    }
+}
+
+
+void AI::makeAggressiveMove(QVector<Unit*>& enemyUnits) {
     mode = AIMode::Aggressive;
 
     for (Unit* unit : units) {
@@ -36,7 +81,7 @@ void AI::makeAggressiveMove(vector<Unit*>& enemyUnits) {
             Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
             if (closestEnemy) {
                 QPointF target = closestEnemy->getPosition();
-                //unit->selected=true;
+                unit->setSelection(true);
                 unit->setTarget(target);
             } else {
                 double randomX = rand() % 800;
@@ -58,7 +103,7 @@ void AI::makeDefensiveMove() {
             if (closestFriend && unit->needHelp) {
 
                 QPointF target = unit->getPosition();
-                //closestFriend->selected = true;
+                closestFriend->setSelection(true);
                 closestFriend->setTarget(target);
 
             } else {
@@ -69,7 +114,7 @@ void AI::makeDefensiveMove() {
     }
 }
 
-Unit* AI::findClosestFriend(Unit* unit, const vector<Unit*>& setsOfUnits) {
+Unit* AI::findClosestFriend(Unit* unit, const QVector<Unit*>& setsOfUnits) {
     Unit* closestHelp = nullptr;
     double minDistance = std::numeric_limits<double>::max();
 
@@ -89,7 +134,7 @@ Unit* AI::findClosestFriend(Unit* unit, const vector<Unit*>& setsOfUnits) {
     return closestHelp;
 }
 
-Unit* AI::findClosestEnemy(Unit* unit, const vector<Unit*>& enemyUnits) {
+Unit* AI::findClosestEnemy(Unit* unit, const QVector<Unit*>& enemyUnits) {
     Unit* closestEnemy = nullptr;
     double minDistance = std::numeric_limits<double>::max();
 
@@ -111,7 +156,7 @@ double AI::calculateDistance(const QPointF& point1, const QPointF& point2) {
     double dy = point2.y() - point1.y();
     return std::sqrt(dx * dx + dy * dy);
 }
-*/
+
 
 void AI::deployUnits(Scenario scenario) {
 

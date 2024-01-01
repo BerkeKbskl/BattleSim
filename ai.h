@@ -13,21 +13,23 @@ class AI : public Player
 public:
 
     AI(Scenario scenario);
-    /*Unit* findClosestFriend(Unit*, const vector<Unit*>& setsOfUnits);
+    Unit* findClosestFriend(Unit*, const QVector<Unit*>& setsOfUnits);
 
-    void makeAggressiveMove(vector<Unit*>& enemyUnits);
-    void makeDefensiveMove();*/
+    void makeAggressiveMove(QVector<Unit*>& enemyUnits);
+    void makeDefensiveMove();
     void deployUnits(Scenario scenario) override;
-   /* void setMode(AIMode mode);
+    void setMode(AIMode mode);
+    void turnTowardEnemy(QVector<Unit*>& enemyUnits);
     void switchMode();
-    void makeMove(vector<Unit*> enemyUnits);
+    void makeMove(QVector<Unit*> enemyUnits);
 
-    Unit* findClosestEnemy(Unit* unit, const vector<Unit*>& enemyUnits) ;
+    Unit* findClosestEnemy(Unit* unit, const QVector<Unit*>& enemyUnits) ;
     double calculateDistance(const QPointF& point1, const QPointF& point2) ;
 
 private:
     AIMode mode;
-*/
+    bool isFirstMove;
+
 };
 
 

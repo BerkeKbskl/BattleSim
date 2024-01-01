@@ -14,7 +14,9 @@ Unit::Unit(int x, int y, double width, double height):
     helpAssigned(false){
 
 }
-
+void Unit::setSelection(bool exp){
+    selected= exp;
+}
 
 bool Unit::isHelpNeed()
 {
