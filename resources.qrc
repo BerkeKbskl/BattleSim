@@ -11,17 +11,18 @@
         <file>images/htp4.png</file>
         <file>images/pauseCon.png</file>
         <file>images/gamemenu.jpg</file>
-        <file>images/button.jpg</file>
         <file>images/pauseicon.png</file>
-        <file>images/map1.png</file>
-        <file>images/map2.png</file>
         <file>images/result.png</file>
+        <file>images/map2.png</file>
+        <file>images/map3.png</file>
+        <file>images/map0.png</file>
+        <file>images/map1.png</file>
     </qresource>
     <qresource prefix="/scenarios">
+        <file>scenarios/scenario0.txt</file>
         <file>scenarios/scenario1.txt</file>
         <file>scenarios/scenario2.txt</file>
         <file>scenarios/scenario3.txt</file>
-        <file>scenarios/scenario4.txt</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

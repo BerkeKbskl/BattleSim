@@ -22,31 +22,29 @@ class Game : public QWidget
 public:
     Game(Scenario scenario, QWidget *parent = nullptr);
     ~Game();
-    QTimer* timer;
-
-    void paintEvent(QPaintEvent *event) override;
-    void mousePressEvent(QMouseEvent* event)override;
-    void updateGame();
-    void checkHealth();
 
 signals:
     void playAgain();
     void exitToMenu();
-private slots:
-    void on_startGame_clicked();
 
 private:
-    bool startGame;
-    void pauseGame();
-    void showResult();
-    bool isPauseState;
     Ui::Game *ui;
-    void manageCollisions();
-    void gameSetup();
+    QTimer* timer;
     Scenario scenario;
     Map map;
     User user;
     AI ai;
+    void startGame();
+    bool isGameStarted;
+    void pauseGame();
+    void showResult();
+    bool isPauseState;
+    void manageCollisions();
+    void gameSetup();
+    void checkHealth();
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent* event)override;
+    void updateGame();
 };
 
 #endif // GAME_H

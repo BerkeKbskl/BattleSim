@@ -17,21 +17,7 @@
    <string>GameMenu</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/*QPushButton:!pressed{
-	border-image: url(:/images/images/button.jpg);
-color: #ffffff;
-border: 3px solid rgb(0,0,0); 
-border-radius: 8px; 
-}
-QPushButton:hover {
-background-image: url(:/images/images/resulttext.jpg);
-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
-border: 3px solid rgba(0,0,0,0.3); 
-border-radius: 8px; 
-}*/
-
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -43,14 +29,15 @@ border-radius: 8px;
    <property name="styleSheet">
     <string notr="true">#centralwidget{border-image: url(:/images/images/gamemenu.jpg);}
 QPushButton:!pressed{
-background-image: url(:/images/images/button.jpg);
+background-color: rgba(0,0,0,0.2);
 color: #ffffff;
-border: 1px solid rgba(255,255,255,0.3); 
+border: 1px solid  qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(0,0,0,0.7), stop:1 rgba(200,200,200,0.6));
 border-radius: 8px; 
 }
 QPushButton:hover {
 color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgba(180,180,180,0.3), stop:1 rgba(210,210,210,0.3));
+    stop:0 rgba(160,160,160,0.3), stop:1 rgba(200,200,200,0.3));
 }</string>
    </property>
    <widget class="QStackedWidget" name="gameMenuW">
@@ -69,8 +56,8 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
      <widget class="QPushButton" name="exitButton">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>260</y>
+        <x>613</x>
+        <y>360</y>
         <width>140</width>
         <height>55</height>
        </rect>
@@ -92,8 +79,8 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
      <widget class="QPushButton" name="playButton">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>120</y>
+        <x>613</x>
+        <y>220</y>
         <width>140</width>
         <height>55</height>
        </rect>
@@ -115,8 +102,8 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
      <widget class="QPushButton" name="howTP_Button">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>190</y>
+        <x>613</x>
+        <y>290</y>
         <width>140</width>
         <height>55</height>
        </rect>
@@ -129,6 +116,31 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
       </property>
       <property name="text">
        <string>HOW TO PLAY</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>383</x>
+        <y>30</y>
+        <width>600</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Garamond</family>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:rgb(255,255,255);</string>
+      </property>
+      <property name="text">
+       <string>HISTORICAL BATTLE SIMULATOR</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -168,12 +180,11 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image: url(:/images/images/button.jpg);
+       <string notr="true">background-color: rgba(0,0,0,0.2);
 color: #ffffff;
-border: 1px solid rgb(0,0,0); 
+border: 1px solid  qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(0,0,0,0.7), stop:1 rgba(200,200,200,0.6));
 border-radius: 8px; 
-
-
 </string>
       </property>
       <property name="sizeAdjustPolicy">

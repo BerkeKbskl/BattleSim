@@ -38,9 +38,9 @@ void GameMenu::gameMenuSetup(){
  */
 void GameMenu::playGame() {
     game = new Game(*scenario);
+    setCentralWidget(game);//changes the main scene
     connect(game,&Game::exitToMenu,this,&GameMenu::showMenu);
     connect(game,&Game::playAgain,this,&GameMenu::playGame);
-    setCentralWidget(game);//changes the main scene
 }
 
 /**
@@ -128,7 +128,7 @@ void GameMenu::showHowToPlay()
 void GameMenu::on_applyScenario_clicked()
 {
     if (ui->comboBox->currentIndex() != 0) {
-    scenario = new Scenario(ui->comboBox->currentIndex());
+        scenario = new Scenario((ui->comboBox->currentIndex()-1));
     playGame();
     }
 }

@@ -12,7 +12,7 @@
  * @param parent The parent widget.
  */
 Game::Game(Scenario scenario,QWidget *parent)
-    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game),startGame(false)
+    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game),isGameStarted(false)
 {
     ui->setupUi(this);
     setFocusPolicy(Qt::StrongFocus);
@@ -42,6 +42,7 @@ void Game::gameSetup(){
     connect(ui->playAgainButton,&QPushButton::clicked,this,&Game::playAgain);
     connect(ui->exitToMenuButton,&QPushButton::clicked,this,&Game::exitToMenu);
     connect(ui->pauseConButton, &QPushButton::clicked, this, &Game::pauseGame);
+    connect(ui->startGameButton, &QPushButton::clicked, this, &Game::startGame);
     timer->start(1000/FPS);
 
 }
@@ -104,7 +105,7 @@ void Game::mousePressEvent(QMouseEvent *event)
         static bool isAnyUnitSelected=false;
         if (!isPauseState&&event->button() == Qt::LeftButton) {
             for (Unit *unit : user.getUnits()) {
-            if(startGame){unit->selectUnit(event->pos());}
+            if(isGameStarted){unit->selectUnit(event->pos());}
             else if(!isAnyUnitSelected){isAnyUnitSelected=unit->selectUnit(event->pos());}
             }
         }
@@ -113,7 +114,7 @@ void Game::mousePressEvent(QMouseEvent *event)
                  && map.contains(event->pos())) {
             for (Unit *unit : user.getUnits()) {
             isAnyUnitSelected=false;
-            startGame?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->manuelDeployBorder->width(),ui->manuelDeployBorder->height()),map.getObstacles(),user.getUnits());
+            isGameStarted?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->manuelDeployBorder->width(),ui->manuelDeployBorder->height()),map.getObstacles(),user.getUnits());
             }
         }
 
@@ -185,7 +186,7 @@ void Game::manageCollisions() {
  * updates unit positions, updates game information, and triggers a repaint.
  */
 void Game::updateGame(){
-    if(startGame){
+    if(isGameStarted){
     ai.makeMove(user.getUnits());
     manageCollisions();
     checkHealth();
@@ -232,10 +233,10 @@ void Game::checkHealth() {
 }
 
 
-void Game::on_startGame_clicked()
+void Game::startGame()
 {
     ui->manuelDeployBorder->setVisible(false);
-    ui->startGame->setVisible(false);
-    startGame=true;
+    ui->startGameButton->setVisible(false);
+    isGameStarted=true;
 }
 

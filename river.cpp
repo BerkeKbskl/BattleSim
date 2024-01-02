@@ -56,7 +56,7 @@ QPainterPath River::generateSmoothPath(const QVector<QPointF>& points)
     path.quadTo(cp1, points.back());
 
     QPainterPathStroker stroker;
-    stroker.setWidth(20);
+    stroker.setWidth(70);
     return stroker.createStroke(path);
 }
 
@@ -66,13 +66,12 @@ void River::draw(QPainter* painter)
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     // Create a linear gradient along the river path
-    QLinearGradient gradient(path.boundingRect().topLeft(), path.boundingRect().bottomRight());
-    gradient.setColorAt(0, Qt::blue);
-    gradient.setColorAt(1, Qt::darkBlue);
+    //QLinearGradient gradient(path.boundingRect().topLeft(), path.boundingRect().bottomRight());
+    //gradient.setColorAt(0, Qt::blue);
+    //gradient.setColorAt(1, Qt::darkBlue);
 
     // Set the gradient as the brush for the river
-    painter->setBrush(gradient);
-
+   // painter->setBrush(gradient);
     painter->setPen(QPen(Qt::blue, 2));
     painter->drawPath(path);
 }
