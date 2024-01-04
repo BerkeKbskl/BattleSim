@@ -108,6 +108,7 @@ void Game::mousePressEvent(QMouseEvent *event)
             if(isGameStarted){unit->selectUnit(event->pos());}
             else if(!isAnyUnitSelected){isAnyUnitSelected=unit->selectUnit(event->pos());}
             }
+            qDebug()<<event->pos();
         }
 
         else if (!isPauseState&&event->button() == Qt::RightButton
