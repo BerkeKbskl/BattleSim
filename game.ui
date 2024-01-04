@@ -29,7 +29,7 @@
     <string notr="true"/>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="pauseMenu">
     <property name="minimumSize">
@@ -38,81 +38,6 @@
       <height>0</height>
      </size>
     </property>
-    <widget class="QPushButton" name="pauseConButton">
-     <property name="geometry">
-      <rect>
-       <x>1160</x>
-       <y>710</y>
-       <width>51</width>
-       <height>45</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton:!pressed{
-border-image: url(:/images/images/pauseCon.png);
-
-}
-QPushButton:hover {
-border:2px solid rgba(255,255,255,0.5);
-background-color:rgba(230,230,230,0.5);
-}
-</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="exitToGMenu">
-     <property name="geometry">
-      <rect>
-       <x>1230</x>
-       <y>710</y>
-       <width>120</width>
-       <height>45</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton:!pressed{
-background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-    stop:0 rgba(160,160,160,0.3), stop:1 rgba(180,180,180,0.3));
-color: #ffffff;
-border: 1px solid rgba(255,255,255,0.3); 
-border-radius: 8px; 
-}
-QPushButton:hover {
-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-   stop:0 rgba(140,140,140,0.3), stop:1 rgba(180,180,180,0.3));
-}</string>
-     </property>
-     <property name="text">
-      <string>EXIT TO MENU </string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="info">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>800</x>
-       <y>710</y>
-       <width>351</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::PlainText</enum>
-     </property>
-     <property name="wordWrap">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="pauseIcon">
      <property name="geometry">
       <rect>
@@ -130,22 +55,56 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="startGameButton">
+    <widget class="QFrame" name="frame">
      <property name="geometry">
       <rect>
-       <x>1169</x>
-       <y>670</y>
-       <width>181</width>
-       <height>31</height>
+       <x>0</x>
+       <y>0</y>
+       <width>381</width>
+       <height>201</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton:!pressed{
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="pauseConButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>51</width>
+        <height>45</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:!pressed{
+border-image: url(:/images/images/pauseCon.png);
+
+}
+QPushButton:hover {
+border:2px solid rgba(255,255,255,0.5);
+background-color:rgba(230,230,230,0.5);
+}
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="exitToGMenu">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>0</y>
+        <width>120</width>
+        <height>45</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:!pressed{
 background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
     stop:0 rgba(160,160,160,0.3), stop:1 rgba(180,180,180,0.3));
 color: #ffffff;
@@ -156,25 +115,86 @@ QPushButton:hover {
 color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
    stop:0 rgba(140,140,140,0.3), stop:1 rgba(180,180,180,0.3));
 }</string>
-     </property>
-     <property name="text">
-      <string>START GAME</string>
-     </property>
+      </property>
+      <property name="text">
+       <string>EXIT TO MENU </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="startGameButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>50</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:!pressed{
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(160,160,160,0.3), stop:1 rgba(180,180,180,0.3));
+color: #ffffff;
+border: 1px solid rgba(255,255,255,0.3); 
+border-radius: 8px; 
+}
+QPushButton:hover {
+color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+   stop:0 rgba(140,140,140,0.3), stop:1 rgba(180,180,180,0.3));
+}</string>
+      </property>
+      <property name="text">
+       <string>START GAME</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QLabel" name="manuelDeployBorder">
+    <widget class="QLabel" name="restrictedArea">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>0</y>
+       <y>384</y>
        <width>1366</width>
        <height>384</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgba(0,70,0,0.2);</string>
+      <string notr="true">background-color:rgba(90,0,0,0.2);</string>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="info">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>690</y>
+       <width>351</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 0);
+color:rgb(255,255,255);</string>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
@@ -195,7 +215,7 @@ color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
      <property name="geometry">
       <rect>
        <x>483</x>
-       <y>184</y>
+       <y>0</y>
        <width>400</width>
        <height>400</height>
       </rect>

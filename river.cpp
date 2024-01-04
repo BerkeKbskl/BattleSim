@@ -70,10 +70,10 @@ void River::draw(QPainter* painter)
     //gradient.setColorAt(0, Qt::blue);
     //gradient.setColorAt(1, Qt::darkBlue);
 
-    // Set the gradient as the brush for the river
-   // painter->setBrush(gradient);
-    painter->setPen(QPen(Qt::blue, 2));
-    painter->drawPath(path);
+    //Set the gradient as the brush for the river
+    //painter->setBrush(gradient);
+    //painter->setPen(QPen(Qt::blue, 2));
+    //painter->drawPath(path);
 }
 
 QPainterPath River::getPath() const

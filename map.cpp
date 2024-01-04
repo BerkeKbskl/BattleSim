@@ -19,6 +19,7 @@ Map::Map(Scenario scenario)
     , height(WH)
     , QRect(0, 0, WW, WH)
     , mapImage(scenario.getMapImage())
+    , scenario(scenario)
 {
     for (int i = 0; i < scenario.getObstacleTypes().size(); i++) {
         QString type = scenario.getObstacleTypes()[i];
@@ -30,6 +31,8 @@ Map::Map(Scenario scenario)
 
 void Map::draw(QPainter *painter)
 {
+    double scale=scenario.getScale();
+    if(scale!=1.0){setSize(QSize(scale*width,scale*height));}
     painter->drawImage(*this, mapImage);
     for (Obstacle *obstacle : obstacles) {
         obstacle->draw(painter);

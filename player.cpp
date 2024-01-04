@@ -3,9 +3,8 @@
 #include "cavalry.h"
 #include "infantry.h"
 
-Player::Player()
+Player::Player():scenario(0,0)
 {
-
 }
 
 /**

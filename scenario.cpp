@@ -8,10 +8,10 @@
  *
  * @param scenarioNum The scenario number.
  */
-Scenario::Scenario(int scenarioNum) {
+Scenario::Scenario(int scenarioNum,double scale):scale(scale) {
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
     mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
-        scanScenarioFile(scenarioPath);
+    scanScenarioFile(scenarioPath);qDebug("%f",scale);
 }
 
 /**
@@ -63,6 +63,10 @@ QVector<QString> Scenario::getObstacleTypes()
     return obstacleTypes;
 }
 
+double Scenario::getScale(){
+    return scale;
+}
+
 /**
  * @brief Scan the scenario file and extract information about units and obstacles.
  *
@@ -80,7 +84,7 @@ void Scenario::scanScenarioFile(QString fileName) {
     else{
         QTextStream in(&file);
         QString declaration;
-        double xPos, yPos;
+            QPointF pos;
         try {
             while (!in.atEnd()) {
                 QStringList decLineContent = in.readLine().split(" ");
@@ -94,9 +98,8 @@ void Scenario::scanScenarioFile(QString fileName) {
                         QStringList positionsLine = in.readLine().split(" ");
                         if(positionsLine.isEmpty()){qDebug("Unit positions are not specified.");}
                         for (int i = 0; i < positionsLine.size(); i++) {
-                            xPos = positionsLine[i].split(",")[0].toDouble();
-                            yPos = positionsLine[i].split(",")[1].toDouble();
-                            userType == "User:" ? (unitPositions[0].push_back({ xPos, yPos }), unitTypes[0].push_back(unitType)) : (unitPositions[1].push_back({ xPos, yPos }), unitTypes[1].push_back(unitType));
+                            pos = {positionsLine[i].split(",")[0].toDouble()*scale,positionsLine[i].split(",")[1].toDouble()*scale};
+                            userType == "User:" ? (unitPositions[0].push_back(pos), unitTypes[0].push_back(unitType)) : (unitPositions[1].push_back(pos), unitTypes[1].push_back(unitType));
                         }
 
                 }
@@ -107,7 +110,8 @@ void Scenario::scanScenarioFile(QString fileName) {
                     obstacleTypes.push_back(obstacleType);
                     QVector<QPointF> obstaclePositions;
                     for (QString positions:positionsLine) {
-                        obstaclePositions.push_back({ positions.split(",")[0].toDouble(),positions.split(",")[1].toDouble()});
+                            pos={positions.split(",")[0].toDouble()*scale,positions.split(",")[1].toDouble()*scale};
+                        obstaclePositions.push_back(pos);
                     }
                     if(obstacleType=="swamp"){obstaclePositions.push_back(obstaclePositions[0]);}
                     obstaclesPositions.push_back(obstaclePositions);

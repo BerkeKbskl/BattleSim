@@ -22,6 +22,7 @@ private:
     QVector<Obstacle*> obstacles;
     int width;
     int height;
+    Scenario scenario;
 };
 
 #endif // MAP_H

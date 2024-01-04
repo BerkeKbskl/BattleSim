@@ -7,7 +7,7 @@
  * attack power, defense power, ammo, and image. It also loads the artillery image.
  */
 Artillery::Artillery() : Unit() {
-    speed = 2;
+    speed = 0.4;
     health = 100;
     attackPower = 3;
     defensePower = 0;

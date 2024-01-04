@@ -1,7 +1,7 @@
 #include "infantry.h"
 
 Infantry::Infantry() : Unit() {
-    speed = 5;
+    speed = 1;
     health=100;
     attackPower=2;
     defensePower = 3;

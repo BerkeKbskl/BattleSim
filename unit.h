@@ -40,10 +40,10 @@ protected:
     QPointF target;
     QPointF center;
     QImage img;
-    int attackPower;
-    int health;
-    int speed;
-    int defensePower;
+    double attackPower;
+    double health;
+    double speed;
+    double defensePower;
     bool selected;
     bool movable;
     double width,height;

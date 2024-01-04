@@ -21,13 +21,18 @@ private slots:
     void playButtonClicked();
     void showMenu();
     void showHowToPlay();
-    void on_applyScenario_clicked();
-    void on_back_clicked();
+    void applyScenario();
+    void back();
     void changeHtpImage(int);
+    void showSettings();
+    void applyAdjustments();
 private:
     void showSelectedScenarioImgae();
     void gameMenuSetup();
     void playGame();
+    QSize screenSize;
+    double scale;
+    QSize size;
     Scenario *scenario;
     Ui::GameMenu *ui;
     Game *game;

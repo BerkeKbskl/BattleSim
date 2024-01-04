@@ -69,10 +69,10 @@ QPainterPath Swamp::getPath() const
 
 void Swamp::draw(QPainter* painter)
 {
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    //painter->setRenderHint(QPainter::Antialiasing, true);
     //painter->setPen(QPen(Qt::blue, 2));
     //painter->setBrush(Qt::blue);
-    painter->drawPath(path);
+    //painter->drawPath(path);
 }
 
 

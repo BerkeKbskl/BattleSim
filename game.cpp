@@ -31,6 +31,10 @@ Game::~Game(){
  * Initializes various game settings, deploys units for the user and AI, and connects signals to slots.
  */
 void Game::gameSetup(){
+    ui->gameW->setGeometry(0,0,ui->gameW->width()*scenario.getScale(),ui->gameW->height()*scenario.getScale());
+    ui->restrictedArea->resize(ui->restrictedArea->width()*scenario.getScale(),ui->restrictedArea->height()*scenario.getScale());
+    ui->restrictedArea->move(0,ui->restrictedArea->pos().y()*scenario.getScale());
+    ui->info->move(0,ui->info->pos().y()*scenario.getScale());
     isPauseState = false;
     ai.deployUnits(scenario);
     user.deployUnits(scenario);
@@ -81,6 +85,7 @@ void Game::paintEvent(QPaintEvent* event) {
  */
 void Game::showResult(){
     ui->gameW->setCurrentIndex(1);
+    ui->resultMenu->move(ui->gameW->width()/2,0);
 
 }
 
@@ -108,14 +113,14 @@ void Game::mousePressEvent(QMouseEvent *event)
             if(isGameStarted){unit->selectUnit(event->pos());}
             else if(!isAnyUnitSelected){isAnyUnitSelected=unit->selectUnit(event->pos());}
             }
-            qDebug()<<event->pos();
+
         }
 
         else if (!isPauseState&&event->button() == Qt::RightButton
                  && map.contains(event->pos())) {
             for (Unit *unit : user.getUnits()) {
             isAnyUnitSelected=false;
-            isGameStarted?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->manuelDeployBorder->width(),ui->manuelDeployBorder->height()),map.getObstacles(),user.getUnits());
+            isGameStarted?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->restrictedArea->width(),ui->restrictedArea->height()),map.getObstacles(),user.getUnits());
             }
         }
 
@@ -236,7 +241,7 @@ void Game::checkHealth() {
 
 void Game::startGame()
 {
-    ui->manuelDeployBorder->setVisible(false);
+    ui->restrictedArea->setVisible(false);
     ui->startGameButton->setVisible(false);
     isGameStarted=true;
 }

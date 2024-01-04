@@ -1,7 +1,7 @@
 #include "cavalry.h"
 
 Cavalry::Cavalry() : Unit() {
-    speed = 10;
+    speed = 1.6;
     health=100;
     attackPower=1;
     defensePower = 5;

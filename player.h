@@ -16,7 +16,7 @@ public:
 
 protected:
     void createUnits(QList<QString>);
-    Scenario scenario = 0;
+    Scenario scenario;
     QColor color;
     QVector<Unit*> units;
 };
