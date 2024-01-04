@@ -21,11 +21,10 @@ public:
     void setMode(AIMode mode);
     void turnTowardEnemy(QVector<Unit*>& enemyUnits);
     void switchMode();
-    void makeMove(QVector<Unit*> enemyUnits);
-
     Unit* findClosestEnemy(Unit* unit, const QVector<Unit*>& enemyUnits) ;
     double calculateDistance(const QPointF& point1, const QPointF& point2) ;
 
+    void makeMove(QVector<Unit *> enemyUnits, QVector<Obstacle *> obstacles);
 private:
     AIMode mode;
     bool isFirstMove;

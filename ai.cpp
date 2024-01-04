@@ -1,161 +1,170 @@
+#include <cmath>
+#include <QPainterPath>
+#include <QPointF>
+#include <QVector>
+#include <float.h>
+#include <iostream>
 #include "ai.h"
-#include<QDebug>
+#include "qvectornd.h"
+
+double squareDistanceTo(const QPointF& p1, const QPointF& p2) {
+    double dx = p2.x() - p1.x();
+    double dy = p2.y() - p1.y();
+    return dx * dx + dy * dy;
+}
+
+void normalize(QPointF& v) {
+    double length = std::sqrt(v.x() * v.x() + v.y() * v.y());
+    if (length != 0.0) {
+        v.setX(v.x() / length);
+        v.setY(v.y() / length);
+    }
+}
+
+QPointF closestPointOnPath(const QPointF &point, const QPainterPath &path)
+{
+    if (path.isEmpty())
+        return point;
+
+    auto vec = QVector2D(point);
+    auto poly = path.toFillPolygon();
+    float d, minDist = FLT_MAX;
+    QVector2D p, q, v, u, minVec;
+
+    for (int k=0; k < poly.count() - 1; k++)
+    {
+        p = QVector2D(poly.at(k));
+        if (k == poly.count() - 1)
+            k = -1;
+        q = QVector2D(poly.at(k+1));
+        v = q - p;
+        u = v.normalized();
+        d = QVector2D::dotProduct(u, vec - p);
+
+        if (d < 0.0f) {
+            d = (vec - p).lengthSquared();
+
+            if (d < minDist)
+            {
+                minDist = d;
+                minVec = p;
+            }
+        }
+        else if (d*d > v.lengthSquared())
+        {
+            d = (vec - q).lengthSquared();
+
+            if (d < minDist)
+            {
+                minDist = d;
+                minVec = q;
+            }
+        }
+        else {
+            u *= d;
+            u += p;
+            d = (vec - u).lengthSquared();
+
+            if (d < minDist)
+            {
+                minDist = d;
+                minVec = u;
+            }
+        }
+    }
+
+    if (minDist >= FLT_MAX)
+        return point;
+
+    return minVec.toPointF();
+}
+
+
+QPointF getRepulsionForce(double x, double y, const QPainterPath& obstaclePath) {
+    QPointF closestPoint = closestPointOnPath(QPointF(x, y), obstaclePath);
+    double closestDist = squareDistanceTo(QPointF(x, y), closestPoint);
+
+    double magnitude = 5.0 / closestDist;  // Adjust the magnitude as needed
+    QPointF direction(x - closestPoint.x(), y - closestPoint.y());
+    normalize(direction);
+    direction.setX(direction.x() * magnitude);
+    direction.setY(direction.y() * magnitude);
+    return direction;
+}
+
+QPointF getAttractionForce(double x, double y, const QPointF& enemyPosition) {
+    double distance = squareDistanceTo(QPointF(x, y), enemyPosition);
+
+    double magnitude = 20 / distance;  // You might need to adjust the magnitude
+    QPointF direction(enemyPosition.x() - x, enemyPosition.y() - y);
+    normalize(direction);
+    direction.setX(direction.x() * magnitude);
+    direction.setY(direction.y() * magnitude);
+
+    return direction;
+}
+
+QPointF getFriendForce(double x, double y, const QPointF& friendPosition) {
+
+    double distance = squareDistanceTo(QPointF(x, y), friendPosition);
+    double magnitude = 12120 / (distance * distance);  // You might need to adjust the magnitude
+    QPointF direction(x-friendPosition.x(), y-friendPosition.y());
+    normalize(direction);
+    direction.setX(direction.x() * magnitude);
+    direction.setY(direction.y() * magnitude);
+    return direction;
+}
+
+
+QPointF computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,
+                           const QVector<Unit*>& enemies,
+                           const QVector<Unit*>& friends) {
+    QPointF repulsionForce(0, 0);
+    QPointF attractionForce(0, 0);
+    QPointF friendForce(0, 0);
+
+    // Precompute the position of the unit outside the loops
+    double unitX = unit->getPosition().x();
+    double unitY = unit->getPosition().y();
+
+    for (const auto& obstacle : obstacles) {
+        QPointF obstacleForce = getRepulsionForce(unitX, unitY, obstacle->getPath());
+        repulsionForce += obstacleForce;
+    }
+
+    for (const auto& enemy : enemies) {
+        QPointF enemyForce = getAttractionForce(unitX, unitY, enemy->getPosition());
+        attractionForce += enemyForce;
+    }
+
+    for (const auto& friendUnit : friends) {
+        if (friendUnit != unit) {
+            QPointF friendForce2 = getFriendForce(unitX, unitY, friendUnit->getPosition());
+            friendForce += friendForce2;
+        }
+    }
+
+    return repulsionForce + attractionForce + friendForce;
+}
+
 
 AI::AI(Scenario scenario) {
-
-    scenario=scenario;
+    this->scenario = scenario;
     createUnits(scenario.getUnitsType(0));
-    color = QColor(255,155,155);
+    color = QColor(255, 155, 155);
     isFirstMove = true;
-
-}
-void AI::setMode(AIMode mode) {
-    this->mode = mode;
 }
 
-void AI::switchMode() {
-    if (mode == AIMode::Aggressive) {
-        mode = AIMode::Defensive;
-    } else {
-        mode = AIMode::Aggressive;
+void AI::makeMove(QVector<Unit*> enemyUnits, QVector<Obstacle*> obstacles) {
+    for (Unit* unit : getUnits()) {
+        // Compute the vector field for the unit based on surrounding obstacles and enemies
+        QPointF field = 20000 * computeVectorField(unit, obstacles, enemyUnits, this->getUnits());
+
+        unit->setSelected(true);  // Assuming this is the selection logic
+        unit->setTarget(unit->getPosition() + field);
+        unit->setSelected(false); // Assuming this is the deselection logic
     }
 }
-
-
-void AI::makeMove(QVector<Unit*> enemyUnits) {
-    int totalAllyHealth=0;
-    int totalEnemyHealth=0;
-    if (isFirstMove) {
-
-        int randomMode = rand() % 2;
-
-        if (randomMode == 0) {
-            mode = AIMode::Aggressive;
-        } else {
-            mode = AIMode::Defensive;
-        }
-        isFirstMove = false;
-    }
-    for (Unit* unit : units) {
-        if(unit)
-            totalAllyHealth += unit->getHealth();
-    }
-    for(Unit* unit : enemyUnits){
-        if(unit)
-            totalEnemyHealth += unit->getHealth();
-    }
-    if(totalAllyHealth>totalEnemyHealth*0.6){
-        mode = AIMode::Aggressive;
-    }else{
-        mode = AIMode::Defensive;
-    }
-
-    if (mode == AIMode::Aggressive) {
-        makeAggressiveMove(enemyUnits);
-    } else {
-        //Defensive move
-        turnTowardEnemy(enemyUnits);
-        //makeDefensiveMove();
-
-    }
-
-}
-void AI::turnTowardEnemy(QVector<Unit*>& enemyUnits){
-    for (Unit* unit : units) {
-        Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
-        QPointF target = closestEnemy->getPosition();
-        unit->setSelection(true);
-        unit->setTarget(target);
-        unit->stop();
-        makeDefensiveMove();
-    }
-}
-
-
-void AI::makeAggressiveMove(QVector<Unit*>& enemyUnits) {
-    mode = AIMode::Aggressive;
-
-    for (Unit* unit : units) {
-        if (mode == AIMode::Aggressive) {
-            Unit* closestEnemy = findClosestEnemy(unit, enemyUnits);
-            if (closestEnemy) {
-                QPointF target = closestEnemy->getPosition();
-                unit->setSelection(true);
-                unit->setTarget(target);
-            } else {
-                double randomX = rand() % 800;
-                double randomY = rand() % 800;
-                QPointF randomTarget(randomX, randomY);
-                unit->setTarget(randomTarget);
-            }
-        }
-
-
-    }
-}
-void AI::makeDefensiveMove() {
-    mode = AIMode::Defensive;
-
-    for (Unit* unit : units) {
-        if (mode == AIMode::Defensive) {
-            Unit* closestFriend = findClosestFriend(unit, units);
-            if (closestFriend && unit->needHelp) {
-
-                QPointF target = unit->getPosition();
-                closestFriend->setSelection(true);
-                closestFriend->setTarget(target);
-
-            } else {
-
-            }
-        }
-
-    }
-}
-
-Unit* AI::findClosestFriend(Unit* unit, const QVector<Unit*>& setsOfUnits) {
-    Unit* closestHelp = nullptr;
-    double minDistance = std::numeric_limits<double>::max();
-
-    for (Unit* help : setsOfUnits) {
-        if (help == unit) {
-            continue;
-        }
-
-        double distance = calculateDistance(help->getPosition(), unit->getPosition());
-
-        if (distance < minDistance) {
-            minDistance = distance;
-            closestHelp = help;
-        }
-    }
-
-    return closestHelp;
-}
-
-Unit* AI::findClosestEnemy(Unit* unit, const QVector<Unit*>& enemyUnits) {
-    Unit* closestEnemy = nullptr;
-    double minDistance = std::numeric_limits<double>::max();
-
-    for (Unit* enemy : enemyUnits) {
-        double distance = calculateDistance(unit->getPosition(), enemy->getPosition());
-
-        if (distance < minDistance) {
-            minDistance = distance;
-            closestEnemy = enemy;
-        }
-    }
-
-    return closestEnemy;
-}
-
-
-double AI::calculateDistance(const QPointF& point1, const QPointF& point2) {
-    double dx = point2.x() - point1.x();
-    double dy = point2.y() - point1.y();
-    return std::sqrt(dx * dx + dy * dy);
-}
-
 
 void AI::deployUnits(Scenario scenario) {
 
