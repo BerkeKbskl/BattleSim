@@ -1,5 +1,4 @@
 #include "user.h"
-#include <iostream>
 
 /**
  * @brief Construct a new User object with the specified scenario.

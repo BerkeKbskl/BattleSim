@@ -1,8 +1,9 @@
-
 #include <QMainWindow>
 #include "game.h"
 #include"scenario.h"
 #include<QLabel>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameMenu; }
@@ -30,6 +31,8 @@ private:
     Scenario *scenario;
     Ui::GameMenu *ui;
     Game *game;
+    QMediaPlayer *player;
+    QAudioOutput *audioOutput;
 
 };
 

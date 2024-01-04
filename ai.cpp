@@ -1,6 +1,5 @@
 #include "ai.h"
 #include<QDebug>
-#include <iostream>
 
 AI::AI(Scenario scenario) {
 
@@ -168,9 +167,3 @@ void AI::deployUnits(Scenario scenario) {
     }
 
 }
-
-
-
-
-
-

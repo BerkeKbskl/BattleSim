@@ -1,5 +1,4 @@
 #include "artillery.h"
-#include <iostream>
 
 /**
  * @brief Constructs an Artillery object.

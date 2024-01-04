@@ -4,6 +4,13 @@
 GameMenu::GameMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GameMenu){
+    player = new QMediaPlayer(this);
+    audioOutput = new QAudioOutput(this);
+    player->setAudioOutput(audioOutput);
+    player->setSource(QUrl("qrc:/sounds/sounds/mainTheme.mp3"));
+    player->setLoops(QMediaPlayer::Infinite);
+    audioOutput->setVolume(50);
+    player->play();
     gameMenuSetup();
 }
 

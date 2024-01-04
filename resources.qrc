@@ -24,5 +24,7 @@
         <file>scenarios/scenario2.txt</file>
         <file>scenarios/scenario3.txt</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/sounds">
+        <file>sounds/mainTheme.mp3</file>
+    </qresource>
 </RCC>

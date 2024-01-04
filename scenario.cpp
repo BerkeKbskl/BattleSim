@@ -1,5 +1,4 @@
 #include "Scenario.h"
-#include <iostream>
 
 /**
  * @brief Construct a new Scenario object based on the specified scenario number.
