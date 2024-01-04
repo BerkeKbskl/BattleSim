@@ -104,7 +104,7 @@ void GameMenu::playButtonClicked()
  */
 void GameMenu::showSelectedScenarioImgae(){
     QString imagePath=":/images/images/sc";
-    imagePath.append(QString::number(ui->comboBox->currentIndex())).append(".jpg");
+    imagePath.append(QString::number(ui->comboBox->currentIndex())).append(".png");
     ui->scenarioImage->setPixmap(QPixmap(imagePath));
 }
 

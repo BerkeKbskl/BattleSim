@@ -284,10 +284,10 @@ border-radius: 8px;
      <widget class="QLabel" name="scenarioImage">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>170</y>
-        <width>361</width>
-        <height>211</height>
+        <x>300</x>
+        <y>80</y>
+        <width>740</width>
+        <height>430</height>
        </rect>
       </property>
       <property name="text">
@@ -362,10 +362,10 @@ border-radius: 8px;
       <widget class="QLabel" name="htp_panel">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>180</x>
          <y>50</y>
-         <width>591</width>
-         <height>351</height>
+         <width>600</width>
+         <height>350</height>
         </rect>
        </property>
        <property name="styleSheet">

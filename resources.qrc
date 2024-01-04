@@ -3,8 +3,6 @@
         <file>images/artillery.png</file>
         <file>images/cavalry.png</file>
         <file>images/infantry.png</file>
-        <file>images/sc1.jpg</file>
-        <file>images/sc2.jpg</file>
         <file>images/pauseCon.png</file>
         <file>images/gamemenu.jpg</file>
         <file>images/pauseicon.png</file>
@@ -13,6 +11,10 @@
         <file>images/map3.png</file>
         <file>images/map0.png</file>
         <file>images/map1.png</file>
+        <file>images/sc1.png</file>
+        <file>images/sc2.png</file>
+        <file>images/sc3.png</file>
+        <file>images/sc4.png</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario0.txt</file>
