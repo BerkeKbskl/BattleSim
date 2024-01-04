@@ -318,9 +318,9 @@ border-radius: 8px;
      <widget class="QFrame" name="htpMenu">
       <property name="geometry">
        <rect>
-        <x>230</x>
-        <y>40</y>
-        <width>1061</width>
+        <x>90</x>
+        <y>50</y>
+        <width>1121</width>
         <height>671</height>
        </rect>
       </property>
