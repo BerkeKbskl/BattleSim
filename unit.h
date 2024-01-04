@@ -33,6 +33,7 @@ public:
     virtual void draw(QPainter *);
     void manualMove(QPointF point,QRectF border,QVector<Obstacle*>,QVector<Unit*>);
     int getHealth() const;
+    void setSelected(bool b);
 protected:
 
     double angle;

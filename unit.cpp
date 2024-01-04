@@ -35,6 +35,10 @@ void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,Q
     selected=false;
     }
 }
+
+void Unit::setSelected(bool b) {
+    selected=b;
+}
 // -------------------------------------------------------------------
 
 /**

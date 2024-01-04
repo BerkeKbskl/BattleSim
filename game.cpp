@@ -193,11 +193,9 @@ void Game::manageCollisions() {
  */
 void Game::updateGame(){
     if(isGameStarted){
-    ai.makeMove(user.getUnits());
+    ai.makeMove(user.getUnits(),map.getObstacles());
     manageCollisions();
     checkHealth();
-
-
 
     for (Unit *unit : user.getUnits()) {
         unit->moveTo();
