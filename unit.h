@@ -35,7 +35,6 @@ public:
     int getHealth() const;
     void setSelected(bool b);
 protected:
-
     double angle;
     QColor color;
     QPointF target;
@@ -43,6 +42,7 @@ protected:
     QImage img;
     double attackPower;
     double health;
+    double maxHealth;
     double speed;
     double defensePower;
     bool selected;

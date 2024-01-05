@@ -85,7 +85,7 @@ void Game::paintEvent(QPaintEvent* event) {
  */
 void Game::showResult(){
     ui->gameW->setCurrentIndex(1);
-    ui->resultMenu->move(ui->gameW->width()/2,0);
+    ui->resultMenu->move((ui->gameW->width()-ui->resultMenu->width())/2,0);
 
 }
 
@@ -107,11 +107,10 @@ void Game::pauseGame(){
  */
 void Game::mousePressEvent(QMouseEvent *event)
 {
-        static bool isAnyUnitSelected=false;
+
         if (!isPauseState&&event->button() == Qt::LeftButton) {
             for (Unit *unit : user.getUnits()) {
-            if(isGameStarted){unit->selectUnit(event->pos());}
-            else if(!isAnyUnitSelected){isAnyUnitSelected=unit->selectUnit(event->pos());}
+            unit->selectUnit(event->pos());
             }
 
         }
@@ -119,7 +118,6 @@ void Game::mousePressEvent(QMouseEvent *event)
         else if (!isPauseState&&event->button() == Qt::RightButton
                  && map.contains(event->pos())) {
             for (Unit *unit : user.getUnits()) {
-            isAnyUnitSelected=false;
             isGameStarted?unit->setTarget(event->pos()):unit->manualMove(event->pos(),QRectF(0,0,ui->restrictedArea->width(),ui->restrictedArea->height()),map.getObstacles(),user.getUnits());
             }
         }

@@ -195,16 +195,12 @@ void GameMenu::applyAdjustments()
     if(screenSize.width()!=width()){setFixedSize(screenSize);}
     }
     else{
-    qDebug("a");
     showFullScreen();
     screenSize={width(),height()};
     scale=width()/currentWidth;
     }
-    qDebug("%f\n",scale);
-    qDebug("%d\n",ui->menuFrame->pos().x());
     ui->menuFrame->move(screenSize.width()/2-ui->menuFrame->width()/2,screenSize.height()/2-ui->menuFrame->height()/2);
     ui->htpMenu->move(ui->htpMenu->pos().x()+ui->htpMenu->pos().x()*scale,ui->htpMenu->pos().y()+ui->htpMenu->pos().y()*scale);
-    qDebug("%d\n",ui->menuFrame->pos().x());
     size=screenSize;
 
 }

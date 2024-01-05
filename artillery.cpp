@@ -9,9 +9,10 @@
 Artillery::Artillery() : Unit() {
     speed = 0.4;
     health = 100;
+    maxHealth=health;
     attackPower = 3;
     defensePower = 0;
-    ammo = 150;
+    ammo = 50;
     img.load(":images/images/artillery.png");
     meleePower = 1;
 }
@@ -109,7 +110,7 @@ void Artillery::draw(QPainter* painter) {
     painter->setPen(Qt::black);
     QFont font("Arial", 10, QFont::Bold);  // Set the font to bold
     painter->setFont(font);
-    QString ammoText = QString::number(ammo / 10);  // Assuming ammo is an integer variable
+    QString ammoText = QString::number(ammo / 3);  // Assuming ammo is an integer variable
 
     // Draw the text on the rotated black rectangle
     painter->translate(center);

@@ -11,7 +11,8 @@ Unit::Unit(int x, int y, double width, double height):
     selected(false),
     movable(false),
     needHelp(false),
-    helpAssigned(false){
+    helpAssigned(false),
+    maxHealth(health){
 
 }
 void Unit::setSelection(bool exp){
@@ -246,7 +247,7 @@ void Unit::draw(QPainter* painter) {
     double healthBarY = center.y() - healthBarHeight - 2 - 20;  // Adjust the offset as needed
 
     // Calculate the width based on the current health percentage
-    double currentHealthWidth = healthBarWidth * (health / 100.0);
+    double currentHealthWidth = healthBarWidth * (health / maxHealth);
 
     // Draw the background of the health bar
     painter->setBrush(Qt::red);
