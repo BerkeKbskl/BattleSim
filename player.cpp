@@ -1,6 +1,7 @@
 #include "player.h"
 #include "artillery.h"
 #include "cavalry.h"
+#include "commander.h"
 #include "infantry.h"
 
 Player::Player():scenario(0,0)
@@ -49,5 +50,6 @@ void Player::createUnits(QList<QString> unitTypes){
         if(type=="infantry"){addUnits(new Infantry());}
         else if(type=="cavalry"){addUnits(new Cavalry());}
         else if(type=="artillery"){addUnits(new Artillery());}
+        else if(type=="commander"){addUnits(new Commander());}
     }
 }

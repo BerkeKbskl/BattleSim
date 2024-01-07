@@ -1,5 +1,13 @@
 #include "unit.h"
 
+/**
+     * @brief Constructor for the Unit class.
+     * @param x The x-coordinate of the unit's initial position.
+     * @param y The y-coordinate of the unit's initial position.
+     * @param width The width of the unit.
+     * @param height The height of the unit.
+     */
+
 Unit::Unit(int x, int y, double width, double height):
     center(x,y),
     target(x,y),
@@ -10,19 +18,27 @@ Unit::Unit(int x, int y, double width, double height):
     height(height),
     selected(false),
     movable(false),
-    needHelp(false),
-    helpAssigned(false),
     maxHealth(health){
 
 }
+
+/**
+     * @brief Sets the selection status of the unit.
+     * @param exp The new selection status.
+     */
+
 void Unit::setSelection(bool exp){
     selected= exp;
 }
 
-bool Unit::isHelpNeed()
-{
-    return this->needHelp;
-}
+/**
+     * @brief Moves the unit to a specified point if the conditions are met.
+     * @param point The target point for the unit.
+     * @param border The border within which the unit is allowed to move.
+     * @param obstacles Vector of obstacles in the environment.
+     * @param units Vector of other units in the environment.
+     */
+
 void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,QVector<Unit*> unit){
     bool isFieldEmpty=true;
     for (Unit *unit:unit){
@@ -37,9 +53,6 @@ void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,Q
     }
 }
 
-void Unit::setSelected(bool b) {
-    selected=b;
-}
 // -------------------------------------------------------------------
 
 /**
@@ -53,7 +66,6 @@ void Unit::setSelected(bool b) {
  */
 int Unit::attack(Unit& enemy){
 
-    enemy.needHelp = true;
     if(enemy.health<=0){
         return 1;
     }

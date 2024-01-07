@@ -20,6 +20,7 @@ Scenario::Scenario(int scenarioNum,double scale){
  * @param index The index indicating which set of unit positions to retrieve (999 for User).
  * @return The QVector of QPointF representing the unit positions.
  */
+
 QVector<QPointF> Scenario::getUnitPositions(int index) {
     return index == 999 ? unitPositions[0] : unitPositions[1];
 }
@@ -30,6 +31,7 @@ QVector<QPointF> Scenario::getUnitPositions(int index) {
  * @param index The index indicating which set of unit types to retrieve.
  * @return The QList of QString representing the unit types.
  */
+
 QList<QString> Scenario::getUnitsType(int index) {
     return index == 999 ? unitTypes[0] : unitTypes[1];
 }
@@ -39,6 +41,7 @@ QList<QString> Scenario::getUnitsType(int index) {
  *
  * @return The QImage representing the map image.
  */
+
 QImage Scenario::getMapImage() {
     return  QImage(mapImagePath);
 }
@@ -48,6 +51,7 @@ QImage Scenario::getMapImage() {
  *
  * @return The QList of QPointF representing the obstacle positions.
  */
+
 QVector<QVector<QPointF>> Scenario::getObstaclePositions()
 {
     return obstaclesPositions;
@@ -58,6 +62,7 @@ QVector<QVector<QPointF>> Scenario::getObstaclePositions()
  *
  * @return The QVector of QString representing the obstacle types.
  */
+
 QVector<QString> Scenario::getObstacleTypes()
 {
     return obstacleTypes;
@@ -71,6 +76,7 @@ QVector<QString> Scenario::getObstacleTypes()
  *
  * @param fileName The path to the scenario file.
  */
+
 void Scenario::scanScenarioFile(QString fileName, double scale) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

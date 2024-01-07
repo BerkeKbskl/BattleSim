@@ -5,30 +5,21 @@
 class AI : public Player
 
 {
-   enum class AIMode {
-        Aggressive,
-        Defensive
-    };
 
 public:
 
     AI(Scenario scenario);
-    Unit* findClosestFriend(Unit*, const QVector<Unit*>& setsOfUnits);
 
-    void makeAggressiveMove(QVector<Unit*>& enemyUnits);
-    void makeDefensiveMove();
     void deployUnits(Scenario scenario) override;
-    void setMode(AIMode mode);
-    void turnTowardEnemy(QVector<Unit*>& enemyUnits);
-    void switchMode();
-    Unit* findClosestEnemy(Unit* unit, const QVector<Unit*>& enemyUnits) ;
-    double calculateDistance(const QPointF& point1, const QPointF& point2) ;
-
     void makeMove(QVector<Unit *> enemyUnits, QVector<Obstacle *> obstacles);
+    double squareDistanceTo(const QPointF& p1, const QPointF& p2);
+    void normalize(QPointF& v);
 private:
-    AIMode mode;
-    bool isFirstMove;
-
+    QPointF closestPointOnPath(const QPointF &point, const QPainterPath &path);
+    QPointF getRepulsionForce(double x, double y, const QPainterPath& obstaclePath);
+    QPointF getAttractionForce(double x, double y, const QPointF& enemyPosition);
+    QPointF getFriendForce(double x, double y, const QPointF& friendPosition);
+    QPointF computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,const QVector<Unit*>& enemies,const QVector<Unit*>& friends);
 };
 
 

@@ -41,6 +41,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
                game.h game.cpp game.ui
                settings.h settings.cpp
+               commander.h
+               commander.cpp
 
 
 

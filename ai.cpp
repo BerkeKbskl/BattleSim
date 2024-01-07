@@ -3,17 +3,28 @@
 #include <QPointF>
 #include <QVector>
 #include <float.h>
-#include <iostream>
 #include "ai.h"
 #include "qvectornd.h"
 
-double squareDistanceTo(const QPointF& p1, const QPointF& p2) {
+/**
+ * @brief Calculate the square distance between two QPointF points.
+ * @param p1 The first QPointF point.
+ * @param p2 The second QPointF point.
+ * @return The square distance between p1 and p2.
+ */
+
+double AI::squareDistanceTo(const QPointF& p1, const QPointF& p2) {
     double dx = p2.x() - p1.x();
     double dy = p2.y() - p1.y();
     return dx * dx + dy * dy;
 }
 
-void normalize(QPointF& v) {
+/**
+ * @brief Normalize the given QPointF vector.
+ * @param v The QPointF vector to be normalized.
+ */
+
+void AI::normalize(QPointF& v) {
     double length = std::sqrt(v.x() * v.x() + v.y() * v.y());
     if (length != 0.0) {
         v.setX(v.x() / length);
@@ -21,7 +32,14 @@ void normalize(QPointF& v) {
     }
 }
 
-QPointF closestPointOnPath(const QPointF &point, const QPainterPath &path)
+/**
+ * @brief Find the closest point on a QPainterPath to a given QPointF point.
+ * @param point The target point.
+ * @param path The QPainterPath to find the closest point on.
+ * @return The closest point on the path to the given point.
+ */
+
+QPointF AI::closestPointOnPath(const QPointF &point, const QPainterPath &path)
 {
     if (path.isEmpty())
         return point;
@@ -79,8 +97,15 @@ QPointF closestPointOnPath(const QPointF &point, const QPainterPath &path)
     return minVec.toPointF();
 }
 
+/**
+ * @brief Calculate the repulsion force from an obstacle at the specified point.
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ * @param obstaclePath The QPainterPath representing the obstacle.
+ * @return The repulsion force vector.
+ */
 
-QPointF getRepulsionForce(double x, double y, const QPainterPath& obstaclePath) {
+QPointF AI::getRepulsionForce(double x, double y, const QPainterPath& obstaclePath) {
     QPointF closestPoint = closestPointOnPath(QPointF(x, y), obstaclePath);
     double closestDist = squareDistanceTo(QPointF(x, y), closestPoint);
 
@@ -92,7 +117,15 @@ QPointF getRepulsionForce(double x, double y, const QPainterPath& obstaclePath) 
     return direction;
 }
 
-QPointF getAttractionForce(double x, double y, const QPointF& enemyPosition) {
+/**
+ * @brief Calculate the attraction force towards an enemy at the specified position.
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ * @param enemyPosition The position of the enemy.
+ * @return The attraction force vector.
+ */
+
+QPointF AI::getAttractionForce(double x, double y, const QPointF& enemyPosition) {
     double distance = squareDistanceTo(QPointF(x, y), enemyPosition);
 
     double magnitude = 20 / distance;  // You might need to adjust the magnitude
@@ -104,7 +137,15 @@ QPointF getAttractionForce(double x, double y, const QPointF& enemyPosition) {
     return direction;
 }
 
-QPointF getFriendForce(double x, double y, const QPointF& friendPosition) {
+/**
+ * @brief Calculate the repulsion force from a friend at the specified position.
+ * @param x The x-coordinate of the point.
+ * @param y The y-coordinate of the point.
+ * @param friendPosition The position of the friend unit.
+ * @return The repulsion force vector.
+ */
+
+QPointF AI::getFriendForce(double x, double y, const QPointF& friendPosition) {
 
     double distance = squareDistanceTo(QPointF(x, y), friendPosition);
     double magnitude = 12120 / (distance * distance);  // You might need to adjust the magnitude
@@ -115,8 +156,16 @@ QPointF getFriendForce(double x, double y, const QPointF& friendPosition) {
     return direction;
 }
 
+/**
+ * @brief Compute the vector field for a given unit based on surrounding obstacles, enemies, and friends.
+ * @param unit The unit for which the vector field is computed.
+ * @param obstacles Vector of obstacle pointers.
+ * @param enemies Vector of enemy unit pointers.
+ * @param friends Vector of friend unit pointers.
+ * @return The resulting vector field for the unit.
+ */
 
-QPointF computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,
+QPointF AI::computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,
                            const QVector<Unit*>& enemies,
                            const QVector<Unit*>& friends) {
     QPointF repulsionForce(0, 0);
@@ -147,24 +196,38 @@ QPointF computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,
     return repulsionForce + attractionForce + friendForce;
 }
 
+/**
+ * @brief Constructor for the AI class.
+ * @param scenario The scenario for which the player choose for play.
+ */
 
 AI::AI(Scenario scenario) {
     this->scenario = scenario;
     createUnits(scenario.getUnitsType(0));
     color = QColor(255, 155, 155);
-    isFirstMove = true;
 }
+
+/**
+ * @brief Make a move for the AI-controlled units.
+ * @param enemyUnits Vector of enemy unit pointers.
+ * @param obstacles Vector of obstacle pointers.
+ */
 
 void AI::makeMove(QVector<Unit*> enemyUnits, QVector<Obstacle*> obstacles) {
     for (Unit* unit : getUnits()) {
         // Compute the vector field for the unit based on surrounding obstacles and enemies
         QPointF field = 20000 * computeVectorField(unit, obstacles, enemyUnits, this->getUnits());
 
-        unit->setSelected(true);  // Assuming this is the selection logic
+        unit->setSelection(true);  // Assuming this is the selection logic
         unit->setTarget(unit->getPosition() + field);
-        unit->setSelected(false); // Assuming this is the deselection logic
+
     }
 }
+
+/**
+ * @brief Deploy units to their initial positions in the scenario.
+ * @param scenario The scenario containing the initial positions.
+ */
 
 void AI::deployUnits(Scenario scenario) {
 
@@ -172,7 +235,6 @@ void AI::deployUnits(Scenario scenario) {
     for(int i=0;i<unitPositions.size();i++){
         units[i]->setPosition({unitPositions[i].x(),unitPositions[i].y()});
         units[i]->setColor(this->color);
-        // has to be deployed 180 degrees because they face the opposite way.
     }
 
 }

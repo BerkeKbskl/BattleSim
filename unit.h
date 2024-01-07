@@ -25,15 +25,11 @@ public:
 
     virtual int attack(Unit& enemy);
 
-    bool isHelpNeed(); // for AI
-    bool needHelp; // make private
-    bool helpAssigned; // make private
-
     void setColor(const QColor);
     virtual void draw(QPainter *);
     void manualMove(QPointF point,QRectF border,QVector<Obstacle*>,QVector<Unit*>);
     int getHealth() const;
-    void setSelected(bool b);
+
 protected:
     double angle;
     QColor color;
