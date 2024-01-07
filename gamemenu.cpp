@@ -3,9 +3,7 @@
 
 GameMenu::GameMenu(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::GameMenu),scale(1){
-    size={1366,768};
-
+    , ui(new Ui::GameMenu){
     gameMenuSetup();
 }
 
@@ -24,17 +22,14 @@ GameMenu::~GameMenu(){
  * the initial state of the game menu.
  */
 void GameMenu::gameMenuSetup(){
-
-    setFixedSize(size);
+    setFixedSize(settings.getScreenSize());
     ui->setupUi(this);
+    ui->gameMenuW->resize(width(),height());
+    ui->menuFrame->move(width()/2-ui->menuFrame->width()/2,height()/2-ui->menuFrame->height()/2);
+    ui->htpMenu->move(width()/2-ui->htpMenu->width()/2,height()/2-ui->htpMenu->height()/2);
     ui->gameMenuW->setCurrentIndex(0);
-    player = new QMediaPlayer(this);
-    audioOutput = new QAudioOutput(this);
-    player->setAudioOutput(audioOutput);
-    player->setSource(QUrl("qrc:/sounds/sounds/mainTheme.mp3"));
-    player->setLoops(QMediaPlayer::Infinite);
-    audioOutput->setVolume(ui->horizontalSlider->value()/100.0);
-    player->play();
+    setSound();
+
     connect(ui->playButton,&QPushButton::clicked,this,&GameMenu::playButtonClicked);//connect(sender(ui),signal to capture/catch,receiver(this class),slot(func to run));
     connect(ui->exitButton,&QPushButton::clicked,this,&GameMenu::exitGame);//to invoke the exitGame function when the exit button clicked.
     connect(ui->howTP_Button,&QPushButton::clicked,this,&GameMenu::showHowToPlay);
@@ -42,12 +37,20 @@ void GameMenu::gameMenuSetup(){
     connect(ui->backToMenu,&QPushButton::clicked,this,&GameMenu::back);
     connect(ui->back,&QPushButton::clicked,this,&GameMenu::back);
     connect(ui->settingsButton,&QPushButton::clicked,this,&GameMenu::showSettings);
-    if(scale!=1.0){
-    ui->menuFrame->move(screenSize.width()/2-ui->menuFrame->width()/2,screenSize.height()/2-ui->menuFrame->height()/2);
-    ui->htpMenu->move(ui->htpMenu->pos().x()+ui->htpMenu->pos().x()*scale,ui->htpMenu->pos().y()+ui->htpMenu->pos().y()*scale);
-    }
+
+
+
 }
 
+void GameMenu::setSound(){
+    player = new QMediaPlayer(this);
+    audioOutput = new QAudioOutput(this);
+    player->setAudioOutput(audioOutput);
+    player->setSource(QUrl("qrc:/sounds/sounds/mainTheme.mp3"));
+    player->setLoops(QMediaPlayer::Infinite);
+    audioOutput->setVolume(ui->horizontalSlider->value()/100.0);
+    player->play();
+}
 /**
  * @brief Starts the game with the selected scenario.
  *
@@ -55,8 +58,7 @@ void GameMenu::gameMenuSetup(){
  * to handle events such as exiting to the menu or playing again.
  */
 void GameMenu::playGame() {
-    game = new Game(*scenario);
-    game->setGeometry(0,0,screenSize.width(),screenSize.height());
+    game = new Game(*scenario,settings);
     setCentralWidget(game);//changes the main scene
     connect(game,&Game::exitToMenu,this,&GameMenu::showMenu);
     connect(game,&Game::playAgain,this,&GameMenu::playGame);
@@ -79,8 +81,7 @@ void GameMenu::exitGame(){
 void GameMenu::showMenu() {
     game->close();
     game=nullptr;
-    gameMenuSetup();//reset menu setup
-
+    gameMenuSetup();
 }
 
 /**
@@ -148,7 +149,14 @@ void GameMenu::showHowToPlay()
 void GameMenu::applyScenario()
 {
     if (ui->comboBox->currentIndex() != 0) {
-        scenario = new Scenario(ui->comboBox->currentIndex()-1,scale);
+        qDebug("********%f", settings.getScale());
+        if(oldSize!=settings.getScreenSize()){
+            settings.setScale((settings.getScreenSize().width()/1.0)/(oldSize.width()/1.0));
+            qDebug("s");
+        }
+       // settings.setScale(old==settings.getScreenSize()?scale/1.0:(settings.getScreenSize().width()/1.0)/(old.width()/1.0));
+        qDebug("/*/*/* %d %d %f",settings.getScreenSize().width(),oldSize.width(),settings.getScale());
+        scenario = new Scenario(ui->comboBox->currentIndex()-1,settings.getScale());
     playGame();
     }
 }
@@ -180,29 +188,25 @@ void GameMenu::changeHtpImage(int num)
 
 void GameMenu::applyAdjustments()
 {
-    audioOutput->setVolume((ui->horizontalSlider->value()/100.0));
-    double currentWidth=1366;
-    if(ui->resolutionSet->currentIndex()==0){
-    screenSize=size;
-    }
-    else if(!(ui->resolutionSet->currentText()=="FULL SCREEN")){
+    audioOutput->setVolume((ui->horizontalSlider->value()/100.0));//set volume acording to positions of slider
+
+    oldSize=settings.getScreenSize();
+    if(ui->resolutionSet->currentIndex()!=0&&!(ui->resolutionSet->currentText()=="FULL SCREEN")){
     showNormal();
-    QStringList token=ui->resolutionSet->currentText().split("X");
-    screenSize={token[0].toInt(),token[1].toInt()};
-    currentWidth!=screenSize.width()?scale=(screenSize.width()/currentWidth):scale;
-
-    if(screenSize.width()>width()){move(0,0);}
-    if(screenSize.width()!=width()){setFixedSize(screenSize);}
+    QStringList reso=ui->resolutionSet->currentText().split("X"); //take the new resolution chosen in combobox
+    if(reso[0].toInt()!=settings.getScreenSize().width()){
+        settings.setScreenSize({reso[0].toInt(),reso[1].toInt()});
+        if(settings.getScreenSize().width()>width()){move(0,0);}
+        setFixedSize(settings.getScreenSize());
+        }
     }
-    else{
+    else if(ui->resolutionSet->currentIndex()!=0){//set the window to full screen
     showFullScreen();
-    screenSize={width(),height()};
-    scale=width()/currentWidth;
+    settings.setScreenSize({width(),height()});
     }
-    ui->menuFrame->move(screenSize.width()/2-ui->menuFrame->width()/2,screenSize.height()/2-ui->menuFrame->height()/2);
-    ui->htpMenu->move(ui->htpMenu->pos().x()+ui->htpMenu->pos().x()*scale,ui->htpMenu->pos().y()+ui->htpMenu->pos().y()*scale);
-    size=screenSize;
-
+    ui->gameMenuW->resize(width(),height());
+    ui->menuFrame->move(width()/2-ui->menuFrame->width()/2,height()/2-ui->menuFrame->height()/2);
+    ui->htpMenu->move(width()/2-ui->htpMenu->width()/2,height()/2-ui->htpMenu->height()/2);
 }
 
 void GameMenu::showSettings(){

@@ -11,12 +11,12 @@
  * @param scenario The scenario containing information about the game setup.
  * @param parent The parent widget.
  */
-Game::Game(Scenario scenario,QWidget *parent)
-    :QWidget(parent), scenario(scenario), map(scenario), user(scenario), ai(scenario),ui(new Ui::Game),isGameStarted(false)
+Game::Game(Scenario scenario, Settings settings, QWidget *parent)
+    :QWidget(parent), scenario(scenario), user(scenario), ai(scenario),ui(new Ui::Game),isGameStarted(false),settings(settings), map(scenario,settings)
 {
     ui->setupUi(this);
     setFocusPolicy(Qt::StrongFocus);
-    // Start updating frames.
+    setGeometry(0,0,settings.getScreenSize().width(),settings.getScreenSize().height());
     gameSetup();
 }
 
@@ -31,10 +31,10 @@ Game::~Game(){
  * Initializes various game settings, deploys units for the user and AI, and connects signals to slots.
  */
 void Game::gameSetup(){
-    ui->gameW->setGeometry(0,0,ui->gameW->width()*scenario.getScale(),ui->gameW->height()*scenario.getScale());
-    ui->restrictedArea->resize(ui->restrictedArea->width()*scenario.getScale(),ui->restrictedArea->height()*scenario.getScale());
-    ui->restrictedArea->move(0,ui->restrictedArea->pos().y()*scenario.getScale());
-    ui->info->move(0,ui->info->pos().y()*scenario.getScale());
+    ui->gameW->setGeometry(0,0,width(),height());
+    ui->restrictedArea->resize(width(),height()/2);
+    ui->restrictedArea->move(0,height()/2);
+    ui->info->move(0,ui->info->pos().y()*settings.getScale());
     isPauseState = false;
     ai.deployUnits(scenario);
     user.deployUnits(scenario);

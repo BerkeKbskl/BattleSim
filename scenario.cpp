@@ -8,10 +8,10 @@
  *
  * @param scenarioNum The scenario number.
  */
-Scenario::Scenario(int scenarioNum,double scale):scale(scale) {
+Scenario::Scenario(int scenarioNum,double scale){
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
     mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
-    scanScenarioFile(scenarioPath);qDebug("%f",scale);
+    scanScenarioFile(scenarioPath,scale);
 }
 
 /**
@@ -63,10 +63,6 @@ QVector<QString> Scenario::getObstacleTypes()
     return obstacleTypes;
 }
 
-double Scenario::getScale(){
-    return scale;
-}
-
 /**
  * @brief Scan the scenario file and extract information about units and obstacles.
  *
@@ -75,7 +71,7 @@ double Scenario::getScale(){
  *
  * @param fileName The path to the scenario file.
  */
-void Scenario::scanScenarioFile(QString fileName) {
+void Scenario::scanScenarioFile(QString fileName, double scale) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Error opening file:" << file.errorString();

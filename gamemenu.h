@@ -1,6 +1,7 @@
 #include <QMainWindow>
 #include "game.h"
 #include"scenario.h"
+#include "settings.h"
 #include<QLabel>
 #include <QMediaPlayer>
 #include <QAudioOutput>
@@ -30,14 +31,13 @@ private:
     void showSelectedScenarioImgae();
     void gameMenuSetup();
     void playGame();
-    QSize screenSize;
-    double scale;
-    QSize size;
+    QSize oldSize;
     Scenario *scenario;
+    Settings settings;
     Ui::GameMenu *ui;
     Game *game;
     QMediaPlayer *player;
     QAudioOutput *audioOutput;
-
+    void setSound();
 };
 

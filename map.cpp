@@ -3,8 +3,6 @@
 #include "river.h"
 #include "swamp.h"
 
-#define WW 1366
-#define WH 768
 
 /**
  * @brief Construct a new Map object based on the specified scenario.
@@ -14,10 +12,9 @@
  *
  * @param scenario The scenario containing information about the map and obstacles.
  */
-Map::Map(Scenario scenario)
-    : width(WW)
-    , height(WH)
-    , QRect(0, 0, WW, WH)
+Map::Map(Scenario scenario, Settings settings)
+    :
+    QRect(0, 0,settings.getScreenSize().width(),settings.getScreenSize().height())
     , mapImage(scenario.getMapImage())
     , scenario(scenario)
 {
@@ -31,8 +28,8 @@ Map::Map(Scenario scenario)
 
 void Map::draw(QPainter *painter)
 {
-    double scale=scenario.getScale();
-    if(scale!=1.0){setSize(QSize(scale*width,scale*height));}
+    //double scale=scenario.getScale();
+   // if(scale!=1.0){setSize(QSize(scale*width,scale*height));}
     painter->drawImage(*this, mapImage);
     for (Obstacle *obstacle : obstacles) {
         obstacle->draw(painter);

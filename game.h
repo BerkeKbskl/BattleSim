@@ -8,6 +8,7 @@
 #include<QKeyEvent>
 #include "ai.h"
 #include "map.h"
+#include "settings.h"
 #include"user.h"
 #include"scenario.h"
 #include<QObject>
@@ -20,7 +21,7 @@ class Game : public QWidget
 {
     Q_OBJECT
 public:
-    Game(Scenario scenario, QWidget *parent = nullptr);
+    Game(Scenario scenario,Settings settings, QWidget *parent = nullptr);
     ~Game();
 
 signals:
@@ -29,6 +30,7 @@ signals:
 
 private:
     Ui::Game *ui;
+    Settings settings;
     QTimer* timer;
     Scenario scenario;
     Map map;

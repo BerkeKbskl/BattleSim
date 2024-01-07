@@ -13,17 +13,15 @@ public:
     QImage  getMapImage();
     QVector<QVector<QPointF>> getObstaclePositions();
     QList<QString> getObstacleTypes();
-    double getScale();
     QColor getUnitColor();
 private:
-    void scanScenarioFile(QString path);
+    void scanScenarioFile(QString path,double scale);
     QString mapImagePath;
     QString scenarioPath;
     QVector<QPointF> unitPositions[2];
     QList<QString> unitTypes[2];
     QVector<QVector<QPointF>> obstaclesPositions;
     QList<QString> obstacleTypes;
-    double scale;
     QColor unitColor;
 };
 
