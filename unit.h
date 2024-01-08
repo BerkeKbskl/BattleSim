@@ -22,13 +22,11 @@ public:
     QPainterPath getNextPath() const;
     QPainterPath getCurrentPath() const;
     virtual QPainterPath getAttackCollider() const;
-
     virtual int attack(Unit& enemy);
-
     void setColor(const QColor);
     virtual void draw(QPainter *);
     void manualMove(QPointF point,QRectF border,QVector<Obstacle*>,QVector<Unit*>);
-    int getHealth() const;
+    double getHealth() const;
 
 protected:
     double angle;

@@ -9,8 +9,10 @@ class Cavalry : public Unit
 public:
     Cavalry() ;
 
-private:
-
+protected:
+    double chargePower;
+    bool isChargeMode;
+    int attack(Unit&) override;
 };
 
 #endif // CAVALRY_H

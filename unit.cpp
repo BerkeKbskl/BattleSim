@@ -80,7 +80,7 @@ int Unit::attack(Unit& enemy){
  *
  * @return The current health value of the unit.
  */
-int Unit::getHealth() const{
+double Unit::getHealth() const{
     return health;
 }
 
