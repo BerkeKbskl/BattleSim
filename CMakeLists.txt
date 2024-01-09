@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
                settings.h settings.cpp
                commander.h
                commander.cpp
+               README.md
 
 
 

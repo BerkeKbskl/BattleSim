@@ -21,6 +21,8 @@
         <file>images/htp4.png</file>
         <file>images/commander.jpeg</file>
         <file>images/commander.png</file>
+        <file>images/screenshots/ss1.jpeg</file>
+        <file>images/screenshots/ss2.jpeg</file>
     </qresource>
     <qresource prefix="/scenarios">
         <file>scenarios/scenario0.txt</file>
