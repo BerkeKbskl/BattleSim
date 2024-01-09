@@ -1,13 +1,5 @@
 #include "unit.h"
 
-/**
-     * @brief Constructor for the Unit class.
-     * @param x The x-coordinate of the unit's initial position.
-     * @param y The y-coordinate of the unit's initial position.
-     * @param width The width of the unit.
-     * @param height The height of the unit.
-     */
-
 Unit::Unit(int x, int y, double width, double height):
     center(x,y),
     target(x,y),
@@ -22,22 +14,10 @@ Unit::Unit(int x, int y, double width, double height):
 
 }
 
-/**
-     * @brief Sets the selection status of the unit.
-     * @param exp The new selection status.
-     */
-
 void Unit::setSelection(bool exp){
     selected= exp;
 }
 
-/**
-     * @brief Moves the unit to a specified point if the conditions are met.
-     * @param point The target point for the unit.
-     * @param border The border within which the unit is allowed to move.
-     * @param obstacles Vector of obstacles in the environment.
-     * @param units Vector of other units in the environment.
-     */
 
 void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,QVector<Unit*> unit){
     bool isFieldEmpty=true;
@@ -55,15 +35,6 @@ void Unit::manualMove(QPointF point,QRectF border,QVector<Obstacle*> obstacles,Q
 
 // -------------------------------------------------------------------
 
-/**
- * @brief Attack another unit.
- *
- * Marks the attacked unit as needing help and decreases its health based on the
- * attack power. Returns 1 if the enemy unit's health is depleted; otherwise, 0.
- *
- * @param enemy The unit to be attacked.
- * @return 1 if the enemy unit's health is depleted; otherwise, 0.
- */
 int Unit::attack(Unit& enemy){
 
     if(enemy.health<=0){
@@ -75,67 +46,33 @@ int Unit::attack(Unit& enemy){
     }
 }
 
-/**
- * @brief Get the current health of the unit.
- *
- * @return The current health value of the unit.
- */
 double Unit::getHealth() const{
     return health;
 }
 
-/**
- * @brief Set the color of the unit.
- *
- * @param color The color to set for the unit.
- */
+
 void Unit::setColor(const QColor color){
     this->color = color;
 }
 
-/**
- * @brief Set the position of the unit.
- *
- * @param v The position to set for the unit.
- */
 void Unit::setPosition(const QPointF v) {
     center = v;
 }
 
-/**
- * @brief Unit::selectUnit
- * @param point
- */
 bool Unit::selectUnit(const QPointF point){
     selected = getCurrentPath().contains(point) ? !selected : selected;
     return selected;
 }
 
-/**
- * @brief Get the current position of the unit.
- *
- * @return The current position of the unit as a QPointF.
- */
 QPointF Unit::getPosition() const {
     return center;
 }
 
-/**
- * @brief Stop the unit's movement and set the target position to the current position.
- */
 void Unit::stop(){
     target = center;
     movable = false;
 }
 
-/**
- * @brief Set the target position for the unit to move towards.
- *
- * If the unit is selected, the target position is set, and the unit becomes movable.
- * The unit's angle is also updated based on the new target position.
- *
- * @param point The target position for the unit.
- */
 void Unit::setTarget(const QPointF point)
 {
     if (selected) { // should be able to set a target despite not being selected
@@ -147,12 +84,6 @@ void Unit::setTarget(const QPointF point)
 
 }
 
-/**
- * @brief Move the unit towards its target position.
- *
- * If the unit is movable, it is moved towards the target position. If the distance
- * to the target is less than the speed, the unit stops meaning it arrived..
- */
 void Unit::moveTo(){
     if (movable) {
             // Less readable
@@ -164,15 +95,7 @@ void Unit::moveTo(){
     }
 }
 
-/**
- * @brief Get the next path of the unit after pushing the current collider forward the angle.
- *
- * This function calculates the next path of the unit by pushing the current collider forward
- * along the current angle. It uses a translation vector to move the collider and then applies
- * rotation to obtain the final path.
- *
- * @return The next QPainterPath representing the updated collider path.
- */
+
 QPainterPath Unit::getNextPath() const {
 
     // Pushes the current collider forward the angle
@@ -185,14 +108,7 @@ QPainterPath Unit::getNextPath() const {
     return rotationTransform.map(getCurrentPath()) + Unit::getCurrentPath();
 }
 
-/**
- * @brief Get the current path of the unit's collider.
- *
- * This function returns the current path of the unit's collider, which is an ellipse path
- * transformed by translation and rotation based on the unit's center, width, height, and angle.
- *
- * @return The current QPainterPath representing the unit's collider.
- */
+
 QPainterPath Unit::getCurrentPath() const
 {
     // Returns the current collider
@@ -208,26 +124,11 @@ QPainterPath Unit::getCurrentPath() const
     return rotationTransform.map(ellipsePath);
 }
 
-/**
- * @brief Get the attack collider path of the unit.
- *
- * This function returns the attack collider path, which is the next path of the unit.
- *
- * @return The attack collider path as a QPainterPath.
- */
 QPainterPath Unit::getAttackCollider() const
 {
     return Unit::getNextPath();
 }
 
-/**
- * @brief Draw the unit on a QPainter.
- *
- * This function draws the unit on the provided QPainter, considering its current state,
- * position, and appearance.
- *
- * @param painter The QPainter on which to draw the unit.
- */
 void Unit::draw(QPainter* painter) {
     painter->save();
     painter->setOpacity(selected ? 0.2 : 1);

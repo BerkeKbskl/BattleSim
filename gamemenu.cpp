@@ -154,10 +154,10 @@ void GameMenu::applyScenario()
             settings.setScale((settings.getScreenSize().width()/1.0)/(oldSize.width()/1.0));
             qDebug("s");
         }
-       // settings.setScale(old==settings.getScreenSize()?scale/1.0:(settings.getScreenSize().width()/1.0)/(old.width()/1.0));
+        // settings.setScale(old==settings.getScreenSize()?scale/1.0:(settings.getScreenSize().width()/1.0)/(old.width()/1.0));
         qDebug("/*/*/* %d %d %f",settings.getScreenSize().width(),oldSize.width(),settings.getScale());
         scenario = new Scenario(ui->comboBox->currentIndex()-1,settings.getScale());
-    playGame();
+        playGame();
     }
 }
 
@@ -192,17 +192,17 @@ void GameMenu::applyAdjustments()
 
     oldSize=settings.getScreenSize();
     if(ui->resolutionSet->currentIndex()!=0&&!(ui->resolutionSet->currentText()=="FULL SCREEN")){
-    showNormal();
-    QStringList reso=ui->resolutionSet->currentText().split("X"); //take the new resolution chosen in combobox
-    if(reso[0].toInt()!=settings.getScreenSize().width()){
-        settings.setScreenSize({reso[0].toInt(),reso[1].toInt()});
-        if(settings.getScreenSize().width()>width()){move(0,0);}
-        setFixedSize(settings.getScreenSize());
+        showNormal();
+        QStringList reso=ui->resolutionSet->currentText().split("X"); //take the new resolution chosen in combobox
+        if(reso[0].toInt()!=settings.getScreenSize().width()){
+            settings.setScreenSize({reso[0].toInt(),reso[1].toInt()});
+            if(settings.getScreenSize().width()>width()){move(0,0);}
+            setFixedSize(settings.getScreenSize());
         }
     }
     else if(ui->resolutionSet->currentIndex()!=0){//set the window to full screen
-    showFullScreen();
-    settings.setScreenSize({width(),height()});
+        showFullScreen();
+        settings.setScreenSize({width(),height()});
     }
     ui->gameMenuW->resize(width(),height());
     ui->menuFrame->move(width()/2-ui->menuFrame->width()/2,height()/2-ui->menuFrame->height()/2);
@@ -214,4 +214,3 @@ void GameMenu::showSettings(){
     connect(ui->applyAdjustments,&QPushButton::clicked,this,&GameMenu::applyAdjustments);
     ui->gameMenuW->setCurrentIndex(3);
 }
-

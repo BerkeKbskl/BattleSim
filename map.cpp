@@ -4,14 +4,6 @@
 #include "swamp.h"
 
 
-/**
- * @brief Construct a new Map object based on the specified scenario.
- *
- * Initializes a Map object with the specified width, height, map image, and obstacles
- * extracted from the provided scenario.
- *
- * @param scenario The scenario containing information about the map and obstacles.
- */
 Map::Map(Scenario scenario, Settings settings)
     :
     QRect(0, 0,settings.getScreenSize().width(),settings.getScreenSize().height())

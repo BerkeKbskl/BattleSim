@@ -1,81 +1,43 @@
 #include "Scenario.h"
 
-/**
- * @brief Construct a new Scenario object based on the specified scenario number.
- *
- * Initializes a Scenario object with paths to scenario and map image files and scans
- * the scenario file to extract information about unit and obstacle positions.
- *
- * @param scenarioNum The scenario number.
- */
+
 Scenario::Scenario(int scenarioNum,double scale){
     scenarioPath.append(":/scenarios/scenarios/scenario").append(to_string(scenarioNum)).append(".txt");
     mapImagePath.append(":/images/images/map").append(to_string(scenarioNum)).append(".png");
     scanScenarioFile(scenarioPath,scale);
 }
 
-/**
- * @brief Get the positions of units based on the specified index.
- *
- * @param index The index indicating which set of unit positions to retrieve (999 for User).
- * @return The QVector of QPointF representing the unit positions.
- */
+
 
 QVector<QPointF> Scenario::getUnitPositions(int index) {
     return index == 999 ? unitPositions[0] : unitPositions[1];
 }
 
-/**
- * @brief Get the types of units based on the specified index.
- *
- * @param index The index indicating which set of unit types to retrieve.
- * @return The QList of QString representing the unit types.
- */
+
 
 QList<QString> Scenario::getUnitsType(int index) {
     return index == 999 ? unitTypes[0] : unitTypes[1];
 }
 
-/**
- * @brief Get the map image associated with the scenario.
- *
- * @return The QImage representing the map image.
- */
 
 QImage Scenario::getMapImage() {
     return  QImage(mapImagePath);
 }
 
-/**
- * @brief Get the positions of obstacles in the scenario.
- *
- * @return The QList of QPointF representing the obstacle positions.
- */
+
 
 QVector<QVector<QPointF>> Scenario::getObstaclePositions()
 {
     return obstaclesPositions;
 }
 
-/**
- * @brief Get the types of obstacles in the scenario.
- *
- * @return The QVector of QString representing the obstacle types.
- */
+
 
 QVector<QString> Scenario::getObstacleTypes()
 {
     return obstacleTypes;
 }
 
-/**
- * @brief Scan the scenario file and extract information about units and obstacles.
- *
- * Reads the scenario file line by line, extracts information about unit and obstacle
- * positions and types, and populates the corresponding data structures.
- *
- * @param fileName The path to the scenario file.
- */
 
 void Scenario::scanScenarioFile(QString fileName, double scale) {
     QFile file(fileName);

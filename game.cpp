@@ -3,14 +3,6 @@
 #include "ui_game.h"
 #define FPS 60
 
-/**
- * @brief Construct a new Game object with the specified scenario and parent.
- *
- * Initializes a Game object with the specified scenario, sets up the game, and starts updating frames.
- *
- * @param scenario The scenario containing information about the game setup.
- * @param parent The parent widget.
- */
 Game::Game(Scenario scenario, Settings settings, QWidget *parent)
     :QWidget(parent), scenario(scenario), user(scenario), ai(scenario),ui(new Ui::Game),isGameStarted(false),settings(settings), map(scenario,settings)
 {
@@ -25,11 +17,6 @@ Game::~Game(){
     delete ui;
 }
 
-/**
- * @brief Set up the initial state of the game.
- *
- * Initializes various game settings, deploys units for the user and AI, and connects signals to slots.
- */
 void Game::gameSetup(){
     ui->gameW->setGeometry(0,0,width(),height());
     ui->restrictedArea->resize(width(),height()/2);
@@ -51,13 +38,6 @@ void Game::gameSetup(){
 
 }
 
-/**
- * @brief Handle the paint event, drawing the map and units on the QPainter.
- *
- * This function is called whenever the widget needs to be redrawn, and it draws the map, user units, and AI units.
- *
- * @param event The paint event.
- */
 void Game::paintEvent(QPaintEvent* event) {
     Q_UNUSED(event);
     QPainter painter(this);
@@ -80,31 +60,20 @@ void Game::paintEvent(QPaintEvent* event) {
 
 }
 
-/**
- * @brief Show the result page when the game is over.
- */
+
 void Game::showResult(){
     ui->gameW->setCurrentIndex(1);
     ui->resultMenu->move((ui->gameW->width()-ui->resultMenu->width())/2,0);
 
 }
 
-/**
- * @brief Pause or resume the game when the pause button is clicked.
- */
+
 void Game::pauseGame(){
     isPauseState = !isPauseState;
     isPauseState ? timer->stop(): timer->start(1000 / FPS);
     isPauseState?ui->pauseIcon->show():ui->pauseIcon->hide();
 }
 
-/**
- * @brief Handle mouse press events, selecting units and setting targets.
- *
- * If the game is not paused, left-clicking selects units, and right-clicking sets targets.
- *
- * @param event The mouse press event.
- */
 void Game::mousePressEvent(QMouseEvent *event)
 {
 
@@ -126,14 +95,7 @@ void Game::mousePressEvent(QMouseEvent *event)
 
 }
 
-/**
- * @brief Manages collisions between units and obstacles in the game.
- *
- * This function checks for collisions between units, obstacles, and attack colliders,
- * updating the game state accordingly. It handles both direct collisions between units
- * and collisions with obstacles on the map. Additionally, it allows units to receive attacks
- * from other units' attack colliders.
- */
+
 void Game::manageCollisions() {
 
     auto coll = [&](const auto& units1, const auto& units2) {
@@ -183,12 +145,7 @@ void Game::manageCollisions() {
         coll(ai.getUnits(), user.getUnits());
     }
 }
-/**
- * @brief Updates the game state.
- *
- * This function manages collisions, checks health of units, makes AI moves,
- * updates unit positions, updates game information, and triggers a repaint.
- */
+
 void Game::updateGame(){
     if(isGameStarted){
     ai.makeMove(user.getUnits(),map.getObstacles());
@@ -211,12 +168,7 @@ void Game::updateGame(){
     update(); // calls paintEvent
 }
 
-/**
- * @brief Checks the health of units and removes dead units from the game.
- *
- * This function removes units with health equal to or below zero from both
- * the user and AI unit lists.
- */
+
 
 void Game::checkHealth() {
 

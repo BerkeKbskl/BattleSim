@@ -1,11 +1,6 @@
 #include "artillery.h"
 
-/**
- * @brief Constructs an Artillery object.
- *
- * This constructor initializes the Artillery object with default values for speed, health,
- * attack power, defense power, ammo, and image. It also loads the artillery image.
- */
+
 Artillery::Artillery() : Unit() {
     speed = 0.2;
     health = 10;
@@ -17,16 +12,7 @@ Artillery::Artillery() : Unit() {
     meleePower = 1;
 }
 
-/**
- * @brief Attacks an enemy unit.
- *
- * This function determines whether to perform a ranged or melee attack based on the
- * ammunition count. It then calls the base class attack method to calculate and apply
- * the damage.
- *
- * @param enemy The enemy unit to attack.
- * @return The damage dealt to the enemy unit.
- */
+
 int Artillery::attack(Unit& enemy){
     if (!shoot())
         attackPower = meleePower;
@@ -34,15 +20,7 @@ int Artillery::attack(Unit& enemy){
     return Unit::attack(enemy);
 }
 
-/**
- * @brief Gets the attack collider path for the artillery unit.
- *
- * This function returns the QPainterPath representing the current attack collider
- * for the artillery unit. The collider is a rectangle in front of the unit when there
- * is ammunition available, otherwise, it is a smaller rectangle near the unit.
- *
- * @return The QPainterPath representing the attack collider.
- */
+
 QPainterPath Artillery::getAttackCollider() const
 {
 
@@ -61,14 +39,7 @@ QPainterPath Artillery::getAttackCollider() const
     return rotationTransform.map(ellipsePath);
 }
 
-/**
- * @brief Performs a ranged attack, reducing ammunition.
- *
- * This function checks if ammunition is available. If so, it decrements the ammunition count
- * and returns true. Otherwise, it returns false.
- *
- * @return True if the artillery unit successfully shoots, false otherwise.
- */
+
 bool Artillery::shoot() {
 
     if (ammo > 0) {
@@ -80,14 +51,7 @@ bool Artillery::shoot() {
 
 }
 
-/**
- * @brief Draws the artillery unit on the painter.
- *
- * This function calls the base class draw method to draw the unit shape and then
- * additionally draws the ammunition count in the middle of the shape.
- *
- * @param painter The QPainter object used for drawing.
- */
+
 void Artillery::draw(QPainter* painter) {
     // Call the base class draw method to draw the unit shape
     Unit::draw(painter);
