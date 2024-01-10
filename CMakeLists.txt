@@ -14,10 +14,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
 set(PROJECT_SOURCES
-        main.cpp
-        gamemenu.cpp
-        gamemenu.h
-        gamemenu.ui
+        src/main.cpp
+        src/gamemenu.cpp
+        src/gamemenu.h
+        src/gamemenu.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -25,24 +25,24 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
 
-               unit.h unit.cpp
-               user.h user.cpp
-               player.h player.cpp
-               ai.h ai.cpp
-               map.h map.cpp
-               infantry.h infantry.cpp
-               cavalry.h cavalry.cpp
-               artillery.h artillery.cpp
-               scenario.h scenario.cpp
-               obstacle.h obstacle.cpp
-               river.cpp river.h
-               swamp.h swamp.cpp
+               src/unit.h src/unit.cpp
+               src/user.h src/user.cpp
+               src/player.h src/player.cpp
+               src/ai.h src/ai.cpp
+               src/map.h src/map.cpp
+               src/infantry.h src/infantry.cpp
+               src/cavalry.h src/cavalry.cpp
+               src/artillery.h src/artillery.cpp
+               src/scenario.h src/scenario.cpp
+               src/obstacle.h src/obstacle.cpp
+               src/river.cpp src/river.h
+               src/swamp.h src/swamp.cpp
                resources.qrc
 
-               game.h game.cpp game.ui
-               settings.h settings.cpp
-               commander.h
-               commander.cpp
+               src/game.h src/game.cpp src/game.ui
+               src/settings.h src/settings.cpp
+               src/commander.h
+               src/commander.cpp
                README.md
 
 

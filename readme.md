@@ -42,7 +42,7 @@ You can open CMakeLists.txt in Qt Creator.
 - Build project.
 - Once the project is built, you can run it directly from Qt Creator. 
 
-### Documentation:
+## Documentation:
 
 1. Navigate to the `doxygen` folder.
 
@@ -55,10 +55,10 @@ You can open CMakeLists.txt in Qt Creator.
 ## Contributions
 
 ### Berke Kabasakal
--Game, Unit, Artillery, Map, Obstacles, River and Swamp (classes and logic for smoothening), Player, User, Unit assets, AI.
+- Game, Unit, Artillery, Map, Obstacles, River and Swamp (classes and logic for smoothening), Player, User, Unit assets, AI.
 
 ### Ferhat Onur Özgan
--GameMenu, Game,  UI, Settings, Unit, User, Scenario class and Map Implementations, File operations, mouse operations , Map images. 
+- GameMenu, Game,  UI, Settings, Unit, User, Scenario class and Map Implementations, File operations, mouse operations , Map images. 
 
 ### Osman Oğuz Erol:
--Commander, Infantry, Cavalry, Audio, AI, Ideas,  Scenario text file writing, Doxygen documentation.
+- Commander, Infantry, Cavalry, Audio, AI, Ideas,  Scenario text file writing, Doxygen documentation.
