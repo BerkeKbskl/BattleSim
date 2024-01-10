@@ -151,7 +151,7 @@ QPointF AI::computeVectorField(Unit* unit, const QVector<Obstacle*>& obstacles,
         }
     }
 
-    return repulsionForce + attractionForce + friendForce;
+    return repulsionForce + attractionForce + friendForce; //resultant vector
 }
 
 

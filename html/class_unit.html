@@ -140,7 +140,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0ba4c508fc91153110b02fa636ce9ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the target position for the unit to move towards.  <br /></td></tr>
 <tr class="separator:a0ba4c508fc91153110b02fa636ce9ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebbb3e104e972e62dc5b573c2730612d" id="r_aebbb3e104e972e62dc5b573c2730612d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebbb3e104e972e62dc5b573c2730612d">moveTo</a> ()</td></tr>
-<tr class="memdesc:aebbb3e104e972e62dc5b573c2730612d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the unit towards its target position.  <br /></td></tr>
+<tr class="memdesc:aebbb3e104e972e62dc5b573c2730612d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the unit towards its target position respect to the its speed.  <br /></td></tr>
 <tr class="separator:aebbb3e104e972e62dc5b573c2730612d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2a0b6a7e8da3a67089c7ccc4cf1786a" id="r_ac2a0b6a7e8da3a67089c7ccc4cf1786a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2a0b6a7e8da3a67089c7ccc4cf1786a">setSelection</a> (bool exp)</td></tr>
 <tr class="memdesc:ac2a0b6a7e8da3a67089c7ccc4cf1786a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the selection status of the unit.  <br /></td></tr>
@@ -176,10 +176,12 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a398cadc4f628509d096c74d4488b1b4b" id="r_a398cadc4f628509d096c74d4488b1b4b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a398cadc4f628509d096c74d4488b1b4b">angle</a></td></tr>
+<tr class="memdesc:a398cadc4f628509d096c74d4488b1b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Angle of unit in the plane.  <br /></td></tr>
 <tr class="separator:a398cadc4f628509d096c74d4488b1b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a0c167b9cd5c9802d4ca59c49d4bacc" id="r_a5a0c167b9cd5c9802d4ca59c49d4bacc"><td class="memItemLeft" align="right" valign="top">QColor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0c167b9cd5c9802d4ca59c49d4bacc">color</a></td></tr>
 <tr class="separator:a5a0c167b9cd5c9802d4ca59c49d4bacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1a4cb28cfbe72dcf246c29e7dbf17dd" id="r_ae1a4cb28cfbe72dcf246c29e7dbf17dd"><td class="memItemLeft" align="right" valign="top">QPointF&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1a4cb28cfbe72dcf246c29e7dbf17dd">target</a></td></tr>
+<tr class="memdesc:ae1a4cb28cfbe72dcf246c29e7dbf17dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Target point to move.  <br /></td></tr>
 <tr class="separator:ae1a4cb28cfbe72dcf246c29e7dbf17dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70373ec54b56c83f8f081dde9f8fca3" id="r_ab70373ec54b56c83f8f081dde9f8fca3"><td class="memItemLeft" align="right" valign="top">QPointF&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab70373ec54b56c83f8f081dde9f8fca3">center</a></td></tr>
 <tr class="separator:ab70373ec54b56c83f8f081dde9f8fca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +190,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a2d7775901cb6e8d7cad00d19abcd6eb4" id="r_a2d7775901cb6e8d7cad00d19abcd6eb4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d7775901cb6e8d7cad00d19abcd6eb4">attackPower</a></td></tr>
 <tr class="separator:a2d7775901cb6e8d7cad00d19abcd6eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a577f4347614183b53d67e4fa81a9743f" id="r_a577f4347614183b53d67e4fa81a9743f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a577f4347614183b53d67e4fa81a9743f">health</a></td></tr>
+<tr class="memdesc:a577f4347614183b53d67e4fa81a9743f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Health of the unit. Dies if it is 0.  <br /></td></tr>
 <tr class="separator:a577f4347614183b53d67e4fa81a9743f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2187503e13d23e5804ddd6c298ab99af" id="r_a2187503e13d23e5804ddd6c298ab99af"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2187503e13d23e5804ddd6c298ab99af">maxHealth</a></td></tr>
 <tr class="separator:a2187503e13d23e5804ddd6c298ab99af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,6 +371,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the current movement path of the unit. </p>
+<dl class="section note"><dt>Note</dt><dd>Path is the term for shape of unit. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The current movement path of the unit. </dd></dl>
 
 </div>
@@ -408,6 +412,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the path for the next movement step. </p>
+<dl class="section note"><dt>Note</dt><dd>Path is the term for shape of unit. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The path for the next movement step. </dd></dl>
 
 </div>
@@ -489,7 +494,8 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Moves the unit towards its target position. </p>
+<p>Moves the unit towards its target position respect to the its speed. </p>
+<dl class="section note"><dt>Note</dt><dd>Manhattan distance is the total lenght to overcome for the unit, if it is greater then speed it stops means that it arrived to the point. </dd></dl>
 
 </div>
 </div>
@@ -659,6 +665,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Angle of unit in the plane. </p>
+
 </div>
 </div>
 <a id="a2d7775901cb6e8d7cad00d19abcd6eb4" name="a2d7775901cb6e8d7cad00d19abcd6eb4"></a>
@@ -768,6 +776,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Health of the unit. Dies if it is 0. </p>
 
 </div>
 </div>
@@ -923,6 +933,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Target point to move. </p>
+
 </div>
 </div>
 <a id="a4c7e1ee1ad3d3c7178a9092723b0a44c" name="a4c7e1ee1ad3d3c7178a9092723b0a44c"></a>
@@ -948,8 +960,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/osman/OneDrive/Masaüstü/HBS/Hbs/<a class="el" href="unit_8h_source.html">unit.h</a></li>
-<li>C:/Users/osman/OneDrive/Masaüstü/HBS/Hbs/<a class="el" href="unit_8cpp.html">unit.cpp</a></li>
+<li><a class="el" href="unit_8h_source.html">unit.h</a></li>
+<li><a class="el" href="unit_8cpp.html">unit.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

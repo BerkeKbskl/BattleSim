@@ -148,7 +148,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a1b698986fa0cb47862ffc0681a4d4be4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the result of the game.  <br /></td></tr>
 <tr class="separator:a1b698986fa0cb47862ffc0681a4d4be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef823b55f9fb71eae61445b8a59e3213" id="r_aef823b55f9fb71eae61445b8a59e3213"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef823b55f9fb71eae61445b8a59e3213">manageCollisions</a> ()</td></tr>
-<tr class="memdesc:aef823b55f9fb71eae61445b8a59e3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manage collisions between units and obstacles.  <br /></td></tr>
+<tr class="memdesc:aef823b55f9fb71eae61445b8a59e3213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages collisions. Checks every units next collider and stops the unit if its next collider intersects with other entities.  <br /></td></tr>
 <tr class="separator:aef823b55f9fb71eae61445b8a59e3213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaabe3d901c249f4dddcbf33786bf5835" id="r_aaabe3d901c249f4dddcbf33786bf5835"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaabe3d901c249f4dddcbf33786bf5835">checkHealth</a> ()</td></tr>
 <tr class="memdesc:aaabe3d901c249f4dddcbf33786bf5835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the health of units and handle any resulting actions.  <br /></td></tr>
@@ -360,7 +360,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Manage collisions between units and obstacles. </p>
+<p>Manages collisions. Checks every units next collider and stops the unit if its next collider intersects with other entities. </p>
+<dl class="section note"><dt>Note</dt><dd>If the unit is colliding with an enemy unit then the functions calls attack function with passing intersected unit. </dd></dl>
 
 </div>
 </div>
@@ -388,6 +389,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Mouse press event for handling user input. </p>
+<dl class="section note"><dt>Note</dt><dd>This method selects the units that mouse clicked on it. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">event</td><td>The QMouseEvent to be processed. </td></tr>
@@ -783,8 +785,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/osman/OneDrive/Masaüstü/HBS/Hbs/<a class="el" href="game_8h_source.html">game.h</a></li>
-<li>C:/Users/osman/OneDrive/Masaüstü/HBS/Hbs/<a class="el" href="game_8cpp.html">game.cpp</a></li>
+<li><a class="el" href="game_8h_source.html">game.h</a></li>
+<li><a class="el" href="game_8cpp.html">game.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

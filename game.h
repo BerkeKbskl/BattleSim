@@ -82,7 +82,8 @@ private:
     void showResult();
 
     /**
-     * @brief Manage collisions between units and obstacles.
+     * @brief Manages collisions. Checks every units next collider and stops the unit if its next collider intersects with other entities.
+     * @note If the unit is colliding with an enemy unit then the functions calls attack function with passing intersected unit.
      */
     void manageCollisions();
 
@@ -104,6 +105,7 @@ private:
 
     /**
      * @brief Mouse press event for handling user input.
+     * @note  This method selects the units that mouse clicked on it.
      * @param event The QMouseEvent to be processed.
      */
     void mousePressEvent(QMouseEvent* event) override;

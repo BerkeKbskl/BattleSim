@@ -42,7 +42,7 @@ public:
 
 private:
     QImage mapImage;
-    QVector<Obstacle*> obstacles;
+    QVector<Obstacle*> obstacles;///< Obstacles positions for put them into the map.
     int width = 0;
     int height = 0;
     Scenario scenario;

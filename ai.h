@@ -26,7 +26,8 @@ public:
      */
     void deployUnits(Scenario scenario) override;
     /**
-     * @brief Makes a move based on the current game state, enemy units, and obstacles.
+     * @brief Makes move with all AI units according to positions of enemy units, obstacles and friendly units.
+     * @note Uses vector fields for avoid obstacles and friendly units, it calculates all the vectors via distance.
      * @param enemyUnits A QVector containing pointers to enemy units.
      * @param obstacles A QVector containing pointers to obstacles in the game.
      */
@@ -46,6 +47,7 @@ public:
 private:
     /**
      * @brief Finds the closest point on a path to the specified point.
+     * @note Its finds the closest point to the river and swamp object.
      * @param point The target point.
      * @param path The QPainterPath to find the closest point on.
      * @return The closest point on the path to the specified point.
@@ -78,6 +80,7 @@ private:
     QPointF getFriendForce(double x, double y, const QPointF& friendPosition);
     /**
      * @brief Computes the vector field for a given unit based on the game state.
+     * @note  This function puts all vectors together and calculates their resultant vector for each unit.
      * @param unit The AI-controlled unit.
      * @param obstacles A QVector containing pointers to obstacles in the game.
      * @param enemies A QVector containing pointers to enemy units.

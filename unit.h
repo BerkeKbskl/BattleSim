@@ -50,7 +50,8 @@ public:
     void setTarget(const QPointF point);
 
     /**
-     * @brief Moves the unit towards its target position.
+     * @brief Moves the unit towards its target position respect to the its speed.
+     * @note Manhattan distance is the total lenght to overcome for the unit, if it is greater then speed it stops means that it arrived to the point.
      */
     void moveTo();
 
@@ -68,12 +69,14 @@ public:
 
     /**
      * @brief Gets the path for the next movement step.
+     * @note Path is the term for shape of unit.
      * @return The path for the next movement step.
      */
     QPainterPath getNextPath() const;
 
     /**
      * @brief Gets the current movement path of the unit.
+     * @note Path is the term for shape of unit.
      * @return The current movement path of the unit.
      */
     QPainterPath getCurrentPath() const;
@@ -119,13 +122,13 @@ public:
     double getHealth() const;
 
 protected:
-    double angle;
+    double angle; ///< Angle of unit in the plane.
     QColor color;
-    QPointF target;
+    QPointF target;///< Target point to move.
     QPointF center;
     QImage img;
     double attackPower;
-    double health;
+    double health;///< Health of the unit. Dies if it is 0.
     double maxHealth;
     double speed;
     double defensePower;

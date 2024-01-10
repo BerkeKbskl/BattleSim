@@ -78,8 +78,8 @@ private:
     Settings settings;
     Ui::GameMenu *ui;
     Game *game;
-    QMediaPlayer *player;
-    QAudioOutput *audioOutput;
+    QMediaPlayer *player;///< Player object for the soundtrack.
+    QAudioOutput *audioOutput;///< AudioOutput object for the soundtrack.
 
     /**
      * @brief Sets up the sound for the game menu.

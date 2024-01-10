@@ -17,7 +17,7 @@ public:
      */
     User(Scenario scenario);
     /**
-     * @brief Deploys units for the user player in the specified scenario.
+     * @brief Deploys units for the user player to the map in the specified scenario.
      * @param scenario The game scenario in which the user player deploys units.
      */
     void deployUnits(Scenario) override;
