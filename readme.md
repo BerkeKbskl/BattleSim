@@ -55,10 +55,10 @@ You can open CMakeLists.txt in Qt Creator.
 ## Contributions
 
 ### Berke Kabasakal
-- Game, Unit, Artillery, Map, Obstacles, River and Swamp (classes and logic for smoothening), Player, User, Unit assets, AI.
+- Game, Unit, Artillery, Map, Obstacles, River and Swamp (classes and logic for smoothening), Player, User, Unit assets, AI, Readme.
 
 ### Ferhat Onur Özgan
-- GameMenu, Game,  UI, Settings, Unit, User, Scenario class and Map Implementations, File operations, mouse operations , Map images. 
+- GameMenu, Game,  UI, Settings, Unit, User, Scenario class and Map Implementations, File operations, mouse operations , Map images, Commander. 
 
 ### Osman Oğuz Erol:
-- Commander, Infantry, Cavalry, Audio, AI, Ideas,  Scenario text file writing, Doxygen documentation.
+- Infantry, Cavalry, Audio, AI, Ideas, Scenario text file writing.
